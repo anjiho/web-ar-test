@@ -48,8 +48,8 @@ public class EventDto {
     // 시간참여 불가시
     private String attendHourMessage;
 
-    // AR 구동 정보 테이블 아이디
-    private Integer eventLogicalId;
+    // AR 구동 정보 타입
+    private String eventLogicalType;
 
     // 계약 인덱스 값
     private String marketingId;

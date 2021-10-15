@@ -4,9 +4,11 @@ import com.sk.ar.web.test.dto.request.ApiResultObjectDto;
 import com.sk.ar.web.test.dto.response.CategoryDto;
 import com.sk.ar.web.test.jpa.event.ArEventButtonJpa;
 import com.sk.ar.web.test.jpa.event.ArEventCategoryJpa;
+import com.sk.ar.web.test.jpa.event.ArEventLogicalJpa;
 import com.sk.ar.web.test.jpa.event.EventJpa;
 import com.sk.ar.web.test.jpa.event.repository.ArEventButtonJpaRepository;
 import com.sk.ar.web.test.jpa.event.repository.ArEventCategoryJpaRepository;
+import com.sk.ar.web.test.jpa.event.repository.ArEventLogicalJpaRepository;
 import com.sk.ar.web.test.jpa.event.repository.EventJpaRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +32,9 @@ public class ArEventService {
     @Autowired
     private ArEventCategoryJpaRepository arEventCategoryJpaRepository;
 
+    @Autowired
+    private ArEventLogicalJpaRepository arEventLogicalJpaRepository;
+
     @Transactional
     public int saveEvent(EventJpa eventJpa) {
 //        if (StringUtils.isEmpty(eventJpa.getCreatedDate())) {
@@ -45,6 +50,12 @@ public class ArEventService {
             arEventButtonJpaRepository.save(arEventButtonJpa);
         }
         return arEventButtonJpa.getId();
+    }
+
+    public void saveAllEventLogical(List<ArEventLogicalJpa> arEventLogicalJpaList) {
+        if (!arEventLogicalJpaList.isEmpty()) {
+            arEventLogicalJpaRepository.saveAll(arEventLogicalJpaList);
+        }
     }
 
     public ApiResultObjectDto findAllEventCategory(String categoryType, String parentCode) {

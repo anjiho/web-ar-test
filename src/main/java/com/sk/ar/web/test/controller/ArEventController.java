@@ -2,8 +2,10 @@ package com.sk.ar.web.test.controller;
 
 import com.sk.ar.web.test.dto.request.ApiResultObjectDto;
 import com.sk.ar.web.test.dto.request.EventDto;
+import com.sk.ar.web.test.dto.request.EventLogicalDto;
 import com.sk.ar.web.test.dto.request.EventSaveDto;
 import com.sk.ar.web.test.jpa.event.ArEventButtonJpa;
+import com.sk.ar.web.test.jpa.event.ArEventLogicalJpa;
 import com.sk.ar.web.test.jpa.event.EventJpa;
 import com.sk.ar.web.test.jpa.event.repository.EventJpaRepository;
 import com.sk.ar.web.test.service.ArEventService;
@@ -17,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -40,7 +44,22 @@ public class ArEventController {
 
         arEventService.saveEventMainButton(arEventButtonJpa);
 
-        log.info(">>>>> " + eventId);
+        //AR_EVENT_LOGICAL 리스트 저장
+        List<EventLogicalDto> eventLogicalList = eventSaveDto.getEventLogicalInfo();
+        if ( !eventLogicalList.isEmpty() ) {
+            List<ArEventLogicalJpa> arEventLogicalJpaList = new ArrayList<>();
+
+            eventLogicalList.forEach(logical -> {
+                ArEventLogicalJpa eventLogicalJpa = new ArEventLogicalJpa().builder()
+                        .eventId(eventId)
+                        .dto(logical)
+                        .build();
+
+                arEventLogicalJpaList.add(eventLogicalJpa);
+            });
+            arEventService.saveAllEventLogical(arEventLogicalJpaList);
+        }
+
     }
 
     @GetMapping(value = "/category/all")
