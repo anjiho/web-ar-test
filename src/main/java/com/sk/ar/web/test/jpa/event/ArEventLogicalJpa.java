@@ -37,13 +37,13 @@ public class ArEventLogicalJpa {
     private String objectSettingUrl;
 
     // 오브젝트 크기(x)
-    private BigDecimal objectSizeX;
+    private BigDecimal objectSizeXAxis;
 
     // 오브젝트 크기(y)
-    private BigDecimal objectSizeY;
+    private BigDecimal objectSizeYAxis;
 
     // 오브젝트 크기(z)
-    private BigDecimal objectSizeZ;
+    private BigDecimal objectSizeZAxis;
 
     // 동영상 재생반복 여부 값
     private String videoPlayRepeatType;
@@ -58,13 +58,13 @@ public class ArEventLogicalJpa {
     private String objectPositionAssignType;
 
     // 오브젝트 위치 지정(x)
-    private BigDecimal objectLocationX;
+    private BigDecimal objectLocationXAxis;
 
     // 오브젝트 위치 지정(y)
-    private BigDecimal objectLocationY;
+    private BigDecimal objectLocationYAxis;
 
     // 오브젝트 위치 지정(z)
-    private BigDecimal objectLocationZ;
+    private BigDecimal objectLocationZAxis;
 
     // STAY EFFECT 설정  값
     private String stayEffectType;
@@ -79,13 +79,13 @@ public class ArEventLogicalJpa {
     private String objectChangeSettingVideoUrl;
 
     // 오브젝트 change 크기(x)
-    private BigDecimal objectChangeSizeX;
+    private BigDecimal objectChangeSizeXAxis;
 
     // 오브젝트 change 크기(y)
-    private BigDecimal objectChangeSizeY;
+    private BigDecimal objectChangeSizeYAxis;
 
     // 오브젝트 change 크기(z)
-    private BigDecimal objectChangeSizeZ;
+    private BigDecimal objectChangeSizeZAxis;
 
     // 오브젝트 change 동영상 투과색 지정 여부 코드
     private String objectChangeVideoPenetrationAssignType;
@@ -169,23 +169,23 @@ public class ArEventLogicalJpa {
         this.objectSort = dto.getObjectSort();
         this.objectSettingType = dto.getObjectSettingType();
         this.objectSettingUrl = dto.getObjectSettingUrl();
-        this.objectSizeX = dto.getObjectSizeX();
-        this.objectSizeY = dto.getObjectSizeY();
-        this.objectSizeZ = dto.getObjectSizeZ();
+        this.objectSizeXAxis = dto.getObjectSizeXAxis();
+        this.objectSizeYAxis = dto.getObjectSizeYAxis();
+        this.objectSizeZAxis = dto.getObjectSizeZAxis();
         this.videoPlayRepeatType = dto.getVideoPlayRepeatType();
         this.videoPenetrationAssignType = dto.getVideoPenetrationAssignType();
         this.videoPenetrationColorHex = dto.getVideoPenetrationColorHex();
         this.objectPositionAssignType = dto.getObjectPositionAssignType();
-        this.objectLocationX = dto.getObjectLocationX();
-        this.objectLocationY = dto.getObjectLocationY();
-        this.objectLocationZ = dto.getObjectLocationZ();
+        this.objectLocationXAxis = dto.getObjectLocationXAxis();
+        this.objectLocationYAxis = dto.getObjectLocationYAxis();
+        this.objectLocationZAxis = dto.getObjectLocationZAxis();
         this.stayEffectType = dto.getStayEffectType();
         this.clickEventType = dto.getClickEventType();
         this.objectChangeSettingType = dto.getObjectChangeSettingType();
         this.objectChangeSettingVideoUrl = dto.getObjectChangeSettingVideoUrl();
-        this.objectChangeSizeX = dto.getObjectChangeSizeX();
-        this.objectChangeSizeY = dto.getObjectChangeSizeY();
-        this.objectChangeSizeZ = dto.getObjectChangeSizeZ();
+        this.objectChangeSizeXAxis = dto.getObjectChangeSizeXAxis();
+        this.objectChangeSizeYAxis = dto.getObjectChangeSizeYAxis();
+        this.objectChangeSizeZAxis = dto.getObjectChangeSizeZAxis();
         this.objectChangeVideoPenetrationAssignType = dto.getObjectChangeVideoPenetrationAssignType();
         this.objectChangeVideoPenetrationColor = dto.getObjectChangeVideoPenetrationColor();
         this.catchSoundType = dto.getCatchSoundType();

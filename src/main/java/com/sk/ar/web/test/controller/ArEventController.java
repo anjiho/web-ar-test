@@ -49,7 +49,9 @@ public class ArEventController {
 //                .dto(eventSaveDto.getEventMainButtonInfo())
 //                .build();
         //메인 버튼 정보 저장
-        ArEventButtonJpa arEventButtonJpa = ArEventButtonJpa.of(eventId, eventSaveDto.getEventMainButtonInfo());
+        ArEventButtonJpa arEventButtonJpa = ArEventButtonJpa.of(
+                eventId, eventSaveDto.getEventMainButtonInfo()
+        );
         arEventService.saveEventMainButton(arEventButtonJpa);
 
         //AR_EVENT_LOGICAL 리스트 저장
@@ -57,9 +59,13 @@ public class ArEventController {
         eventLogicalList.
                 stream()
                 .filter(Objects::nonNull)
-                .forEach(jpa -> jpa.setCreatedDate(DateUtils.returnNowDate()));
+                .forEach(jpa -> {
+                    jpa.setEventId(eventId);
+                    jpa.setCreatedDate(DateUtils.returnNowDate());
+                });
 
-        
+        arEventService.saveAllEventLogical(eventLogicalList);
+
 
 //        if ( !eventLogicalList.isEmpty() ) {
 //            List<ArEventLogicalJpa> arEventLogicalJpaList = new ArrayList<>();
