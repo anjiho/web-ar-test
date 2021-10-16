@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sk.ar.web.test.dto.request.EventButtonDto;
 import com.sk.ar.web.test.dto.request.EventSaveDto;
 import com.sk.ar.web.test.utils.DateUtils;
+import com.sk.ar.web.test.utils.ModelMapperUtils;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -107,5 +108,13 @@ public class ArEventButtonJpa {
         this.arBgImage = dto.getArBgImage();
         this.arSkinImage = dto.getArSkinImage();
         this.createdDate = DateUtils.returnNowDate();
+    }
+
+    public static ArEventButtonJpa of(int eventId, EventButtonDto dto) {
+       ArEventButtonJpa arEventButtonJpa = ModelMapperUtils.getModelMapper().map(dto, ArEventButtonJpa.class);
+       arEventButtonJpa.setEventId(eventId);
+       arEventButtonJpa.setCreatedDate(DateUtils.returnNowDate());
+
+       return arEventButtonJpa;
     }
 }

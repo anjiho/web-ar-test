@@ -146,6 +146,4 @@ public class EventLogicalDto {
     // 정렬 순서
     private Integer eventLogicalNumber;
 
-    // 생성일
-    private Date createdDate;
 }
