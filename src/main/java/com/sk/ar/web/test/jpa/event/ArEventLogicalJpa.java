@@ -1,9 +1,6 @@
 package com.sk.ar.web.test.jpa.event;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.sk.ar.web.test.dto.request.EventLogicalDto;
-import com.sk.ar.web.test.utils.DateUtils;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,13 +34,16 @@ public class ArEventLogicalJpa {
     private String objectSettingUrl;
 
     // 오브젝트 크기(x)
-    private BigDecimal objectSizeXAxis;
+    @Column(name = "object_size_x")
+    private BigDecimal objectSizeX;
 
     // 오브젝트 크기(y)
-    private BigDecimal objectSizeYAxis;
+    @Column(name = "object_size_y")
+    private BigDecimal objectSizeY;
 
     // 오브젝트 크기(z)
-    private BigDecimal objectSizeZAxis;
+    @Column(name = "object_size_z")
+    private BigDecimal objectSizeZ;
 
     // 동영상 재생반복 여부 값
     private String videoPlayRepeatType;
@@ -58,13 +58,16 @@ public class ArEventLogicalJpa {
     private String objectPositionAssignType;
 
     // 오브젝트 위치 지정(x)
-    private BigDecimal objectLocationXAxis;
+    @Column(name = "object_location_x")
+    private BigDecimal objectLocationX;
 
     // 오브젝트 위치 지정(y)
-    private BigDecimal objectLocationYAxis;
+    @Column(name = "object_location_y")
+    private BigDecimal objectLocationY;
 
     // 오브젝트 위치 지정(z)
-    private BigDecimal objectLocationZAxis;
+    @Column(name = "object_location_z")
+    private BigDecimal objectLocationZ;
 
     // STAY EFFECT 설정  값
     private String stayEffectType;
@@ -79,13 +82,16 @@ public class ArEventLogicalJpa {
     private String objectChangeSettingVideoUrl;
 
     // 오브젝트 change 크기(x)
-    private BigDecimal objectChangeSizeXAxis;
+    @Column(name = "object_change_size_x")
+    private BigDecimal objectChangeSizeX;
 
     // 오브젝트 change 크기(y)
+    @Column(name = "object_change_size_y")
     private BigDecimal objectChangeSizeYAxis;
 
     // 오브젝트 change 크기(z)
-    private BigDecimal objectChangeSizeZAxis;
+    @Column(name = "object_change_size_z")
+    private BigDecimal objectChangeSizeZ;
 
     // 오브젝트 change 동영상 투과색 지정 여부 코드
     private String objectChangeVideoPenetrationAssignType;
@@ -163,53 +169,4 @@ public class ArEventLogicalJpa {
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
     private Date createdDate;
 
-    @Builder
-    public ArEventLogicalJpa(int eventId, EventLogicalDto dto) {
-        this.eventId = eventId;
-        this.objectSort = dto.getObjectSort();
-        this.objectSettingType = dto.getObjectSettingType();
-        this.objectSettingUrl = dto.getObjectSettingUrl();
-        this.objectSizeXAxis = dto.getObjectSizeXAxis();
-        this.objectSizeYAxis = dto.getObjectSizeYAxis();
-        this.objectSizeZAxis = dto.getObjectSizeZAxis();
-        this.videoPlayRepeatType = dto.getVideoPlayRepeatType();
-        this.videoPenetrationAssignType = dto.getVideoPenetrationAssignType();
-        this.videoPenetrationColorHex = dto.getVideoPenetrationColorHex();
-        this.objectPositionAssignType = dto.getObjectPositionAssignType();
-        this.objectLocationXAxis = dto.getObjectLocationXAxis();
-        this.objectLocationYAxis = dto.getObjectLocationYAxis();
-        this.objectLocationZAxis = dto.getObjectLocationZAxis();
-        this.stayEffectType = dto.getStayEffectType();
-        this.clickEventType = dto.getClickEventType();
-        this.objectChangeSettingType = dto.getObjectChangeSettingType();
-        this.objectChangeSettingVideoUrl = dto.getObjectChangeSettingVideoUrl();
-        this.objectChangeSizeXAxis = dto.getObjectChangeSizeXAxis();
-        this.objectChangeSizeYAxis = dto.getObjectChangeSizeYAxis();
-        this.objectChangeSizeZAxis = dto.getObjectChangeSizeZAxis();
-        this.objectChangeVideoPenetrationAssignType = dto.getObjectChangeVideoPenetrationAssignType();
-        this.objectChangeVideoPenetrationColor = dto.getObjectChangeVideoPenetrationColor();
-        this.catchSoundType = dto.getCatchSoundType();
-        this.catchSoundFile = dto.getCatchSoundFile();
-        this.exposureControlType = dto.getExposureControlType();
-        this.locationExposureControlType = dto.getLocationExposureControlType();
-        this.locationExposureControlPid = dto.getLocationExposureControlPid();
-        this.maxExposureType = dto.getMaxExposureType();
-        this.maxExposureCount = dto.getMaxExposureCount();
-        this.dayExposureType = dto.getDayExposureType();
-        this.dayExposureCount = dto.getDayExposureCount();
-        this.hourExposureType = dto.getHourExposureType();
-        this.hourExposureCount = dto.getHourExposureCount();
-        this.exposurePercentType = dto.getExposurePercentType();
-        this.exposurePercent = dto.getExposurePercent();
-        this.bridgeType = dto.getBridgeType();
-        this.bridgeUrl = dto.getBridgeUrl();
-        this.bridgeExposureTimeType = dto.getBridgeExposureTimeType();
-        this.bridgeDisplayDirectionType = dto.getBridgeDisplayDirectionType();
-        this.panPositionType = dto.getPanPositionType();
-        this.panMissionNumber = dto.getPanMissionNumber();
-        this.missionInactiveThumbnailUrl = dto.getMissionInactiveThumbnailUrl();
-        this.missionActiveThumbnailUrl = dto.getMissionActiveThumbnailUrl();
-        this.eventLogicalNumber = dto.getEventLogicalNumber();
-        this.createdDate = DateUtils.returnNowDate();
-    }
 }

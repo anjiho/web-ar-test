@@ -86,30 +86,6 @@ public class ArEventButtonJpa {
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
     private Date createdDate;
 
-    @Builder
-    public ArEventButtonJpa(int eventId, EventButtonDto dto) {
-        this.eventId = eventId;
-        this.arButtonBgColorAssignType = dto.getArButtonBgColorAssignType();
-        this.arButtonBgColorRed = dto.getArButtonBgColorRed();
-        this.arButtonBgColorGreen = dto.getArButtonBgColorGreen();
-        this.arButtonBgColorBlue = dto.getArButtonBgColorBlue();
-        this.arButtonBgColorHex = dto.getArButtonBgColorHex();
-        this.arButtonColorAssignType = dto.getArButtonColorAssignType();
-        this.arButtonColorRed = dto.getArButtonColorRed();
-        this.arButtonColorGreen = dto.getArButtonColorGreen();
-        this.arButtonColorBlue = dto.getArButtonColorBlue();
-        this.arButtonColorHex = dto.getArButtonColorHex();
-        this.arButtonTextColorAssignType = dto.getArButtonTextColorAssignType();
-        this.arButtonTextColorRed = dto.getArButtonTextColorRed();
-        this.arButtonTextColorGreen = dto.getArButtonTextColorGreen();
-        this.arButtonTextColorBlue = dto.getArButtonTextColorBlue();
-        this.arButtonTextColorHex = dto.getArButtonTextColorHex();
-        this.arButtonText = dto.getArButtonText();
-        this.arBgImage = dto.getArBgImage();
-        this.arSkinImage = dto.getArSkinImage();
-        this.createdDate = DateUtils.returnNowDate();
-    }
-
     public static ArEventButtonJpa of(int eventId, EventButtonDto dto) {
        ArEventButtonJpa arEventButtonJpa = ModelMapperUtils.getModelMapper().map(dto, ArEventButtonJpa.class);
        arEventButtonJpa.setEventId(eventId);

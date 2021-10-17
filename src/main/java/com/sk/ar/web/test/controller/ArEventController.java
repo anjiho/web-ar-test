@@ -44,10 +44,6 @@ public class ArEventController {
         EventJpa eventJpa = new EventJpa().builder().eventDto(eventSaveDto.getEventMainInfo()).build();
         int eventId = arEventService.saveEvent(eventJpa);
 
-//        ArEventButtonJpa arEventButtonJpa = new ArEventButtonJpa().builder()
-//                .eventId(eventId)
-//                .dto(eventSaveDto.getEventMainButtonInfo())
-//                .build();
         //메인 버튼 정보 저장
         ArEventButtonJpa arEventButtonJpa = ArEventButtonJpa.of(
                 eventId, eventSaveDto.getEventMainButtonInfo()
@@ -65,21 +61,6 @@ public class ArEventController {
                 });
 
         arEventService.saveAllEventLogical(eventLogicalList);
-
-
-//        if ( !eventLogicalList.isEmpty() ) {
-//            List<ArEventLogicalJpa> arEventLogicalJpaList = new ArrayList<>();
-//
-//            eventLogicalList.forEach(logical -> {
-//                ArEventLogicalJpa eventLogicalJpa = new ArEventLogicalJpa().builder()
-//                        .eventId(eventId)
-//                        .dto(logical)
-//                        .build();
-//
-//                arEventLogicalJpaList.add(eventLogicalJpa);
-//            });
-//            arEventService.saveAllEventLogical(arEventLogicalJpaList);
-//        }
 
     }
 
