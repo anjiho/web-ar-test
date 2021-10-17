@@ -23,6 +23,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -61,6 +62,12 @@ public class ArEventController {
                 });
 
         arEventService.saveAllEventLogical(eventLogicalList);
+
+        //이미지 스캐닝형일때 AR_EVENT_IMAGE_SCANNING 저장하기
+        if ("scanning".equals(eventJpa.getEventLogicalType())) {
+            int eventLogicalId = eventLogicalList.stream().findFirst().get().getId();
+
+        }
 
     }
 

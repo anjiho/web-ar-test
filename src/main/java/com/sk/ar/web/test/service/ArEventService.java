@@ -58,6 +58,11 @@ public class ArEventService {
         }
     }
 
+    public int saveEventLogical(ArEventLogicalJpa arEventLogicalJpa) {
+        arEventLogicalJpaRepository.save(arEventLogicalJpa);
+        return arEventLogicalJpa.getId();
+    }
+
     public ApiResultObjectDto findAllEventCategory(String categoryType, String parentCode) {
         int resultCode = HttpStatus.OK.value();
 
