@@ -4,6 +4,7 @@ import com.sk.ar.web.test.dto.request.*;
 import com.sk.ar.web.test.entity.*;
 import com.sk.ar.web.test.jpa.event.*;
 import com.sk.ar.web.test.service.ArEventService;
+import com.sk.ar.web.test.service.CategoryService;
 import com.sk.ar.web.test.utils.DateUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -28,6 +29,9 @@ public class ArEventController {
     private ArEventService arEventService;
 
     @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
     private ModelMapper modelMapper;
 
 
@@ -36,81 +40,66 @@ public class ArEventController {
         /**
          * EVENT_BASE 저장
          */
-        EventBaseEntity eventBaseEntity = EventBaseEntity.of(eventSaveDto.getEventBaseInfo());
-        int eventId = arEventService.saveEventBase(eventBaseEntity);
+        int eventId = arEventService.saveEventBase(EventBaseEntity.of(eventSaveDto.getEventBaseInfo()));
         log.info("eventId >> " + eventId);
 
         if (eventId > 0) {
             /**
              * AR_EVENT 저장
              */
-            ArEventEntity arEventEntity = ArEventEntity.of(eventId, eventSaveDto.getArEventInfo());
-            int arEventId = arEventService.saveEvent(arEventEntity);
+            int arEventId = arEventService.saveEvent(ArEventEntity.of(eventId, eventSaveDto.getArEventInfo()));
             log.info("arEventId >> " + arEventId);
 
             if (arEventId > 0) {
                 /**
                  * AR_EVENT_BUTTON 저장
                  */
-                ArEventButtonEntity arEventButtonEntity = ArEventButtonEntity.of(arEventId, eventSaveDto.getArEventButtonInfo());
-                arEventService.saveEventButton(arEventButtonEntity);
+                arEventService.saveEventButton(ArEventButtonEntity.of(arEventId, eventSaveDto.getArEventButtonInfo()));
 
                 /**
-                 * AR_EVENT_OBJECT 저장
+                 * AR_EVENT_OBJECT 저장 (이미지스캐닝이 아날떄만)
                  */
-                List<ArEventObjectEntity> eventObjectEntityList = convertEventObjectDtoListToArEventObjectEntityList(eventSaveDto.getArEventObjectInfo());
-                eventObjectEntityList
-                        .stream()
-                        .filter(Objects::nonNull)
-                        .forEach(objectEntity -> {
-                            objectEntity.setArEventId(arEventId);
-                            objectEntity.setCreatedDate(DateUtils.returnNowDate());
-                        });
-                arEventService.saveAllArEventObject(eventObjectEntityList);
+                if (!"scanning".equals(eventSaveDto.getArEventInfo().getEventLogicalType())) {
+                    List<ArEventObjectEntity> eventObjectEntityList = convertEventObjectDtoListToArEventObjectEntityList(eventSaveDto.getArEventObjectInfo());
+                    eventObjectEntityList
+                            .stream()
+                            .filter(Objects::nonNull)
+                            .forEach(objectEntity -> {
+                                objectEntity.setArEventId(arEventId);
+                                objectEntity.setCreatedDate(DateUtils.returnNowDate());
+                            });
+                    arEventService.saveAllArEventObject(eventObjectEntityList);
+                }
+
 
                 /**
-                 * TODO AR_EVENT_LOGICAL, AR_EVENT_SCANNING_IMAGE(이미지스캔형일때만), AR_EVENT_SCANNING_IMAGE, AR_EVENT_WINNING_BUTTON 저장
+                 * AR_EVENT_LOGICAL 저장
+                 */
+                arEventService.saveEventLogical(ArEventLogicalEntity.of(arEventId, eventSaveDto.getArEventLogicalInfo()));
+
+                /**
+                 * AR_EVENT_SCANNING_IMAGE(이미지스캔형일때만)
+                 */
+                if ("scanning".equals(eventSaveDto.getArEventInfo().getEventLogicalType())) {
+                    List<ArEventScanningImageEntity> arEventImageScanningEntityList = convertEventScanningImageDtoListToArEventImageScanningEntityList(eventSaveDto.getEventScanningImageInfo());
+                    arEventImageScanningEntityList
+                    .stream()
+                    .filter(Objects::nonNull)
+                    .forEach(entity -> {
+                        entity.setArEventId(arEventId);
+                        entity.setCreatedDate(DateUtils.returnNowDate());
+                    });
+
+                    arEventService.saveAllEventImageScanning(arEventImageScanningEntityList);
+                }
+
+                /**
+                 * TODO 당첨정보 >> AR_EVENT_WINNING, AR_EVENT_WINNING_BUTTON 저장
                  */
             }
         }
 
 
-        //메인 버튼 정보 저장
-//        ArEventButtonJpa arEventButtonJpa = ArEventButtonJpa.of(
-//                eventId, eventSaveDto.getEventMainButtonInfo()
-//        );
-//        arEventService.saveEventMainButton(arEventButtonJpa);
-//
-//        //AR_EVENT_LOGICAL 리스트 저장
-//        List<ArEventLogicalJpa> eventLogicalList = convertArEventLogicalJpaListToDtoList(eventSaveDto.getEventLogicalInfo());
-//        eventLogicalList.
-//                stream()
-//                .filter(Objects::nonNull)
-//                .forEach(jpa -> {
-//                    jpa.setEventId(eventId);
-//                    jpa.setCreatedDate(DateUtils.returnNowDate());
-//                });
-//
-//        arEventService.saveAllEventLogical(eventLogicalList);
-//
-//        int eventLogicalId = arEventService.findFirstByEventIdOrderByIdDesc(eventId).getId();
-
-        //이미지 스캐닝형일때 AR_EVENT_IMAGE_SCANNING 저장하기
-//        if ("scanning".equals(eventJpa.getEventLogicalType())) {
-//
-//
-//            List<ArEventImageScanningEntity> arEventImageScanningEntityList = convertArEventImageScanningEntityListToDtoList(eventSaveDto.getEventImageScanningInfo());
-//            arEventImageScanningEntityList
-//                    .stream()
-//                    .filter(Objects::nonNull)
-//                    .forEach(entity -> {
-//                        entity.setEventLogicalId(eventLogicalId);
-//                        entity.setCreatedDate(DateUtils.returnNowDate());
-//                    });
-//
-//            arEventService.saveAllEventImageScanning(arEventImageScanningEntityList);
-//        }
-//
 //        //당첨정보 저장하기
 //        int j = 0;
 //        List<ArEventWinningEntity> arEventWinningEntityList = convertEventWinningDtoToArEventWinningEntityList(eventSaveDto.getEventWinningInfo());
@@ -155,10 +144,10 @@ public class ArEventController {
                 .collect(Collectors.toList());
     }
 
-    private List<ArEventImageScanningEntity> convertArEventImageScanningEntityListToDtoList(List<EventImageScanningDto> eventImageScanningDtoList) {
-        return eventImageScanningDtoList.
+    private List<ArEventScanningImageEntity> convertEventScanningImageDtoListToArEventImageScanningEntityList(List<EvenScanningImageDto> evenScanningImageDtoList) {
+        return evenScanningImageDtoList.
                 stream()
-                .map(dto -> modelMapper.map(dto, ArEventImageScanningEntity.class))
+                .map(dto -> modelMapper.map(dto, ArEventScanningImageEntity.class))
                 .collect(Collectors.toList());
     }
 

@@ -31,7 +31,7 @@
     "attendHourStart": 0,
     "attendHourEnd": 23,
     "attendHourMessage": "시간 메세지",
-    "eventLogicalType": "basic"
+    "eventLogicalType": "scanning"
   },
 
   "eventBaseInfo": {
@@ -138,13 +138,28 @@
       "videoPlayRepeatType": "string"
     }
   ],
+  "arEventLogicalInfo": {
+      "bridgeDisplayDirectionType": "width",
+      "bridgeExposureTimeSecond": 10,
+      "bridgeExposureTimeType": "y",
+      "bridgeUrl": "http://sk.com/birdge.jpg",
+      "bridgeType": "image",
+      "panMissionNumber": 2,
+      "panPositionType": "bottom"
+    },
 
   "eventImageScanningInfo": [
     {
-      "scanningImageNumber": 0,
+      "scanningImageNumber": 1,
       "scanningImageUrl": "string",
       "scanningSoundData": "string",
       "scanningSoundType": "string"
+    },
+    {
+          "scanningImageNumber": 1,
+          "scanningImageUrl": "string",
+          "scanningSoundData": "string",
+          "scanningSoundType": "string"
     }
   ],
   "eventWinningInfo": [

@@ -1,4 +1,4 @@
-package com.sk.ar.web.test.jpa.event;
+package com.sk.ar.web.test.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,8 +11,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "AR_EVENT_CATEGORY")
-public class ArEventCategoryJpa {
-
+public class ArEventCategoryEntity {
     // 아이디
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

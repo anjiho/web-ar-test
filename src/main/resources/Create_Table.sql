@@ -82,7 +82,7 @@ create table AR_EVENT_LOGICAL
     ar_event_id                   int          null comment '이벤트 아이디',
     pan_position_type             varchar(10)  null comment '판 설정  값(판 위치 셀렉트박스)',
     pan_mission_number            int          null comment '판 미션 수',
-    image_scanning_bridge_type    varchar(10)  null comment '브릿지 타입 값',
+    bridge_type    varchar(10)  null comment '브릿지 타입 값',
     bridge_url                    varchar(200) null comment '브릿지 url',
     bridge_exposure_time_type     varchar(10)  null comment '브릿지 노출 시간 여부 값(설정 라디오버튼)',
     bridge_exposure_time_second   int          null comment '브릿지 노출 시간 값',

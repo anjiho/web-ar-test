@@ -1,5 +1,8 @@
 package com.sk.ar.web.test.entity;
 
+import com.sk.ar.web.test.dto.request.EventLogicalDto;
+import com.sk.ar.web.test.utils.DateUtils;
+import com.sk.ar.web.test.utils.ModelMapperUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,7 +32,7 @@ public class ArEventLogicalEntity {
     private Integer panMissionNumber;
 
     // 브릿지 타입 값
-    private String imageScanningBridgeType;
+    private String bridgeType;
 
     // 브릿지 url
     private String bridgeUrl;
@@ -54,4 +57,11 @@ public class ArEventLogicalEntity {
 
     // 수정일
     private Date lastModifiedDate;
+
+    public static ArEventLogicalEntity of(int arEventId, EventLogicalDto dto) {
+        ArEventLogicalEntity logicalEntity = ModelMapperUtils.getModelMapper().map(dto, ArEventLogicalEntity.class);
+        logicalEntity.setArEventId(arEventId);
+        logicalEntity.setCreatedDate(DateUtils.returnNowDate());
+        return logicalEntity;
+    }
 }

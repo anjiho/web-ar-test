@@ -1,6 +1,6 @@
 package com.sk.ar.web.test.jpa.event;
 
-import com.sk.ar.web.test.dto.request.EventImageScanningDto;
+import com.sk.ar.web.test.dto.request.EvenScanningImageDto;
 import com.sk.ar.web.test.utils.DateUtils;
 import com.sk.ar.web.test.utils.ModelMapperUtils;
 import lombok.Getter;
@@ -41,7 +41,7 @@ public class ArEventImageScanningEntity {
     // 생성일
     private Date createdDate;
 
-    public static ArEventImageScanningEntity of (int eventLogicalId, EventImageScanningDto dto) {
+    public static ArEventImageScanningEntity of (int eventLogicalId, EvenScanningImageDto dto) {
         ArEventImageScanningEntity entity = ModelMapperUtils.getModelMapper().map(dto, ArEventImageScanningEntity.class);
         entity.setEventLogicalId(eventLogicalId);
         entity.setCreatedDate(DateUtils.returnNowDate());

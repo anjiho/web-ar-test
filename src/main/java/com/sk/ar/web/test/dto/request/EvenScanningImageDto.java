@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class EventImageScanningDto {
+public class EvenScanningImageDto {
 
     // 스캐닝 이미지 url
     private String scanningImageUrl;

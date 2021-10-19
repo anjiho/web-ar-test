@@ -26,9 +26,13 @@ public class EventSaveDto {
     @Valid
     private List<EventObjectDto> arEventObjectInfo;
 
+    //AR 구동정보 공통
+    @Valid
+    private EventLogicalDto arEventLogicalInfo;
+
     //이미지스캐닝 정보(AR 구동정보가 이미지스캐닝일때만 저장)
     @Valid
-    private List<EventImageScanningDto> eventImageScanningInfo;
+    private List<EvenScanningImageDto> eventScanningImageInfo;
 
     //이벤트 당첨정보, 당첨버튼정보 저장
     @Valid

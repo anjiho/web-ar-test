@@ -33,10 +33,13 @@ public class ArEventService {
     private ArEventObjectEntityRepository arEventObjectEntityRepository;
 
     @Autowired
+    private ArEventLogicalEntityRepository arEventLogicalEntityRepository;
+
+    @Autowired
     private ArEventButtonJpaRepository arEventButtonJpaRepository;
 
     @Autowired
-    private ArEventCategoryJpaRepository arEventCategoryJpaRepository;
+    private ArEventCategoryEntityRepository arEventCategoryEntityRepository;
 
     @Autowired
     private ArEventLogicalJpaRepository arEventLogicalJpaRepository;
@@ -67,15 +70,16 @@ public class ArEventService {
         arEventButtonEntityRepository.save(arEventButtonEntity);
     }
 
+    @Transactional
     public void saveAllArEventObject(List<ArEventObjectEntity> arEventObjectEntityList) {
         if (!arEventObjectEntityList.isEmpty()) {
             arEventObjectEntityRepository.saveAll(arEventObjectEntityList);
         }
     }
 
-    public int saveEventLogical(ArEventLogicalJpa arEventLogicalJpa) {
-        arEventLogicalJpaRepository.save(arEventLogicalJpa);
-        return arEventLogicalJpa.getId();
+    @Transactional
+    public void saveEventLogical(ArEventLogicalEntity arEventLogicalEntity) {
+        arEventLogicalEntityRepository.save(arEventLogicalEntity);
     }
 
     public ArEventLogicalJpa findFirstByEventIdOrderByIdDesc(int eventId) {
@@ -106,22 +110,22 @@ public class ArEventService {
     public ApiResultObjectDto findAllEventCategory(String categoryType, String parentCode) {
         int resultCode = HttpStatus.OK.value();
 
-        Optional<List<ArEventCategoryJpa>>parentCategoryOptional = null;
+        Optional<List<ArEventCategoryEntity>>parentCategoryOptional = null;
         //조건에 따른 부모의 카테고리 리스트 가져오기
         if (StringUtils.isEmpty(categoryType) && StringUtils.isEmpty(parentCode)) {
-            parentCategoryOptional = arEventCategoryJpaRepository.findAllByCategoryDepth(1);
+            parentCategoryOptional = arEventCategoryEntityRepository.findAllByCategoryDepth(1);
         } else if (StringUtils.isEmpty(categoryType) && !StringUtils.isEmpty(parentCode)) {
-            parentCategoryOptional = arEventCategoryJpaRepository.findAllByCategoryCodeAndCategoryDepth(parentCode.toUpperCase(), 1);
+            parentCategoryOptional = arEventCategoryEntityRepository.findAllByCategoryCodeAndCategoryDepth(parentCode.toUpperCase(), 1);
         } else if (!StringUtils.isEmpty(categoryType) && StringUtils.isEmpty(parentCode)) {
-            parentCategoryOptional = arEventCategoryJpaRepository.findAllByCategoryTypeAndCategoryDepth(categoryType, 1);
+            parentCategoryOptional = arEventCategoryEntityRepository.findAllByCategoryTypeAndCategoryDepth(categoryType, 1);
         } else {
-            parentCategoryOptional = arEventCategoryJpaRepository.findAllByCategoryTypeAndCategoryCodeAndCategoryDepth(categoryType, parentCode.toUpperCase(), 1);
+            parentCategoryOptional = arEventCategoryEntityRepository.findAllByCategoryTypeAndCategoryCodeAndCategoryDepth(categoryType, parentCode.toUpperCase(), 1);
         }
 
         //부모의 값이 있는지 확인
         if (parentCategoryOptional.isPresent()) {
             List<CategoryDto> categoryList = new ArrayList<>();
-            List<ArEventCategoryJpa> parentCategoryList = parentCategoryOptional.orElseGet(ArrayList::new);
+            List<ArEventCategoryEntity> parentCategoryList = parentCategoryOptional.orElseGet(ArrayList::new);
             //부모 카테고리 리스트 foreach 시작
             parentCategoryList.forEach(parent -> {
 
@@ -132,7 +136,7 @@ public class ArEventService {
                 categoryDto.setCategoryDepth(parent.getCategoryDepth());
 
                 //부모 카테고리 코드에 따른 자식 카테고리 코드 리스트 값 가져오기
-                List<ArEventCategoryJpa> childCategoryList = arEventCategoryJpaRepository.findAllByParentCodeAndAndCategoryDepth(parent.getCategoryCode(), 2);
+                List<ArEventCategoryEntity> childCategoryList = arEventCategoryEntityRepository.findAllByParentCodeAndAndCategoryDepth(parent.getCategoryCode(), 2);
                 List<Map<String, Object>> childCategoryMapList = new ArrayList<>();
 
                 //자식의 카테고리 리스트 foreach 시작
