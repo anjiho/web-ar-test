@@ -2,6 +2,7 @@ package com.sk.ar.web.test.jpa.event;
 
 import com.sk.ar.web.test.dto.request.EventDto;
 import com.sk.ar.web.test.utils.DateUtils;
+import com.sk.ar.web.test.utils.ModelMapperUtils;
 import lombok.*;
 
 import javax.persistence.*;
@@ -72,19 +73,26 @@ public class EventJpa {
     // 생성일
     private Date createdDate;
 
-    @Builder
-    public EventJpa(EventDto eventDto) {
-        this.eventTitle = eventDto.getEventTitle();
-        this.pageConnectPopupYn = eventDto.getPageConnectPopupYn();
-        this.arAttendConditionAllYn = eventDto.getArAttendConditionAllYn();
-        this.arAttendConditionSpecialPositionYn = eventDto.getArAttendConditionSpecialPositionYn();
-        this.arAttendConditionHourlyYn = eventDto.getArAttendConditionHourlyYn();
-        this.pid = eventDto.getPid();
-        this.positionMessageAttend = eventDto.getPositionMessageAttend();
-        this.attendHourStart = eventDto.getAttendHourStart();
-        this.attendHourEnd = eventDto.getAttendHourEnd();
-        this.attendHourMessage = eventDto.getAttendHourMessage();
-        this.eventLogicalType = eventDto.getEventLogicalType();
-        this.createdDate = DateUtils.returnNowDate();
+//    @Builder
+//    public EventJpa(EventDto eventDto) {
+//        this.eventTitle = eventDto.getEventTitle();
+//        this.pageConnectPopupYn = eventDto.getPageConnectPopupYn();
+//        this.arAttendConditionAllYn = eventDto.getArAttendConditionAllYn();
+//        this.arAttendConditionSpecialPositionYn = eventDto.getArAttendConditionSpecialPositionYn();
+//        this.arAttendConditionHourlyYn = eventDto.getArAttendConditionHourlyYn();
+//        this.pid = eventDto.getPid();
+//        this.positionMessageAttend = eventDto.getPositionMessageAttend();
+//        this.attendHourStart = eventDto.getAttendHourStart();
+//        this.attendHourEnd = eventDto.getAttendHourEnd();
+//        this.attendHourMessage = eventDto.getAttendHourMessage();
+//        this.eventLogicalType = eventDto.getEventLogicalType();
+//        this.createdDate = DateUtils.returnNowDate();
+//    }
+
+    public static EventJpa of(EventDto dto) {
+        EventJpa jpa = ModelMapperUtils.getModelMapper().map(dto, EventJpa.class);
+        jpa.setCreatedDate(DateUtils.returnNowDate());
+
+        return jpa;
     }
 }

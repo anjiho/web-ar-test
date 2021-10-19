@@ -1,12 +1,7 @@
 package com.sk.ar.web.test.controller;
 
-import com.sk.ar.web.test.dto.request.ApiResultObjectDto;
-import com.sk.ar.web.test.dto.request.EventDto;
-import com.sk.ar.web.test.dto.request.EventLogicalDto;
-import com.sk.ar.web.test.dto.request.EventSaveDto;
-import com.sk.ar.web.test.jpa.event.ArEventButtonJpa;
-import com.sk.ar.web.test.jpa.event.ArEventLogicalJpa;
-import com.sk.ar.web.test.jpa.event.EventJpa;
+import com.sk.ar.web.test.dto.request.*;
+import com.sk.ar.web.test.jpa.event.*;
 import com.sk.ar.web.test.jpa.event.repository.EventJpaRepository;
 import com.sk.ar.web.test.service.ArEventService;
 import com.sk.ar.web.test.utils.DateUtils;
@@ -20,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -42,7 +38,7 @@ public class ArEventController {
 
     @PostMapping(value = "/save")
     public void saveEvent(@RequestBody EventSaveDto eventSaveDto) {
-        EventJpa eventJpa = new EventJpa().builder().eventDto(eventSaveDto.getEventMainInfo()).build();
+        EventJpa eventJpa = EventJpa.of(eventSaveDto.getEventMainInfo());
         int eventId = arEventService.saveEvent(eventJpa);
 
         //메인 버튼 정보 저장
@@ -63,12 +59,71 @@ public class ArEventController {
 
         arEventService.saveAllEventLogical(eventLogicalList);
 
+        int eventLogicalId = arEventService.findFirstByEventIdOrderByIdDesc(eventId).getId();
+
         //이미지 스캐닝형일때 AR_EVENT_IMAGE_SCANNING 저장하기
         if ("scanning".equals(eventJpa.getEventLogicalType())) {
-            int eventLogicalId = eventLogicalList.stream().findFirst().get().getId();
+
+
+            List<ArEventImageScanningEntity> arEventImageScanningEntityList = convertArEventImageScanningEntityListToDtoList(eventSaveDto.getEventImageScanningInfo());
+            arEventImageScanningEntityList
+                    .stream()
+                    .filter(Objects::nonNull)
+                    .forEach(entity -> {
+                        entity.setEventLogicalId(eventLogicalId);
+                        entity.setCreatedDate(DateUtils.returnNowDate());
+                    });
+
+            arEventService.saveAllEventImageScanning(arEventImageScanningEntityList);
+        }
+
+        //당첨정보 저장하기
+        int j = 0;
+        List<ArEventWinningEntity> arEventWinningEntityList = convertEventWinningDtoToArEventWinningEntityList(eventSaveDto.getEventWinningInfo());
+        for (ArEventWinningEntity arEventWinningEntity : arEventWinningEntityList) {
+
+            arEventWinningEntity.setEventId(eventId);
+            arEventWinningEntity.setCreatedDate(DateUtils.returnNowDate());
+
+            arEventService.saveEventWinning(arEventWinningEntity);
+
+            List<ArEventWinningButtonEntity> arEventWinningButtonEntityList = convertEventWinningButtonDtoToArEventWinningButtonEntityList(eventSaveDto.getEventWinningInfo().get(j).getEventWinningButtonInfo());
+
+            for (ArEventWinningButtonEntity buttonEntity : arEventWinningButtonEntityList) {
+
+
+                buttonEntity.setArEventWinningId(arEventService.findEventWinningEntityByEventId(eventId).getId());
+                buttonEntity.setCreatedDate(DateUtils.returnNowDate());
+
+                arEventService.saveEventWinningButton(buttonEntity);
+            }
+
+            j++;
 
         }
 
+//        arEventWinningEntityList
+//                .stream()
+//                .filter(Objects::nonNull)
+//                .forEach(entity -> {
+//                    int i = 0;
+//                    entity.setEventId(eventId);
+//                    entity.setCreatedDate(DateUtils.returnNowDate());
+//
+//                    ArEventWinningEntity insertedArEventWinningEntity = arEventService.saveEventWinning(entity);
+//
+//                    List<ArEventWinningButtonEntity> arEventWinningButtonEntityList = convertEventWinningButtonDtoToArEventWinningButtonEntityList(eventSaveDto.getEventWinningInfo().get(i).getEventWinningButtonInfo());
+//                    arEventWinningButtonEntityList
+//                            .stream()
+//                            .filter(Objects::nonNull)
+//                                    .forEach(buttonEntity -> {
+//                                        buttonEntity.setArEventWinningId(insertedArEventWinningEntity.getId());
+//                                        buttonEntity.setCreatedDate(DateUtils.returnNowDate());
+//                                    });
+//                    //당첨정버 버튼 저장
+//                    arEventService.saveAllEventWinningButton(arEventWinningButtonEntityList);
+//                    i++;
+//                });
     }
 
     @GetMapping(value = "/category/all")
@@ -88,4 +143,26 @@ public class ArEventController {
                 .map(dto -> modelMapper.map(dto, ArEventLogicalJpa.class))
                 .collect(Collectors.toList());
     }
+
+    private List<ArEventImageScanningEntity> convertArEventImageScanningEntityListToDtoList(List<EventImageScanningDto> eventImageScanningDtoList) {
+        return eventImageScanningDtoList.
+                stream()
+                .map(dto -> modelMapper.map(dto, ArEventImageScanningEntity.class))
+                .collect(Collectors.toList());
+    }
+
+    private List<ArEventWinningEntity> convertEventWinningDtoToArEventWinningEntityList(List<EventWinningDto>eventWinningDtoList) {
+        return eventWinningDtoList
+                .stream()
+                .map(dto -> modelMapper.map(dto, ArEventWinningEntity.class))
+                .collect(Collectors.toList());
+    }
+
+    private List<ArEventWinningButtonEntity> convertEventWinningButtonDtoToArEventWinningButtonEntityList(List<EventWinningButtonDto>eventWinningButtonDtoList) {
+        return eventWinningButtonDtoList
+                .stream()
+                .map(dto -> modelMapper.map(dto, ArEventWinningButtonEntity.class))
+                .collect(Collectors.toList());
+    }
+
 }

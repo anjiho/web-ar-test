@@ -58,9 +58,9 @@ public class EventDto {
     private String contractStatus;
 
     // 서비스 시작일
-    private String eventStartDate;
+    private Date eventStartDate;
 
     // 서비스 종료일
-    private String eventEndDate;
+    private Date eventEndDate;
 
 }

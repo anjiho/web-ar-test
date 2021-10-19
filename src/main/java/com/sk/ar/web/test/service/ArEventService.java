@@ -2,14 +2,8 @@ package com.sk.ar.web.test.service;
 
 import com.sk.ar.web.test.dto.request.ApiResultObjectDto;
 import com.sk.ar.web.test.dto.response.CategoryDto;
-import com.sk.ar.web.test.jpa.event.ArEventButtonJpa;
-import com.sk.ar.web.test.jpa.event.ArEventCategoryJpa;
-import com.sk.ar.web.test.jpa.event.ArEventLogicalJpa;
-import com.sk.ar.web.test.jpa.event.EventJpa;
-import com.sk.ar.web.test.jpa.event.repository.ArEventButtonJpaRepository;
-import com.sk.ar.web.test.jpa.event.repository.ArEventCategoryJpaRepository;
-import com.sk.ar.web.test.jpa.event.repository.ArEventLogicalJpaRepository;
-import com.sk.ar.web.test.jpa.event.repository.EventJpaRepository;
+import com.sk.ar.web.test.jpa.event.*;
+import com.sk.ar.web.test.jpa.event.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +29,17 @@ public class ArEventService {
     @Autowired
     private ArEventLogicalJpaRepository arEventLogicalJpaRepository;
 
+    @Autowired
+    private ArEventImageScanningEntityRepository arEventImageScanningEntityRepository;
+
+    @Autowired
+    private ArEventWinningEntityRepository arEventWinningEntityRepository;
+
+    @Autowired
+    private ArEventWinningButtonEntityRepository arEventWinningButtonEntityRepository;
+
     @Transactional
     public int saveEvent(EventJpa eventJpa) {
-//        if (StringUtils.isEmpty(eventJpa.getCreatedDate())) {
-//            eventJpa.setCreatedDate("2021-01-01 12:12:12");
-//        }
         eventJpaRepository.save(eventJpa);
         return eventJpa.getEventId();
     }
@@ -61,6 +61,31 @@ public class ArEventService {
     public int saveEventLogical(ArEventLogicalJpa arEventLogicalJpa) {
         arEventLogicalJpaRepository.save(arEventLogicalJpa);
         return arEventLogicalJpa.getId();
+    }
+
+    public ArEventLogicalJpa findFirstByEventIdOrderByIdDesc(int eventId) {
+        return arEventLogicalJpaRepository.findFirstByEventIdOrderByIdDesc(eventId);
+    }
+
+    public void saveAllEventImageScanning(List<ArEventImageScanningEntity> arEventImageScanningEntityList) {
+        arEventImageScanningEntityRepository.saveAll(arEventImageScanningEntityList);
+    }
+
+    public int saveEventWinning(ArEventWinningEntity arEventWinningEntity) {
+        arEventWinningEntityRepository.save(arEventWinningEntity);
+        return arEventWinningEntity.getId();
+    }
+
+    public ArEventWinningEntity findEventWinningEntityByEventId(int eventId) {
+        return arEventWinningEntityRepository.findFirstByEventIdOrderByIdDesc(eventId);
+    }
+
+    public void saveAllEventWinningButton(List<ArEventWinningButtonEntity> arEventWinningButtonEntityList) {
+        arEventWinningButtonEntityRepository.saveAll(arEventWinningButtonEntityList);
+    }
+
+    public void saveEventWinningButton(ArEventWinningButtonEntity arEventWinningButtonEntity) {
+        arEventWinningButtonEntityRepository.save(arEventWinningButtonEntity);
     }
 
     public ApiResultObjectDto findAllEventCategory(String categoryType, String parentCode) {

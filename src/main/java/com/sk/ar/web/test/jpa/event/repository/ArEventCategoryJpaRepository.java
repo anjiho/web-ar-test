@@ -1,7 +1,7 @@
 package com.sk.ar.web.test.jpa.event.repository;
 
 import com.sk.ar.web.test.jpa.event.ArEventCategoryJpa;
-import io.swagger.models.auth.In;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -147,6 +147,9 @@ public class ArEventLogicalJpa {
     // 브릿지 노출 시간 여부 값(설정 라디오버튼)
     private String bridgeExposureTimeType;
 
+    // 브릿지 노출 시간 값
+    private Integer bridgeExposureTimeSecond;
+
     // 브릿지 화면 방향  값(화면 방향 라디오 코드 값)
     private String bridgeDisplayDirectionType;
 
