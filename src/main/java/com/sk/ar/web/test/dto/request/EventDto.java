@@ -11,9 +11,8 @@ import java.util.Date;
 @Data
 public class EventDto {
 
-    // 이벤트 타이틀
-    @NotEmpty(message = "이벤트 제목이 없습니다.")
-    private String eventTitle;
+    // AR 구동 정보(기본형 ~ 이미지스캐닝형)
+    private String eventLogicalType;
 
     // 페이지 접속 팝업
     @NotNull(message = "페이지 접속 팝업 값이 없습니다.")
@@ -47,20 +46,5 @@ public class EventDto {
 
     // 시간참여 불가시
     private String attendHourMessage;
-
-    // AR 구동 정보 타입
-    private String eventLogicalType;
-
-    // 계약 인덱스 값
-    private String marketingId;
-
-    // 계약상태 값
-    private String contractStatus;
-
-    // 서비스 시작일
-    private Date eventStartDate;
-
-    // 서비스 종료일
-    private Date eventEndDate;
 
 }

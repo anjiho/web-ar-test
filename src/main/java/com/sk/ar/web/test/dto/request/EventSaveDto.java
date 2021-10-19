@@ -10,17 +10,21 @@ import java.util.List;
 @Data
 public class EventSaveDto {
 
-    //이벤트 메인 정보
+    //이벤트 기본 정보
     @Valid
-    private EventDto eventMainInfo;
+    private EventBaseDto eventBaseInfo;
 
-    //이벤트 메인 버튼 정보
+    //AR 이벤트 설정 공통 정보
     @Valid
-    private EventButtonDto eventMainButtonInfo;
+    private EventDto arEventInfo;
 
-    //AR 구동 정보
+    //AR 이벤트 버튼 정보
     @Valid
-    private List<EventLogicalDto> eventLogicalInfo;
+    private EventButtonDto arEventButtonInfo;
+
+    //AR 구동 정보(기본형, 브릿지형, 미션클리어판)
+    @Valid
+    private List<EventObjectDto> arEventObjectInfo;
 
     //이미지스캐닝 정보(AR 구동정보가 이미지스캐닝일때만 저장)
     @Valid

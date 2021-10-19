@@ -9,10 +9,7 @@ import java.util.Date;
 
 @NoArgsConstructor
 @Data
-public class EventLogicalDto {
-
-    // 이벤트 아이디
-    private Integer eventId;
+public class EventObjectDto {
 
     // 오브젝트 순서
     private Integer objectSort;
@@ -134,19 +131,10 @@ public class EventLogicalDto {
     // 브릿지 화면 방향  값(화면 방향 라디오 코드 값)
     private String bridgeDisplayDirectionType;
 
-    // 미션클리어판, 이미지가이드판 설정  값(판 위치 셀렉트박스)
-    private String panPositionType;
-
-    // 미션클리어판, 이미지가이드판 미션 수
-    private Integer panMissionNumber;
-
     // 미션클리어형 비활성 썸네일 url
     private String missionInactiveThumbnailUrl;
 
     // 미션클리어형 활성 썸네일 url
     private String missionActiveThumbnailUrl;
-
-    // 정렬 순서
-    private Integer eventLogicalNumber;
 
 }

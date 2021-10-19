@@ -1,11 +1,29 @@
-package com.sk.ar.web.test.dto.request;
+package com.sk.ar.web.test.entity;
 
-import lombok.Data;
+import com.sk.ar.web.test.dto.request.EventButtonDto;
+import com.sk.ar.web.test.utils.DateUtils;
+import com.sk.ar.web.test.utils.ModelMapperUtils;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
+import java.util.Date;
 
 @NoArgsConstructor
-@Data
-public class EventButtonDto {
+@Getter
+@Setter
+@Entity
+@Table(name = "AR_EVENT_BUTTON")
+public class ArEventButtonEntity {
+
+    // 아이디
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer arEventButtonId;
+
+    // 이벤트 아이디
+    private Integer arEventId;
 
     // 버튼 배경색 지정 여부 값(AR_EVENT_CATEGORY)
     private String arButtonBgColorAssignType;
@@ -60,4 +78,24 @@ public class EventButtonDto {
 
     // AR 스킨 이미지
     private String arSkinImage;
+
+    // 생성자
+    private String createdBy;
+
+    // 생성일
+    private Date createdDate;
+
+    // 수정자
+    private String lastModifiedBy;
+
+    // 수정일
+    private Date lastModifiedDate;
+
+    public static ArEventButtonEntity of(int arEventId, EventButtonDto dto) {
+        ArEventButtonEntity entity = ModelMapperUtils.getModelMapper().map(dto, ArEventButtonEntity.class);
+        entity.setArEventId(arEventId);
+        entity.setCreatedDate(DateUtils.returnNowDate());
+        return entity;
+    }
+
 }

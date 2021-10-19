@@ -1,8 +1,8 @@
 package com.sk.ar.web.test.controller;
 
 import com.sk.ar.web.test.dto.request.*;
+import com.sk.ar.web.test.entity.*;
 import com.sk.ar.web.test.jpa.event.*;
-import com.sk.ar.web.test.jpa.event.repository.EventJpaRepository;
 import com.sk.ar.web.test.service.ArEventService;
 import com.sk.ar.web.test.utils.DateUtils;
 import io.swagger.annotations.ApiImplicitParam;
@@ -14,13 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -38,92 +33,108 @@ public class ArEventController {
 
     @PostMapping(value = "/save")
     public void saveEvent(@RequestBody EventSaveDto eventSaveDto) {
-        EventJpa eventJpa = EventJpa.of(eventSaveDto.getEventMainInfo());
-        int eventId = arEventService.saveEvent(eventJpa);
+        /**
+         * EVENT_BASE 저장
+         */
+        EventBaseEntity eventBaseEntity = EventBaseEntity.of(eventSaveDto.getEventBaseInfo());
+        int eventId = arEventService.saveEventBase(eventBaseEntity);
+        log.info("eventId >> " + eventId);
+
+        if (eventId > 0) {
+            /**
+             * AR_EVENT 저장
+             */
+            ArEventEntity arEventEntity = ArEventEntity.of(eventId, eventSaveDto.getArEventInfo());
+            int arEventId = arEventService.saveEvent(arEventEntity);
+            log.info("arEventId >> " + arEventId);
+
+            if (arEventId > 0) {
+                /**
+                 * AR_EVENT_BUTTON 저장
+                 */
+                ArEventButtonEntity arEventButtonEntity = ArEventButtonEntity.of(arEventId, eventSaveDto.getArEventButtonInfo());
+                arEventService.saveEventButton(arEventButtonEntity);
+
+                /**
+                 * AR_EVENT_OBJECT 저장
+                 */
+                List<ArEventObjectEntity> eventObjectEntityList = convertEventObjectDtoListToArEventObjectEntityList(eventSaveDto.getArEventObjectInfo());
+                eventObjectEntityList
+                        .stream()
+                        .filter(Objects::nonNull)
+                        .forEach(objectEntity -> {
+                            objectEntity.setArEventId(arEventId);
+                            objectEntity.setCreatedDate(DateUtils.returnNowDate());
+                        });
+                arEventService.saveAllArEventObject(eventObjectEntityList);
+
+                /**
+                 * TODO AR_EVENT_LOGICAL, AR_EVENT_SCANNING_IMAGE(이미지스캔형일때만), AR_EVENT_SCANNING_IMAGE, AR_EVENT_WINNING_BUTTON 저장
+                 */
+            }
+        }
+
 
         //메인 버튼 정보 저장
-        ArEventButtonJpa arEventButtonJpa = ArEventButtonJpa.of(
-                eventId, eventSaveDto.getEventMainButtonInfo()
-        );
-        arEventService.saveEventMainButton(arEventButtonJpa);
-
-        //AR_EVENT_LOGICAL 리스트 저장
-        List<ArEventLogicalJpa> eventLogicalList = convertArEventLogicalJpaListToDtoList(eventSaveDto.getEventLogicalInfo());
-        eventLogicalList.
-                stream()
-                .filter(Objects::nonNull)
-                .forEach(jpa -> {
-                    jpa.setEventId(eventId);
-                    jpa.setCreatedDate(DateUtils.returnNowDate());
-                });
-
-        arEventService.saveAllEventLogical(eventLogicalList);
-
-        int eventLogicalId = arEventService.findFirstByEventIdOrderByIdDesc(eventId).getId();
+//        ArEventButtonJpa arEventButtonJpa = ArEventButtonJpa.of(
+//                eventId, eventSaveDto.getEventMainButtonInfo()
+//        );
+//        arEventService.saveEventMainButton(arEventButtonJpa);
+//
+//        //AR_EVENT_LOGICAL 리스트 저장
+//        List<ArEventLogicalJpa> eventLogicalList = convertArEventLogicalJpaListToDtoList(eventSaveDto.getEventLogicalInfo());
+//        eventLogicalList.
+//                stream()
+//                .filter(Objects::nonNull)
+//                .forEach(jpa -> {
+//                    jpa.setEventId(eventId);
+//                    jpa.setCreatedDate(DateUtils.returnNowDate());
+//                });
+//
+//        arEventService.saveAllEventLogical(eventLogicalList);
+//
+//        int eventLogicalId = arEventService.findFirstByEventIdOrderByIdDesc(eventId).getId();
 
         //이미지 스캐닝형일때 AR_EVENT_IMAGE_SCANNING 저장하기
-        if ("scanning".equals(eventJpa.getEventLogicalType())) {
-
-
-            List<ArEventImageScanningEntity> arEventImageScanningEntityList = convertArEventImageScanningEntityListToDtoList(eventSaveDto.getEventImageScanningInfo());
-            arEventImageScanningEntityList
-                    .stream()
-                    .filter(Objects::nonNull)
-                    .forEach(entity -> {
-                        entity.setEventLogicalId(eventLogicalId);
-                        entity.setCreatedDate(DateUtils.returnNowDate());
-                    });
-
-            arEventService.saveAllEventImageScanning(arEventImageScanningEntityList);
-        }
-
-        //당첨정보 저장하기
-        int j = 0;
-        List<ArEventWinningEntity> arEventWinningEntityList = convertEventWinningDtoToArEventWinningEntityList(eventSaveDto.getEventWinningInfo());
-        for (ArEventWinningEntity arEventWinningEntity : arEventWinningEntityList) {
-
-            arEventWinningEntity.setEventId(eventId);
-            arEventWinningEntity.setCreatedDate(DateUtils.returnNowDate());
-
-            arEventService.saveEventWinning(arEventWinningEntity);
-
-            List<ArEventWinningButtonEntity> arEventWinningButtonEntityList = convertEventWinningButtonDtoToArEventWinningButtonEntityList(eventSaveDto.getEventWinningInfo().get(j).getEventWinningButtonInfo());
-
-            for (ArEventWinningButtonEntity buttonEntity : arEventWinningButtonEntityList) {
-
-
-                buttonEntity.setArEventWinningId(arEventService.findEventWinningEntityByEventId(eventId).getId());
-                buttonEntity.setCreatedDate(DateUtils.returnNowDate());
-
-                arEventService.saveEventWinningButton(buttonEntity);
-            }
-
-            j++;
-
-        }
-
-//        arEventWinningEntityList
-//                .stream()
-//                .filter(Objects::nonNull)
-//                .forEach(entity -> {
-//                    int i = 0;
-//                    entity.setEventId(eventId);
-//                    entity.setCreatedDate(DateUtils.returnNowDate());
+//        if ("scanning".equals(eventJpa.getEventLogicalType())) {
 //
-//                    ArEventWinningEntity insertedArEventWinningEntity = arEventService.saveEventWinning(entity);
 //
-//                    List<ArEventWinningButtonEntity> arEventWinningButtonEntityList = convertEventWinningButtonDtoToArEventWinningButtonEntityList(eventSaveDto.getEventWinningInfo().get(i).getEventWinningButtonInfo());
-//                    arEventWinningButtonEntityList
-//                            .stream()
-//                            .filter(Objects::nonNull)
-//                                    .forEach(buttonEntity -> {
-//                                        buttonEntity.setArEventWinningId(insertedArEventWinningEntity.getId());
-//                                        buttonEntity.setCreatedDate(DateUtils.returnNowDate());
-//                                    });
-//                    //당첨정버 버튼 저장
-//                    arEventService.saveAllEventWinningButton(arEventWinningButtonEntityList);
-//                    i++;
-//                });
+//            List<ArEventImageScanningEntity> arEventImageScanningEntityList = convertArEventImageScanningEntityListToDtoList(eventSaveDto.getEventImageScanningInfo());
+//            arEventImageScanningEntityList
+//                    .stream()
+//                    .filter(Objects::nonNull)
+//                    .forEach(entity -> {
+//                        entity.setEventLogicalId(eventLogicalId);
+//                        entity.setCreatedDate(DateUtils.returnNowDate());
+//                    });
+//
+//            arEventService.saveAllEventImageScanning(arEventImageScanningEntityList);
+//        }
+//
+//        //당첨정보 저장하기
+//        int j = 0;
+//        List<ArEventWinningEntity> arEventWinningEntityList = convertEventWinningDtoToArEventWinningEntityList(eventSaveDto.getEventWinningInfo());
+//        for (ArEventWinningEntity arEventWinningEntity : arEventWinningEntityList) {
+//
+//            arEventWinningEntity.setArEventId(eventId);
+//            arEventWinningEntity.setCreatedDate(DateUtils.returnNowDate());
+//
+//            arEventService.saveEventWinning(arEventWinningEntity);
+//
+//            List<ArEventWinningButtonEntity> arEventWinningButtonEntityList = convertEventWinningButtonDtoToArEventWinningButtonEntityList(eventSaveDto.getEventWinningInfo().get(j).getEventWinningButtonInfo());
+//
+//            for (ArEventWinningButtonEntity buttonEntity : arEventWinningButtonEntityList) {
+//
+//
+//                buttonEntity.setArEventWinningId(arEventService.findEventWinningEntityByEventId(eventId).getId());
+//                buttonEntity.setCreatedDate(DateUtils.returnNowDate());
+//
+//                arEventService.saveEventWinningButton(buttonEntity);
+//            }
+//
+//            j++;
+//
+//        }
     }
 
     @GetMapping(value = "/category/all")
@@ -137,10 +148,10 @@ public class ArEventController {
         return ResponseEntity.ok(arEventService.findAllEventCategory(categoryType, parentCode));
     }
 
-    private List<ArEventLogicalJpa> convertArEventLogicalJpaListToDtoList(List<EventLogicalDto>eventLogicalDtoList) {
-        return eventLogicalDtoList.
+    private List<ArEventObjectEntity> convertEventObjectDtoListToArEventObjectEntityList(List<EventObjectDto> eventObjectDtoList) {
+        return eventObjectDtoList.
                 stream()
-                .map(dto -> modelMapper.map(dto, ArEventLogicalJpa.class))
+                .map(dto -> modelMapper.map(dto, ArEventObjectEntity.class))
                 .collect(Collectors.toList());
     }
 

@@ -1,4 +1,4 @@
-package com.sk.ar.web.test.jpa.event;
+package com.sk.ar.web.test.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,7 +7,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Date;
 
-// 이벤트 당첨자 정보 설정
 @NoArgsConstructor
 @Getter
 @Setter
@@ -18,10 +17,10 @@ public class ArEventWinningEntity {
     // 아이디
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer arEventWinningId;
 
     // 이벤트 아이디
-    private Integer eventId;
+    private Integer arEventId;
 
     // 당첨자 정보 설정 넘버
     private Integer eventWinningNumber;
@@ -65,6 +64,15 @@ public class ArEventWinningEntity {
     // 당첨 이미지 url
     private String winningImageUrl;
 
+    // 생성자
+    private String createdBy;
+
     // 생성일
     private Date createdDate;
+
+    // 수정자
+    private String lastModifiedBy;
+
+    // 수정일
+    private Date lastModifiedDate;
 }

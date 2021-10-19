@@ -1,3 +1,186 @@
+/** 신규 Request Param **/
+{
+  "arEventButtonInfo": {
+    "arBgImage": "http://cdn.test.com/test.png",
+    "arButtonBgColorAssignType": "y",
+    "arButtonBgColorBlue": 255,
+    "arButtonBgColorGreen": 200,
+    "arButtonBgColorHex": "",
+    "arButtonBgColorRed": 210,
+    "arButtonColorAssignType": "n",
+    "arButtonColorBlue": 0,
+    "arButtonColorGreen": 0,
+    "arButtonColorHex": "string",
+    "arButtonColorRed": 0,
+    "arButtonText": "AR버튼 텍스트",
+    "arButtonTextColorAssignType": "y",
+    "arButtonTextColorBlue": 0,
+    "arButtonTextColorGreen": 0,
+    "arButtonTextColorHex": "#FFFFF12",
+    "arButtonTextColorRed": 0,
+    "arSkinImage": "ar스킨 메시지"
+  },
+  "arEventInfo": {
+    "pageConnectPopupYn": true,
+    "arAttendConditionAllYn": true,
+    "arAttendConditionSpecialPositionYn": true,
+    "arAttendConditionHourlyYn": true,
+    "pid": "PID_3284940Fg",
+    "positionMessageAttend": "메세지1",
+    "positionMessageNotAttend": "메세지2",
+    "attendHourStart": 0,
+    "attendHourEnd": 23,
+    "attendHourMessage": "시간 메세지",
+    "eventLogicalType": "basic"
+  },
+
+  "eventBaseInfo": {
+    "contractStatus": "03",
+    "eventEndDate": "2021-10-19",
+    "eventStartDate": "2021-01-19",
+    "eventTitle": "AR 이벤트입니다.",
+    "marketingId": "45678",
+    "qrCodeUrl": ""
+  },
+  "arEventObjectInfo": [
+    {
+      "bridgeDisplayDirectionType": "string",
+      "bridgeExposureTimeType": "string",
+      "bridgeType": "string",
+      "bridgeUrl": "string",
+      "catchSoundFile": "string",
+      "catchSoundType": "string",
+      "clickEventType": "string",
+      "dayExposureCount": 0,
+      "dayExposureType": "string",
+      "eventId": 0,
+      "eventLogicalNumber": 0,
+      "exposureControlType": "string",
+      "exposurePercent": "0",
+      "exposurePercentType": "string",
+      "hourExposureCount": 0,
+      "hourExposureType": "string",
+      "locationExposureControlPid": "string",
+      "locationExposureControlType": "string",
+      "maxExposureCount": 0,
+      "maxExposureType": "string",
+      "missionActiveThumbnailUrl": "string",
+      "missionInactiveThumbnailUrl": "string",
+      "objectChangeSettingType": "string",
+      "objectChangeSettingVideoUrl": "string",
+      "objectChangeSizeX": 0,
+      "objectChangeSizeY": 0,
+      "objectChangeSizeZ": 0,
+      "objectChangeVideoPenetrationAssignType": "string",
+      "objectChangeVideoPenetrationColor": "string",
+      "objectLocationX": 0,
+      "objectLocationY": 0,
+      "objectLocationZ": 0,
+      "objectPositionAssignType": "direct",
+      "objectSettingType": "image2d",
+      "objectSettingUrl": "string",
+      "objectSizeX": 2.0,
+      "objectSizeY": -1.2,
+      "objectSizeZ": 1.3,
+      "objectSort": 1,
+      "panMissionNumber": 0,
+      "panPositionType": "string",
+      "stayEffectType": "string",
+      "videoPenetrationAssignType": "string",
+      "videoPenetrationColorHex": "string",
+      "videoPlayRepeatType": "string"
+    },
+    {
+      "bridgeDisplayDirectionType": "string",
+      "bridgeExposureTimeType": "string",
+      "bridgeType": "string",
+      "bridgeUrl": "string",
+      "catchSoundFile": "string",
+      "catchSoundType": "string",
+      "clickEventType": "string",
+      "dayExposureCount": 0,
+      "dayExposureType": "string",
+      "eventId": 0,
+      "eventLogicalNumber": 0,
+      "exposureControlType": "string",
+      "exposurePercent": "100",
+      "exposurePercentType": "0",
+      "hourExposureCount": 0,
+      "hourExposureType": "string",
+      "locationExposureControlPid": "string",
+      "locationExposureControlType": "string",
+      "maxExposureCount": 0,
+      "maxExposureType": "string",
+      "missionActiveThumbnailUrl": "string",
+      "missionInactiveThumbnailUrl": "string",
+      "objectChangeSettingType": "string",
+      "objectChangeSettingVideoUrl": "string",
+      "objectChangeSizeX": 0,
+      "objectChangeSizeY": 0,
+      "objectChangeSizeZ": 0,
+      "objectChangeVideoPenetrationAssignType": "string",
+      "objectChangeVideoPenetrationColor": "string",
+      "objectLocationX": 0,
+      "objectLocationY": 0,
+      "objectLocationZ": 0,
+      "objectPositionAssignType": "random",
+      "objectSettingType": "gif2d",
+      "objectSettingUrl": "string",
+      "objectSizeX": 0,
+      "objectSizeY": 0,
+      "objectSizeZ": 0,
+      "objectSort": 2,
+      "panMissionNumber": 0,
+      "panPositionType": "string",
+      "stayEffectType": "string",
+      "videoPenetrationAssignType": "string",
+      "videoPenetrationColorHex": "string",
+      "videoPlayRepeatType": "string"
+    }
+  ],
+
+  "eventImageScanningInfo": [
+    {
+      "scanningImageNumber": 0,
+      "scanningImageUrl": "string",
+      "scanningSoundData": "string",
+      "scanningSoundType": "string"
+    }
+  ],
+  "eventWinningInfo": [
+    {
+      "dayWinningNumber": 0,
+      "endWinningTime": 0,
+      "eventId": 0,
+      "eventWinningButtonInfo": [
+        {
+          "arEventWinningId": 0,
+          "buttonActionType": "string",
+          "buttonLinkUrl": "string",
+          "buttonSortNumber": 0,
+          "buttonText": "string"
+        }
+      ],
+      "eventWinningNumber": 0,
+      "giftCardCampaignId": "string",
+      "giftCardProductCode": "string",
+      "hourWinningNumber": 0,
+      "objectMappingNumber": 0,
+      "objectMappingType": "string",
+      "startWinningTime": 0,
+      "totalWinningNumber": 0,
+      "winningImageUrl": "string",
+      "winningPercent": "string",
+      "winningTimeType": "string",
+      "winningType": "string"
+    }
+  ]
+}
+
+
+
+
+
 //기본형일때
 {
     "eventLogicalInfo": [

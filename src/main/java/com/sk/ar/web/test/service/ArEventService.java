@@ -2,8 +2,11 @@ package com.sk.ar.web.test.service;
 
 import com.sk.ar.web.test.dto.request.ApiResultObjectDto;
 import com.sk.ar.web.test.dto.response.CategoryDto;
+import com.sk.ar.web.test.entity.*;
+import com.sk.ar.web.test.entity.repository.*;
 import com.sk.ar.web.test.jpa.event.*;
 import com.sk.ar.web.test.jpa.event.repository.*;
+import com.sun.xml.internal.fastinfoset.stax.events.EventBase;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +21,16 @@ import java.util.*;
 public class ArEventService {
 
     @Autowired
-    private EventJpaRepository eventJpaRepository;
+    private EventBaseEntityRepository eventBaseEntityRepository;
+
+    @Autowired
+    private ArEventEntityRepository arEventEntityRepository;
+
+    @Autowired
+    private ArEventButtonEntityRepository arEventButtonEntityRepository;
+
+    @Autowired
+    private ArEventObjectEntityRepository arEventObjectEntityRepository;
 
     @Autowired
     private ArEventButtonJpaRepository arEventButtonJpaRepository;
@@ -30,7 +42,7 @@ public class ArEventService {
     private ArEventLogicalJpaRepository arEventLogicalJpaRepository;
 
     @Autowired
-    private ArEventImageScanningEntityRepository arEventImageScanningEntityRepository;
+    private ArEventScanningImageEntityRepository arEventScanningImageEntityRepository;
 
     @Autowired
     private ArEventWinningEntityRepository arEventWinningEntityRepository;
@@ -39,22 +51,25 @@ public class ArEventService {
     private ArEventWinningButtonEntityRepository arEventWinningButtonEntityRepository;
 
     @Transactional
-    public int saveEvent(EventJpa eventJpa) {
-        eventJpaRepository.save(eventJpa);
-        return eventJpa.getEventId();
+    public int saveEventBase(EventBaseEntity eventBaseEntity) {
+        eventBaseEntityRepository.save(eventBaseEntity);
+        return eventBaseEntityRepository.findFirstByOrderByEventIdDesc().getEventId();
     }
 
     @Transactional
-    public int saveEventMainButton(ArEventButtonJpa arEventButtonJpa) {
-        if (arEventButtonJpa.getEventId() > 0) {
-            arEventButtonJpaRepository.save(arEventButtonJpa);
-        }
-        return arEventButtonJpa.getId();
+    public int saveEvent(ArEventEntity arEventEntity) {
+        arEventEntityRepository.save(arEventEntity);
+        return arEventEntityRepository.findFirstByOrderByArEventIdDesc().getArEventId();
     }
 
-    public void saveAllEventLogical(List<ArEventLogicalJpa> arEventLogicalJpaList) {
-        if (!arEventLogicalJpaList.isEmpty()) {
-            arEventLogicalJpaRepository.saveAll(arEventLogicalJpaList);
+    @Transactional
+    public void saveEventButton(ArEventButtonEntity arEventButtonEntity) {
+        arEventButtonEntityRepository.save(arEventButtonEntity);
+    }
+
+    public void saveAllArEventObject(List<ArEventObjectEntity> arEventObjectEntityList) {
+        if (!arEventObjectEntityList.isEmpty()) {
+            arEventObjectEntityRepository.saveAll(arEventObjectEntityList);
         }
     }
 
@@ -67,17 +82,17 @@ public class ArEventService {
         return arEventLogicalJpaRepository.findFirstByEventIdOrderByIdDesc(eventId);
     }
 
-    public void saveAllEventImageScanning(List<ArEventImageScanningEntity> arEventImageScanningEntityList) {
-        arEventImageScanningEntityRepository.saveAll(arEventImageScanningEntityList);
+    public void saveAllEventImageScanning(List<ArEventScanningImageEntity> arEventImageScanningEntityList) {
+        arEventScanningImageEntityRepository.saveAll(arEventImageScanningEntityList);
     }
 
     public int saveEventWinning(ArEventWinningEntity arEventWinningEntity) {
         arEventWinningEntityRepository.save(arEventWinningEntity);
-        return arEventWinningEntity.getId();
+        return arEventWinningEntity.getArEventWinningId();
     }
 
-    public ArEventWinningEntity findEventWinningEntityByEventId(int eventId) {
-        return arEventWinningEntityRepository.findFirstByEventIdOrderByIdDesc(eventId);
+    public ArEventWinningEntity findEventWinningEntityByArEventId(int arEventId) {
+        return arEventWinningEntityRepository.findFirstByArEventIdOrderByArEventWinningIdDesc(arEventId);
     }
 
     public void saveAllEventWinningButton(List<ArEventWinningButtonEntity> arEventWinningButtonEntityList) {
