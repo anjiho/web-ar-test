@@ -14,6 +14,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.util.List;
 import java.util.Objects;
@@ -29,14 +31,12 @@ public class ArEventController {
     private ArEventService arEventService;
 
     @Autowired
-    private CategoryService categoryService;
-
-    @Autowired
     private ModelMapper modelMapper;
 
 
     @PostMapping(value = "/save")
-    public void saveEvent(@RequestBody EventSaveDto eventSaveDto) {
+    public void saveEvent(@RequestBody EventSaveDto eventSaveDto,
+                          @RequestPart(value = "excelFile", required = false) MultipartFile excelFile) {
         /**
          * EVENT_BASE 저장
          */
