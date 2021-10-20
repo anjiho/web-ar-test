@@ -2,7 +2,6 @@ package com.sk.ar.web.test.controller;
 
 import com.sk.ar.web.test.dto.request.*;
 import com.sk.ar.web.test.entity.*;
-import com.sk.ar.web.test.jpa.event.*;
 import com.sk.ar.web.test.service.ArEventService;
 import com.sk.ar.web.test.service.CategoryService;
 import com.sk.ar.web.test.utils.DateUtils;
@@ -10,6 +9,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,10 +40,10 @@ public class ArEventController {
         /**
          * EVENT_BASE 저장
          */
-        int eventId = arEventService.saveEventBase(EventBaseEntity.of(eventSaveDto.getEventBaseInfo()));
+        String eventId = arEventService.saveEventBase(WebEventBaseEntity.of(arEventService.findLastWebEventBase(), eventSaveDto.getEventBaseInfo()));
         log.info("eventId >> " + eventId);
 
-        if (eventId > 0) {
+        if (StringUtils.isNotEmpty(eventId)) {
             /**
              * AR_EVENT 저장
              */
@@ -135,6 +135,12 @@ public class ArEventController {
     public ResponseEntity<ApiResultObjectDto> findAllByEventCategory(@RequestParam(value = "categoryType", required = false) String categoryType,
                                                                      @RequestParam(value = "parentCode", required = false) String parentCode) {
         return ResponseEntity.ok(arEventService.findAllEventCategory(categoryType, parentCode));
+    }
+
+    @GetMapping(value = "/test")
+    @ApiOperation("")
+    public ResponseEntity<WebEventBaseEntity> test(@RequestParam(value = "eventId", required = false) String eventId) {
+        return ResponseEntity.ok(arEventService.findEventBase(eventId));
     }
 
     private List<ArEventObjectEntity> convertEventObjectDtoListToArEventObjectEntityList(List<EventObjectDto> eventObjectDtoList) {

@@ -110,6 +110,15 @@ public class EventObjectDto {
     // 시간당 노출 수
     private Integer hourExposureCount;
 
+    // 참여번호당 노출수 타입 값
+    private String attendCodeExposureType;
+
+    // 참여번호당 노출수 지정시 타입(0:전체기한내, 1일)
+    private Integer attendCodeLimitType;
+
+    // 참여번호당 노출수
+    private Integer attendCodeExposureCount;
+
     // 노출 확률 여부 값
     private String exposurePercentType;
 

@@ -1,7 +1,6 @@
 package com.sk.ar.web.test.entity;
 
 import com.sk.ar.web.test.dto.request.EventBaseDto;
-import com.sk.ar.web.test.jpa.event.EventJpa;
 import com.sk.ar.web.test.utils.DateUtils;
 import com.sk.ar.web.test.utils.ModelMapperUtils;
 import lombok.Getter;
@@ -15,13 +14,15 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "EVENT_BASE")
-public class EventBaseEntity {
-
+@Table(name = "WEB_EVENT_BASE")
+public class WebEventBaseEntity {
     // 인데스
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer eventId;
+    private Integer id;
+
+    //이벤트 아이디
+    private String eventId;
 
     // 이벤트 타이틀
     private String eventTitle;
@@ -56,9 +57,28 @@ public class EventBaseEntity {
     // 수정일
     private Date lastModifiedDate;
 
-    public static EventBaseEntity of(EventBaseDto dto) {
-        EventBaseEntity entity = ModelMapperUtils.getModelMapper().map(dto, EventBaseEntity.class);
+
+
+    public static WebEventBaseEntity of(WebEventBaseEntity webEventBaseEntity, EventBaseDto dto) {
+        WebEventBaseEntity entity = new WebEventBaseEntity();
+        entity.setEventId(webEventBaseEntity == null ? "00001" : generateEventId(webEventBaseEntity.getEventId()));
+        entity.setEventTitle(dto.getEventTitle());
+        entity.setMarketingId(dto.getMarketingId());
+        entity.setContractStatus(dto.getContractStatus());
+        entity.setEventStartDate(dto.getEventStartDate());
+        entity.setEventEndDate(dto.getEventEndDate());
+        entity.setQrCodeUrl(dto.getQrCodeUrl());
         entity.setCreatedDate(DateUtils.returnNowDate());
         return entity;
+    }
+
+    public static String generateEventId(String prevEventId) {
+        String generateCode = "";
+        if (!"".equals(prevEventId)) {
+            generateCode = String.format("%05d", Integer.parseInt(prevEventId) + 1);
+        } else {
+            generateCode = "00001";
+        }
+        return generateCode;
     }
 }

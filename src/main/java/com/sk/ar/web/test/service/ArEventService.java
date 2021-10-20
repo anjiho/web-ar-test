@@ -6,7 +6,6 @@ import com.sk.ar.web.test.entity.*;
 import com.sk.ar.web.test.entity.repository.*;
 import com.sk.ar.web.test.jpa.event.*;
 import com.sk.ar.web.test.jpa.event.repository.*;
-import com.sun.xml.internal.fastinfoset.stax.events.EventBase;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,9 +53,17 @@ public class ArEventService {
     private ArEventWinningButtonEntityRepository arEventWinningButtonEntityRepository;
 
     @Transactional
-    public int saveEventBase(EventBaseEntity eventBaseEntity) {
-        eventBaseEntityRepository.save(eventBaseEntity);
-        return eventBaseEntityRepository.findFirstByOrderByEventIdDesc().getEventId();
+    public String saveEventBase(WebEventBaseEntity webEventBaseEntity) {
+        eventBaseEntityRepository.save(webEventBaseEntity);
+        return eventBaseEntityRepository.findFirstByOrderByIdDesc().getEventId();
+    }
+
+    public WebEventBaseEntity findLastWebEventBase() {
+        return eventBaseEntityRepository.findFirstByOrderByIdDesc();
+    }
+
+    public WebEventBaseEntity findEventBase(String eventId) {
+        return eventBaseEntityRepository.findByEventId(eventId);
     }
 
     @Transactional
@@ -160,4 +167,6 @@ public class ArEventService {
         }
         return new ApiResultObjectDto();
     }
+
+
 }

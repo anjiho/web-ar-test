@@ -24,7 +24,7 @@ public class ArEventEntity {
     private Integer arEventId;
 
     // 이벤트 기본 테이블 아이디
-    private Integer eventId;
+    private String eventId;
 
     // AR 구동 정보(기본형 ~ 이미지스캐닝형)
     private String eventLogicalType;
@@ -77,7 +77,7 @@ public class ArEventEntity {
     // 수정일
     private Date lastModifiedDate;
 
-    public static ArEventEntity of(int eventId, EventDto dto) {
+    public static ArEventEntity of(String eventId, EventDto dto) {
         ArEventEntity entity = ModelMapperUtils.getModelMapper().map(dto, ArEventEntity.class);
         entity.setEventId(eventId);
         entity.setCreatedDate(DateUtils.returnNowDate());
