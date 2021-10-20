@@ -36,39 +36,27 @@ public class ArEventObjectEntity {
     private String objectSettingUrl;
 
     // 오브젝트 크기(x)
-    @Column(name = "object_size_x")
     private BigDecimal objectSizeX;
 
     // 오브젝트 크기(y)
-    @Column(name = "object_size_y")
     private BigDecimal objectSizeY;
 
     // 오브젝트 크기(z)
-    @Column(name = "object_size_z")
     private BigDecimal objectSizeZ;
 
     // 동영상 재생반복 여부 값
     private String videoPlayRepeatType;
 
-    // 동영상 투과색 지정 여부
-    private String videoPenetrationAssignType;
-
-    // 동영상 투과색(hex)
-    private String videoPenetrationColorHex;
-
     // 오브젝트 위치지정 값
     private String objectPositionAssignType;
 
     // 오브젝트 위치 지정(x)
-    @Column(name = "object_location_x")
     private BigDecimal objectLocationX;
 
     // 오브젝트 위치 지정(y)
-    @Column(name = "object_location_y")
     private BigDecimal objectLocationY;
 
     // 오브젝트 위치 지정(z)
-    @Column(name = "object_location_z")
     private BigDecimal objectLocationZ;
 
     // STAY EFFECT 설정  값
@@ -84,22 +72,13 @@ public class ArEventObjectEntity {
     private String objectChangeSettingVideoUrl;
 
     // 오브젝트 change 크기(x)
-    @Column(name = "object_change_size_x")
     private BigDecimal objectChangeSizeX;
 
     // 오브젝트 change 크기(y)
-    @Column(name = "object_change_size_y")
     private BigDecimal objectChangeSizeY;
 
     // 오브젝트 change 크기(z)
-    @Column(name = "object_change_size_z")
     private BigDecimal objectChangeSizeZ;
-
-    // 오브젝트 change 동영상 투과색 지정 여부 코드
-    private String objectChangeVideoPenetrationAssignType;
-
-    // 오브젝트 change 동영상 투과색
-    private String objectChangeVideoPenetrationColor;
 
     // 캐치 사운드 설정 값
     private String catchSoundType;
@@ -133,6 +112,15 @@ public class ArEventObjectEntity {
 
     // 시간당 노출 수
     private Integer hourExposureCount;
+
+    // 참여번호당 노출수 타입 값
+    private String attendCodeExposureType;
+
+    // 참여번호당 노출수 지정시 타입(0:전체기한내, 1일)
+    private Integer attendCodeLimitType;
+
+    // 참여번호당 노출수
+    private Integer attendCodeExposureCount;
 
     // 노출 확률 여부 값
     private String exposurePercentType;

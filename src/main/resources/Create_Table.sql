@@ -227,7 +227,22 @@ CREATE TABLE EVENT_BASE
     `last_modified_by`    VARCHAR(50)     NULL        COMMENT '수정자',
     `last_modified_date`  DATETIME        NULL        COMMENT '수정일',
     PRIMARY KEY (event_id)
-)
+);
 
 ALTER TABLE EVENT_BASE COMMENT '이벤트 기본 테이블' charset = utf8;
+
+CREATE TABLE AR_EVENT_GATE_CODE
+(
+    `id`                  INT            NOT NULL    AUTO_INCREMENT COMMENT '아이디',
+    `ar_event_id`         INT            NULL        COMMENT '이벤트 아이디',
+    `attend_code`         VARCHAR(20)    NULL        COMMENT '참여번호 값',
+    `use_yn`              TINYINT(1)     NULL        DEFAULT 0 COMMENT '사용여부',
+    `created_by`          VARCHAR(50)    NULL        COMMENT '생성자',
+    `created_date`        DATETIME       NULL        COMMENT '생성일',
+    `last_modified_by`    VARCHAR(50)    NULL        COMMENT '수정자',
+    `last_modified_date`  DATETIME       NULL        COMMENT '수정일',
+    PRIMARY KEY (id)
+);
+
+ALTER TABLE AR_EVENT_GATE_CODE COMMENT '이벤트 코드 테이블(엑셀 업로드)';
 

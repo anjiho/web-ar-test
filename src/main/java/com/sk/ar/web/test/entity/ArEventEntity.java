@@ -41,6 +41,9 @@ public class ArEventEntity {
     // AR 참여조건(시간별)
     private Boolean arAttendConditionHourlyYn;
 
+    // AR 참여조건(참여번호)
+    private Boolean arAttendConditionCodeYn;
+
     // pid
     private String pid;
 
@@ -58,6 +61,9 @@ public class ArEventEntity {
 
     // 시간참여 불가시
     private String attendHourMessage;
+
+    // 참여번호 미 매칭시
+    private String attendCodeMisMatchMessage;
 
     // 생성자
     private String createdBy;

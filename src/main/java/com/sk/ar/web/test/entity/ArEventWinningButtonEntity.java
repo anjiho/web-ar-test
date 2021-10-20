@@ -22,7 +22,7 @@ public class ArEventWinningButtonEntity {
     // AR_EVENT_WINNING.id
     private Integer arEventWinningId;
 
-    // 버튼 액션 타입(1 : 계속하기, 2 : url 접속)
+    // 버튼 액션 타입
     private String buttonActionType;
 
     // 버튼 문구
@@ -33,6 +33,15 @@ public class ArEventWinningButtonEntity {
 
     // 순서
     private Integer buttonSortNumber;
+
+    // 버튼 액션 타입이 경품배송일때 성명 사용여부
+    private Boolean deliveryNameYn;
+
+    // 버튼 액션 타입이 경품배송일때 전화번호 사용여부
+    private Boolean deliveryPhoneNumberYn;
+
+    // 버튼 액션 타입이 경품배송일때 배송주소 사용여부
+    private Boolean deliveryAddressYn;
 
     // 생성자
     private String createdBy;
