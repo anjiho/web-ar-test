@@ -2,6 +2,7 @@ package com.sk.ar.web.test.dto.request;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -38,6 +39,6 @@ public class EventSaveDto {
     @Valid
     private List<EventWinningDto> eventWinningInfo;
 
-
+    private MultipartFile excelFile;
 
 }

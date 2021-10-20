@@ -12,11 +12,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -35,8 +37,8 @@ public class ArEventController {
 
 
     @PostMapping(value = "/save")
-    public void saveEvent(@RequestBody EventSaveDto eventSaveDto,
-                          @RequestPart(value = "excelFile", required = false) MultipartFile excelFile) {
+    public void saveEvent(@ModelAttribute EventSaveDto eventSaveDto) {
+        log.info(eventSaveDto.getExcelFile().getOriginalFilename());
         /**
          * EVENT_BASE 저장
          */
@@ -50,53 +52,53 @@ public class ArEventController {
             int arEventId = arEventService.saveEvent(ArEventEntity.of(eventId, eventSaveDto.getArEventInfo()));
             log.info("arEventId >> " + arEventId);
 
-            if (arEventId > 0) {
-                /**
-                 * AR_EVENT_BUTTON 저장
-                 */
-                arEventService.saveEventButton(ArEventButtonEntity.of(arEventId, eventSaveDto.getArEventButtonInfo()));
-
-                /**
-                 * AR_EVENT_OBJECT 저장 (이미지스캐닝이 아날떄만)
-                 */
-                if (!"scanning".equals(eventSaveDto.getArEventInfo().getEventLogicalType())) {
-                    List<ArEventObjectEntity> eventObjectEntityList = convertEventObjectDtoListToArEventObjectEntityList(eventSaveDto.getArEventObjectInfo());
-                    eventObjectEntityList
-                            .stream()
-                            .filter(Objects::nonNull)
-                            .forEach(objectEntity -> {
-                                objectEntity.setArEventId(arEventId);
-                                objectEntity.setCreatedDate(DateUtils.returnNowDate());
-                            });
-                    arEventService.saveAllArEventObject(eventObjectEntityList);
-                }
-
-
-                /**
-                 * AR_EVENT_LOGICAL 저장
-                 */
-                arEventService.saveEventLogical(ArEventLogicalEntity.of(arEventId, eventSaveDto.getArEventLogicalInfo()));
-
-                /**
-                 * AR_EVENT_SCANNING_IMAGE(이미지스캔형일때만)
-                 */
-                if ("scanning".equals(eventSaveDto.getArEventInfo().getEventLogicalType())) {
-                    List<ArEventScanningImageEntity> arEventImageScanningEntityList = convertEventScanningImageDtoListToArEventImageScanningEntityList(eventSaveDto.getEventScanningImageInfo());
-                    arEventImageScanningEntityList
-                    .stream()
-                    .filter(Objects::nonNull)
-                    .forEach(entity -> {
-                        entity.setArEventId(arEventId);
-                        entity.setCreatedDate(DateUtils.returnNowDate());
-                    });
-
-                    arEventService.saveAllEventImageScanning(arEventImageScanningEntityList);
-                }
-
-                /**
-                 * TODO 당첨정보 >> AR_EVENT_WINNING, AR_EVENT_WINNING_BUTTON 저장
-                 */
-            }
+//            if (arEventId > 0) {
+//                /**
+//                 * AR_EVENT_BUTTON 저장
+//                 */
+//                arEventService.saveEventButton(ArEventButtonEntity.of(arEventId, eventSaveDto.getArEventButtonInfo()));
+//
+//                /**
+//                 * AR_EVENT_OBJECT 저장 (이미지스캐닝이 아날떄만)
+//                 */
+//                if (!"scanning".equals(eventSaveDto.getArEventInfo().getEventLogicalType())) {
+//                    List<ArEventObjectEntity> eventObjectEntityList = convertEventObjectDtoListToArEventObjectEntityList(eventSaveDto.getArEventObjectInfo());
+//                    eventObjectEntityList
+//                            .stream()
+//                            .filter(Objects::nonNull)
+//                            .forEach(objectEntity -> {
+//                                objectEntity.setArEventId(arEventId);
+//                                objectEntity.setCreatedDate(DateUtils.returnNowDate());
+//                            });
+//                    arEventService.saveAllArEventObject(eventObjectEntityList);
+//                }
+//
+//
+//                /**
+//                 * AR_EVENT_LOGICAL 저장
+//                 */
+//                arEventService.saveEventLogical(ArEventLogicalEntity.of(arEventId, eventSaveDto.getArEventLogicalInfo()));
+//
+//                /**
+//                 * AR_EVENT_SCANNING_IMAGE(이미지스캔형일때만)
+//                 */
+//                if ("scanning".equals(eventSaveDto.getArEventInfo().getEventLogicalType())) {
+//                    List<ArEventScanningImageEntity> arEventImageScanningEntityList = convertEventScanningImageDtoListToArEventImageScanningEntityList(eventSaveDto.getEventScanningImageInfo());
+//                    arEventImageScanningEntityList
+//                    .stream()
+//                    .filter(Objects::nonNull)
+//                    .forEach(entity -> {
+//                        entity.setArEventId(arEventId);
+//                        entity.setCreatedDate(DateUtils.returnNowDate());
+//                    });
+//
+//                    arEventService.saveAllEventImageScanning(arEventImageScanningEntityList);
+//                }
+//
+//                /**
+//                 * TODO 당첨정보 >> AR_EVENT_WINNING, AR_EVENT_WINNING_BUTTON 저장
+//                 */
+//            }
         }
 
 
