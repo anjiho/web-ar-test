@@ -1,24 +1,27 @@
-create table AR_EVENT
+CREATE TABLE AR_EVENT
 (
-    ar_event_id                             int auto_increment comment '이벤트 아이디'
-        primary key,
-    event_id                                int                                null comment '이벤트 기본 테이블 아이디',
-    event_logical_type                      varchar(10)                        null comment 'AR 구동 정보(기본형 ~ 이미지스캐닝형)',
-    page_connect_popup_yn                   tinyint(1)                         null comment '페이지 접속 팝업',
-    ar_attend_condition_all_yn              tinyint(1)                         null comment 'AR 참여조건(전체)',
-    ar_attend_condition_special_position_yn tinyint(1)                         null comment 'AR 참여조건(특정위치)',
-    ar_attend_condition_hourly_yn           tinyint(1)                         null comment 'AR 참여조건(시간별)',
-    pid                                     varchar(50)                        null comment 'pid',
-    position_message_attend                 varchar(100)                       null comment '위치메세지 등록(위치 참여시)',
-    position_message_not_attend             varchar(100)                       null comment '위치메세지 등록(위치 미 참여시)',
-    attend_hour_start                       int                                null comment '참여시간 설정(시작)',
-    attend_hour_end                         int                                null comment '참여시간 설정(종료)',
-    attend_hour_message                     varchar(100)                       null comment '시간참여 불가시',
-    created_by                              varchar(50)                        null comment '생성자',
-    created_date                            datetime default CURRENT_TIMESTAMP null comment '생성일',
-    last_modified_by                        varchar(50)                        null comment '수정자',
-    last_modified_date                      datetime                           null comment '수정일'
+    `ar_event_id`                              INT             NOT NULL    AUTO_INCREMENT COMMENT '이벤트 아이디',
+    `event_id`                                 INT             NULL        COMMENT '이벤트 기본 테이블 아이디',
+    `event_logical_type`                       VARCHAR(10)     NULL        COMMENT 'AR 구동 정보(기본형 ~ 이미지스캐닝형)',
+    `page_connect_popup_yn`                    TINYINT(1)      NULL        COMMENT '페이지 접속 팝업',
+    `ar_attend_condition_all_yn`               TINYINT(1)      NULL        COMMENT 'AR 참여조건(전체)',
+    `ar_attend_condition_special_position_yn`  TINYINT(1)      NULL        COMMENT 'AR 참여조건(특정위치)',
+    `ar_attend_condition_hourly_yn`            TINYINT(1)      NULL        COMMENT 'AR 참여조건(시간별)',
+    `ar_attend_condition_code_yn`              TINYINT(1)      NULL        COMMENT 'AR 참여조건(참여번호)',
+    `pid`                                      VARCHAR(50)     NULL        COMMENT 'pid',
+    `position_message_attend`                  VARCHAR(100)    NULL        COMMENT '위치메세지 등록(위치 참여시)',
+    `position_message_not_attend`              VARCHAR(100)    NULL        COMMENT '위치메세지 등록(위치 미 참여시)',
+    `attend_hour_start`                        INT             NULL        COMMENT '참여시간 설정(시작)',
+    `attend_hour_end`                          INT             NULL        COMMENT '참여시간 설정(종료)',
+    `attend_hour_message`                      VARCHAR(100)    NULL        COMMENT '시간참여 불가시',
+    `attend_code_mis_match_message`            VARCHAR(100)    NULL        COMMENT '참여번호 미 매칭시',
+    `created_by`                               VARCHAR(50)     NULL        COMMENT '생성자',
+    `created_date`                             DATETIME        NULL        DEFAULT now() COMMENT '생성일',
+    `last_modified_by`                         VARCHAR(50)     NULL        COMMENT '수정자',
+    `last_modified_date`                       DATETIME        NULL        COMMENT '수정일',
+    CONSTRAINT PK_AR_EVENT PRIMARY KEY (ar_event_id)
 )
+
     comment '이벤트 설정(공통) 테이블' charset = utf8;
 
 create table AR_EVENT_BUTTON
@@ -94,58 +97,58 @@ create table AR_EVENT_LOGICAL
 )
     comment 'AR 구동정보 공통 테이블' charset = utf8;
 
-create table AR_EVENT_OBJECT
+CREATE TABLE AR_EVENT_OBJECT
 (
-    ar_event_object_id                          int auto_increment comment '아이디'
-        primary key,
-    ar_event_id                                 int                                   null comment '이벤트 아이디',
-    object_sort                                 int                                   null comment '오브젝트 순서',
-    object_setting_type                         varchar(10)                           null comment '오브젝트 설정 값',
-    object_setting_url                          varchar(100)                          null comment '오브젝트 설정 파일 URL',
-    object_size_x                               decimal(3, 1)                         null comment '오브젝트 크기(x)',
-    object_size_y                               decimal(3, 1)                         null comment '오브젝트 크기(y)',
-    object_size_z                               decimal(3, 1)                         null comment '오브젝트 크기(z)',
-    video_play_repeat_type                      varchar(10) default '1'               null comment '동영상 재생반복 여부 값',
-    video_penetration_assign_type               varchar(10)                           null comment '동영상 투과색 지정 여부',
-    video_penetration_color_hex                 varchar(10)                           null comment '동영상 투과색(hex)',
-    object_position_assign_type                 varchar(10)                           null comment '오브젝트 위치지정 값',
-    object_location_x                           decimal(3, 1)                         null comment '오브젝트 위치 지정(x)',
-    object_location_y                           decimal(3, 1)                         null comment '오브젝트 위치 지정(y)',
-    object_location_z                           decimal(3, 1)                         null comment '오브젝트 위치 지정(z)',
-    stay_effect_type                            varchar(10)                           null comment 'STAY EFFECT 설정  값',
-    click_event_type                            varchar(10)                           null comment '클릭 이벤트 설정  값',
-    object_change_setting_type                  varchar(10)                           null comment '오브젝트 change 설정 값',
-    object_change_setting_video_url             varchar(100)                          null comment '오브젝트 change 설정 파일 URL',
-    object_change_size_x                        decimal(3, 1)                         null comment '오브젝트 change 크기(x)',
-    object_change_size_y                        decimal(3, 1)                         null comment '오브젝트 change 크기(y)',
-    object_change_size_z                        decimal(3, 1)                         null comment '오브젝트 change 크기(z)',
-    object_change_video_penetration_assign_type varchar(45)                           null comment '오브젝트 change 동영상 투과색 지정 여부 코드',
-    object_change_video_penetration_color       varchar(10)                           null comment '오브젝트 change 동영상 투과색',
-    catch_sound_type                            varchar(10)                           null comment '캐치 사운드 설정 값',
-    catch_sound_file                            varchar(100)                          null comment '캐치 사운드  값(URL, Library)',
-    exposure_control_type                       varchar(10)                           null comment '노출제어 값',
-    location_exposure_control_type              varchar(10)                           null comment '위치 노출제어 값',
-    location_exposure_control_pid               varchar(50)                           null comment '이벤트 pid',
-    max_exposure_type                           varchar(10)                           null comment '최대 노출 여부 값',
-    max_exposure_count                          int                                   null comment '최대 노출 수',
-    day_exposure_type                           varchar(10)                           null comment '일 노출 여부  값',
-    day_exposure_count                          int                                   null comment '일 노출 수',
-    hour_exposure_type                          varchar(10)                           null comment '시간당 노출 여부 값',
-    hour_exposure_count                         int                                   null comment '시간당 노출 수',
-    exposure_percent_type                       varchar(10)                           null comment '노출 확률 여부 값',
-    exposure_percent                            varchar(4)                            null comment '노출 확률 %(0.01 ~ 100)',
-    bridge_type                                 varchar(10)                           null comment '브릿지 타입 값',
-    bridge_url                                  varchar(100)                          null comment '브릿지 파일 url',
-    bridge_exposure_time_type                   varchar(10)                           null comment '브릿지 노출 시간 여부 값(설정 라디오버튼)',
-    bridge_exposure_time_second                 int                                   null comment '브릿지 노출 시간 값',
-    bridge_display_direction_type               varchar(10)                           null comment '브릿지 화면 방향  값(화면 방향 라디오 코드 값)',
-    mission_inactive_thumbnail_url              varchar(100)                          null comment '미션클리어형 비활성 썸네일 url',
-    mission_active_thumbnail_url                varchar(100)                          null comment '미션클리어형 활성 썸네일 url',
-    created_by                                  varchar(50)                           null comment '생성자',
-    created_date                                datetime    default CURRENT_TIMESTAMP null comment '생성일',
-    last_modified_by                            varchar(50)                           null comment '수정자',
-    last_modified_date                          datetime                              null comment '수정일'
+    `ar_event_object_id`               INT              NOT NULL    AUTO_INCREMENT COMMENT '아이디',
+    `ar_event_id`                      INT              NULL        COMMENT '이벤트 아이디',
+    `object_sort`                      INT              NULL        COMMENT '오브젝트 순서',
+    `object_setting_type`              VARCHAR(10)      NULL        COMMENT '오브젝트 설정 값',
+    `object_setting_url`               VARCHAR(100)     NULL        COMMENT '오브젝트 설정 파일 URL',
+    `object_size_x`                    NUMERIC(3, 1)    NULL        COMMENT '오브젝트 크기(x)',
+    `object_size_y`                    NUMERIC(3, 1)    NULL        COMMENT '오브젝트 크기(y)',
+    `object_size_z`                    NUMERIC(3, 1)    NULL        COMMENT '오브젝트 크기(z)',
+    `video_play_repeat_type`           VARCHAR(10)      NULL        DEFAULT '1' COMMENT '동영상 재생반복 여부 값',
+    `object_position_assign_type`      VARCHAR(10)      NULL        COMMENT '오브젝트 위치지정 값',
+    `object_location_x`                NUMERIC(3, 1)    NULL        COMMENT '오브젝트 위치 지정(x)',
+    `object_location_y`                NUMERIC(3, 1)    NULL        COMMENT '오브젝트 위치 지정(y)',
+    `object_location_z`                NUMERIC(3, 1)    NULL        COMMENT '오브젝트 위치 지정(z)',
+    `stay_effect_type`                 VARCHAR(10)      NULL        COMMENT 'STAY EFFECT 설정  값',
+    `click_event_type`                 VARCHAR(10)      NULL        COMMENT '클릭 이벤트 설정  값',
+    `object_change_setting_type`       VARCHAR(10)      NULL        COMMENT '오브젝트 change 설정 값',
+    `object_change_setting_video_url`  VARCHAR(100)     NULL        COMMENT '오브젝트 change 설정 파일 URL',
+    `object_change_size_x`             NUMERIC(3, 1)    NULL        COMMENT '오브젝트 change 크기(x)',
+    `object_change_size_y`             NUMERIC(3, 1)    NULL        COMMENT '오브젝트 change 크기(y)',
+    `object_change_size_z`             NUMERIC(3, 1)    NULL        COMMENT '오브젝트 change 크기(z)',
+    `catch_sound_type`                 VARCHAR(10)      NULL        COMMENT '캐치 사운드 설정 값',
+    `catch_sound_file`                 VARCHAR(100)     NULL        COMMENT '캐치 사운드  값(URL, Library)',
+    `exposure_control_type`            VARCHAR(10)      NULL        COMMENT '노출제어 값',
+    `location_exposure_control_type`   VARCHAR(10)      NULL        COMMENT '위치 노출제어 값',
+    `location_exposure_control_pid`    VARCHAR(50)      NULL        COMMENT '이벤트 pid',
+    `max_exposure_type`                VARCHAR(10)      NULL        COMMENT '최대 노출 여부 값',
+    `max_exposure_count`               INT              NULL        COMMENT '최대 노출 수',
+    `day_exposure_type`                VARCHAR(10)      NULL        COMMENT '일 노출 여부  값',
+    `day_exposure_count`               INT              NULL        COMMENT '일 노출 수',
+    `hour_exposure_type`               VARCHAR(10)      NULL        COMMENT '시간당 노출 여부 값',
+    `hour_exposure_count`              INT              NULL        COMMENT '시간당 노출 수',
+    `attend_code_exposure_type`        VARCHAR(10)      NULL        COMMENT '참여번호당 노출수 타입 값',
+    `attend_code_limit_type`           INT              NULL        COMMENT '참여번호당 노출수 지정시 타입(0:전체기한내, 1일)',
+    `attend_code_exposure_count`       INT              NULL        COMMENT '참여번호당 노출수',
+    `exposure_percent_type`            VARCHAR(10)      NULL        COMMENT '노출 확률 여부 값',
+    `exposure_percent`                 VARCHAR(4)       NULL        COMMENT '노출 확률 %(0.01 ~ 100)',
+    `bridge_type`                      VARCHAR(10)      NULL        COMMENT '브릿지 타입 값',
+    `bridge_url`                       VARCHAR(100)     NULL        COMMENT '브릿지 파일 url',
+    `bridge_exposure_time_type`        VARCHAR(10)      NULL        COMMENT '브릿지 노출 시간 여부 값(설정 라디오버튼)',
+    `bridge_exposure_time_second`      INT              NULL        COMMENT '브릿지 노출 시간 값',
+    `bridge_display_direction_type`    VARCHAR(10)      NULL        COMMENT '브릿지 화면 방향  값(화면 방향 라디오 코드 값)',
+    `mission_inactive_thumbnail_url`   VARCHAR(100)     NULL        COMMENT '미션클리어형 비활성 썸네일 url',
+    `mission_active_thumbnail_url`     VARCHAR(100)     NULL        COMMENT '미션클리어형 활성 썸네일 url',
+    `created_by`                       VARCHAR(50)      NULL        COMMENT '생성자',
+    `created_date`                     DATETIME         NULL        DEFAULT now() COMMENT '생성일',
+    `last_modified_by`                 VARCHAR(50)      NULL        COMMENT '수정자',
+    `last_modified_date`               DATETIME         NULL        COMMENT '수정일',
+    CONSTRAINT PK_AR_EVENT_LOGICAL_TYPE PRIMARY KEY (ar_event_object_id)
 )
+
     comment 'AR 구동 정보 테이블(기본형, 브릿지형, 미션클리어판)' charset = utf8;
 
 create table AR_EVENT_SCANNING_IMAGE
@@ -190,36 +193,41 @@ create table AR_EVENT_WINNING
 )
     comment '이벤트 당첨자 정보 설정' charset = utf8;
 
-create table AR_EVENT_WINNING_BUTTON
+CREATE TABLE AR_EVENT_WINNING_BUTTON
 (
-    id                  int auto_increment comment '아이디'
-        primary key,
-    ar_event_winning_id int                                null comment 'AR_EVENT_WINNING.id',
-    button_action_type  varchar(10)                        null comment '버튼 액션 타입(1 : 계속하기, 2 : url 접속)',
-    button_text         varchar(50)                        null comment '버튼 문구',
-    button_link_url     varchar(100)                       null comment '버튼 링크 url',
-    button_sort_number  int                                null comment '순서',
-    created_by          varchar(50)                        null comment '생성자',
-    created_date        datetime default CURRENT_TIMESTAMP null comment '생성일',
-    last_modified_by    varchar(50)                        null comment '수정자',
-    last_modified_date  datetime                           null comment '수정일'
+    `id`                        INT             NOT NULL    AUTO_INCREMENT COMMENT '아이디',
+    `ar_event_winning_id`       INT             NULL        COMMENT 'AR_EVENT_WINNING.id',
+    `button_action_type`        VARCHAR(10)     NULL        COMMENT '버튼 액션 타입',
+    `button_text`               VARCHAR(50)     NULL        COMMENT '버튼 문구',
+    `button_link_url`           VARCHAR(100)    NULL        COMMENT '버튼 링크 url',
+    `button_sort_number`        INT             NULL        COMMENT '순서',
+    `delivery_name_yn`          TINYINT(1)      NULL        DEFAULT 0 COMMENT '버튼 액션 타입이 경품배송일때 성명 사용여부',
+    `delivery_phone_number_yn`  TINYINT(1)      NULL        DEFAULT 0 COMMENT '버튼 액션 타입이 경품배송일때 전화번호 사용여부',
+    `delivery_addres_yn`        TINYINT(1)      NULL        DEFAULT 0 COMMENT '버튼 액션 타입이 경품배송일때 배송주소 사용여부',
+    `created_by`                VARCHAR(50)     NULL        COMMENT '생성자',
+    `created_date`              DATETIME        NULL        DEFAULT now() COMMENT '생성일',
+    `last_modified_by`          VARCHAR(50)     NULL        COMMENT '수정자',
+    `last_modified_date`        DATETIME        NULL        COMMENT '수정일',
+    PRIMARY KEY (id)
 )
     comment '이벤트 당첨자 버튼 정보' charset = utf8;
 
-create table EVENT_BASE
+CREATE TABLE EVENT_BASE
 (
-    event_id           int auto_increment comment '인데스'
-        primary key,
-    event_title        varchar(45)  null comment '이벤트 타이틀',
-    marketing_id       varchar(45)  null comment '계약 인덱스 값',
-    contract_status    varchar(10)  null comment '계약상태 값',
-    event_start_date   datetime     null comment '서비스 시작일',
-    event_end_date     datetime     null comment '서비스 종료일',
-    qr_code_url        varchar(200) null comment 'QR코드 이미지 URL',
-    created_by         varchar(50)  null comment '생성자',
-    created_date       datetime     null comment '생성일',
-    last_modified_by   varchar(50)  null comment '수정자',
-    last_modified_date datetime     null comment '수정일'
+    `event_id`            INT             NOT NULL    AUTO_INCREMENT COMMENT '인데스',
+    `event_title`         VARCHAR(45)     NULL        COMMENT '이벤트 타이틀',
+    `marketing_id`        VARCHAR(45)     NULL        COMMENT '계약 인덱스 값',
+    `contract_status`     VARCHAR(10)     NULL        COMMENT '계약상태 값',
+    `event_type`          VARCHAR(10)     NULL        COMMENT '이벤트 종류 타입(AR, ROLLET)',
+    `event_start_date`    DATETIME        NULL        COMMENT '서비스 시작일',
+    `event_end_date`      DATETIME        NULL        COMMENT '서비스 종료일',
+    `qr_code_url`         VARCHAR(200)    NULL        COMMENT 'QR코드 이미지 URL',
+    `created_by`          VARCHAR(50)     NULL        COMMENT '생성자',
+    `created_date`        DATETIME        NULL        COMMENT '생성일',
+    `last_modified_by`    VARCHAR(50)     NULL        COMMENT '수정자',
+    `last_modified_date`  DATETIME        NULL        COMMENT '수정일',
+    PRIMARY KEY (event_id)
 )
-    comment '이벤트 기본 테이블' charset = utf8;
+
+ALTER TABLE EVENT_BASE COMMENT '이벤트 기본 테이블' charset = utf8;
 
