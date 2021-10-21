@@ -11,7 +11,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "AR_EVENT_WINNING")
+@Table(name = "AR_EVENT_WINNING_BUTTON")
 public class ArEventWinningButtonEntity {
 
     // 아이디

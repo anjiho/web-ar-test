@@ -1,23 +1,30 @@
 package com.sk.ar.web.test.service;
 
 import com.sk.ar.web.test.dto.request.ApiResultObjectDto;
+import com.sk.ar.web.test.dto.request.EventAttendTimeDto;
+import com.sk.ar.web.test.dto.request.EventHtmlDto;
 import com.sk.ar.web.test.dto.response.CategoryDto;
 import com.sk.ar.web.test.entity.*;
 import com.sk.ar.web.test.entity.repository.*;
 import com.sk.ar.web.test.jpa.event.*;
 import com.sk.ar.web.test.jpa.event.repository.*;
+import com.sk.ar.web.test.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class ArEventService {
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     private EventBaseEntityRepository eventBaseEntityRepository;
@@ -51,6 +58,12 @@ public class ArEventService {
 
     @Autowired
     private ArEventWinningButtonEntityRepository arEventWinningButtonEntityRepository;
+
+    @Autowired
+    private ArEventAttendTimeEntityRepository arEventAttendTimeEntityRepository;
+
+    @Autowired
+    private ArEventHtmlEntityRepository arEventHtmlEntityRepository;
 
     @Transactional
     public String saveEventBase(WebEventBaseEntity webEventBaseEntity) {
@@ -93,10 +106,12 @@ public class ArEventService {
         return arEventLogicalJpaRepository.findFirstByEventIdOrderByIdDesc(eventId);
     }
 
+    @Transactional
     public void saveAllEventImageScanning(List<ArEventScanningImageEntity> arEventImageScanningEntityList) {
         arEventScanningImageEntityRepository.saveAll(arEventImageScanningEntityList);
     }
 
+    @Transactional
     public int saveEventWinning(ArEventWinningEntity arEventWinningEntity) {
         arEventWinningEntityRepository.save(arEventWinningEntity);
         return arEventWinningEntity.getArEventWinningId();
@@ -106,12 +121,45 @@ public class ArEventService {
         return arEventWinningEntityRepository.findFirstByArEventIdOrderByArEventWinningIdDesc(arEventId);
     }
 
+    @Transactional
     public void saveAllEventWinningButton(List<ArEventWinningButtonEntity> arEventWinningButtonEntityList) {
         arEventWinningButtonEntityRepository.saveAll(arEventWinningButtonEntityList);
     }
 
+    @Transactional
     public void saveEventWinningButton(ArEventWinningButtonEntity arEventWinningButtonEntity) {
         arEventWinningButtonEntityRepository.save(arEventWinningButtonEntity);
+    }
+
+    @Transactional
+    public void saveAllEventAttendTime(int arEventId, List<ArEventAttendTimeEntity>arEventAttendTimeEntityList) {
+        if (!arEventAttendTimeEntityList.isEmpty()) {
+            arEventAttendTimeEntityList
+                    .stream()
+                    .filter(Objects::nonNull)
+                    .forEach(entity -> {
+                            entity.setArEventId(arEventId);
+                            entity.setCreatedDate(DateUtils.returnNowDate());
+                    });
+
+            arEventAttendTimeEntityRepository.saveAll(arEventAttendTimeEntityList);
+        }
+    }
+
+    @Transactional
+    public void saveAllEventHtml(int arEventId, List<EventHtmlDto>eventHtmlDtoList) {
+        if (!eventHtmlDtoList.isEmpty()) {
+            List<ArEventHtmlEntity> arEventHtmlEntityList = convertEventHtmlDtoListToArEventHtmlEntityList(eventHtmlDtoList);
+            arEventHtmlEntityList
+                    .stream()
+                    .filter(Objects::nonNull)
+                    .forEach(entity -> {
+                        entity.setArEventId(arEventId);
+                        entity.setCreatedDate(DateUtils.returnNowDate());
+                    });
+
+            arEventHtmlEntityRepository.saveAll(arEventHtmlEntityList);
+        }
     }
 
     public ApiResultObjectDto findAllEventCategory(String categoryType, String parentCode) {
@@ -168,5 +216,13 @@ public class ArEventService {
         return new ApiResultObjectDto();
     }
 
+
+    private List<ArEventHtmlEntity> convertEventHtmlDtoListToArEventHtmlEntityList(List<EventHtmlDto>eventHtmlDtoList) {
+        return eventHtmlDtoList
+                .stream()
+                .map(dto -> modelMapper.map(dto, ArEventHtmlEntity.class))
+                .collect(Collectors.toList());
+
+    }
 
 }

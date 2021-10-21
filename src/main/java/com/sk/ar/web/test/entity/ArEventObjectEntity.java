@@ -36,12 +36,15 @@ public class ArEventObjectEntity {
     private String objectSettingUrl;
 
     // 오브젝트 크기(x)
+    @Column(name = "object_size_x")
     private BigDecimal objectSizeX;
 
     // 오브젝트 크기(y)
+    @Column(name = "object_size_y")
     private BigDecimal objectSizeY;
 
     // 오브젝트 크기(z)
+    @Column(name = "object_size_z")
     private BigDecimal objectSizeZ;
 
     // 동영상 재생반복 여부 값
@@ -51,12 +54,15 @@ public class ArEventObjectEntity {
     private String objectPositionAssignType;
 
     // 오브젝트 위치 지정(x)
+    @Column(name = "object_location_x")
     private BigDecimal objectLocationX;
 
     // 오브젝트 위치 지정(y)
+    @Column(name = "object_location_y")
     private BigDecimal objectLocationY;
 
     // 오브젝트 위치 지정(z)
+    @Column(name = "object_location_z")
     private BigDecimal objectLocationZ;
 
     // STAY EFFECT 설정  값
@@ -72,12 +78,15 @@ public class ArEventObjectEntity {
     private String objectChangeSettingVideoUrl;
 
     // 오브젝트 change 크기(x)
+    @Column(name = "object_change_size_x")
     private BigDecimal objectChangeSizeX;
 
     // 오브젝트 change 크기(y)
+    @Column(name = "object_change_size_y")
     private BigDecimal objectChangeSizeY;
 
     // 오브젝트 change 크기(z)
+    @Column(name = "object_change_size_z")
     private BigDecimal objectChangeSizeZ;
 
     // 캐치 사운드 설정 값
@@ -135,7 +144,7 @@ public class ArEventObjectEntity {
     private String bridgeUrl;
 
     // 브릿지 노출 시간 여부 값(설정 라디오버튼)
-    private String bridgeExposureTimeType;
+    //private String bridgeExposureTimeType;
 
     // 브릿지 노출 시간 값
     private Integer bridgeExposureTimeSecond;

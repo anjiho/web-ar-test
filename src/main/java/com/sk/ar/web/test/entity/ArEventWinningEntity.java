@@ -17,6 +17,7 @@ public class ArEventWinningEntity {
     // 아이디
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // 아이디
     private Integer arEventWinningId;
 
     // 이벤트 아이디
@@ -63,6 +64,9 @@ public class ArEventWinningEntity {
 
     // 당첨 이미지 url
     private String winningImageUrl;
+
+    // 당첨 상품명
+    private String productName;
 
     // 생성자
     private String createdBy;

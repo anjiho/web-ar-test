@@ -33,12 +33,12 @@ public class EventSaveDto {
 
     //이미지스캐닝 정보(AR 구동정보가 이미지스캐닝일때만 저장)
     @Valid
-    private List<EvenScanningImageDto> eventScanningImageInfo;
+    private List<EvenScanningImageDto> arEventScanningImageInfo;
 
     //이벤트 당첨정보, 당첨버튼정보 저장
     @Valid
-    private List<EventWinningDto> eventWinningInfo;
+    private List<EventWinningDto> arEventWinningInfo;
 
-    private MultipartFile excelFile;
+    private List<EventHtmlDto> arEventHtmlInfo;
 
 }

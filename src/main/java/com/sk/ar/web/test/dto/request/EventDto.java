@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.*;
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @Data
@@ -16,7 +17,8 @@ public class EventDto {
 
     // 페이지 접속 팝업
     @NotNull(message = "페이지 접속 팝업 값이 없습니다.")
-    private Boolean pageConnectPopupYn;
+    // 페이지 접속 팝업(위치설정조건)
+    private Boolean locationSettingYn;
 
     // AR 참여조건(전체)
     private Boolean arAttendConditionAllYn;
@@ -40,17 +42,19 @@ public class EventDto {
     private String positionMessageNotAttend;
 
     // 참여시간 설정(시작)
-    @Positive
-    @Range(min = 0, max = 24)
-    private Integer attendHourStart;
-
-    // 참여시간 설정(종료)
-    private Integer attendHourEnd;
+//    @Positive
+//    @Range(min = 0, max = 24)
+//    private Integer attendHourStart;
+//
+//    // 참여시간 설정(종료)
+//    private Integer attendHourEnd;
 
     // 시간참여 불가시
     private String attendHourMessage;
 
     // 참여번호 미 매칭시
     private String attendCodeMisMatchMessage;
+
+    private List<EventAttendTimeDto> arEventAttendTimeInfo;
 
 }

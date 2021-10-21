@@ -132,7 +132,7 @@ public class EventObjectDto {
     private String bridgeUrl;
 
     // 브릿지 노출 시간 여부 값(설정 라디오버튼)
-    private String bridgeExposureTimeType;
+    //private String bridgeExposureTimeType;
 
     // 브릿지 노출 시간 값
     private Integer bridgeExposureTimeSecond;

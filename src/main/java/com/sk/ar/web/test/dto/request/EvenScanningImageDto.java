@@ -18,4 +18,10 @@ public class EvenScanningImageDto {
 
     // 정렬 순서
     private Integer scanningImageNumber;
+
+    // 활성화 썸네일
+    private String activeThumbnailUrl;
+
+    // 비활성화 썸네일
+    private String inactiveThumbnailUrl;
 }

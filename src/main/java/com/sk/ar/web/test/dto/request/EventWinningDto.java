@@ -9,9 +9,6 @@ import java.util.List;
 @Getter
 public class EventWinningDto {
 
-    // 이벤트 아이디
-    private Integer eventId;
-
     // 당첨자 정보 설정 넘버
     private Integer eventWinningNumber;
 
@@ -54,5 +51,9 @@ public class EventWinningDto {
     // 당첨 이미지 url
     private String winningImageUrl;
 
-    private List<EventWinningButtonDto> eventWinningButtonInfo;
+    // 당첨 상품명
+    private String productName;
+
+    // 당첨 버튼 정보
+    private List<EventWinningButtonDto> arEventWinningButtonInfo;
 }

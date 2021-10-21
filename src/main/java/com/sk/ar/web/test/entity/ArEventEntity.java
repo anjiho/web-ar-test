@@ -29,8 +29,8 @@ public class ArEventEntity {
     // AR 구동 정보(기본형 ~ 이미지스캐닝형)
     private String eventLogicalType;
 
-    // 페이지 접속 팝업
-    private Boolean pageConnectPopupYn;
+    // 페이지 접속 팝업(위치설정조건)
+    private Boolean locationSettingYn;
 
     // AR 참여조건(전체)
     private Boolean arAttendConditionAllYn;
@@ -53,11 +53,11 @@ public class ArEventEntity {
     // 위치메세지 등록(위치 미 참여시)
     private String positionMessageNotAttend;
 
-    // 참여시간 설정(시작)
-    private Integer attendHourStart;
-
-    // 참여시간 설정(종료)
-    private Integer attendHourEnd;
+//    // 참여시간 설정(시작)
+//    private Integer attendHourStart;
+//
+//    // 참여시간 설정(종료)
+//    private Integer attendHourEnd;
 
     // 시간참여 불가시
     private String attendHourMessage;

@@ -19,7 +19,7 @@ public class EventBaseDto {
 
     // 계약상태 값
     private String contractStatus;
-    
+
     // 이벤트 종류 타입(AR, ROULETTE)
     private String eventType;
 
