@@ -1,7 +1,6 @@
 package com.sk.ar.web.test.entity;
 
 import com.sk.ar.web.test.dto.request.EventDto;
-import com.sk.ar.web.test.jpa.event.EventJpa;
 import com.sk.ar.web.test.utils.DateUtils;
 import com.sk.ar.web.test.utils.ModelMapperUtils;
 import lombok.Getter;

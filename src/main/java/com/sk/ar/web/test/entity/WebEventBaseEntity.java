@@ -61,7 +61,7 @@ public class WebEventBaseEntity {
 
     public static WebEventBaseEntity of(WebEventBaseEntity webEventBaseEntity, EventBaseDto dto) {
         WebEventBaseEntity entity = new WebEventBaseEntity();
-        entity.setEventId(webEventBaseEntity == null ? "00001" : generateEventId(webEventBaseEntity.getEventId()));
+        entity.setEventId(webEventBaseEntity == null ? "00001" : generateEventId(String.valueOf(webEventBaseEntity.getId())));
         entity.setEventTitle(dto.getEventTitle());
         entity.setMarketingId(dto.getMarketingId());
         entity.setContractStatus(dto.getContractStatus());

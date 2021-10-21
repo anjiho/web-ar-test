@@ -6,8 +6,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sk.ar.web.test.dto.request.*;
 import com.sk.ar.web.test.entity.*;
 import com.sk.ar.web.test.logic.ArEventLogic;
+import com.sk.ar.web.test.logic.ExcelLogic;
 import com.sk.ar.web.test.service.ArEventService;
 import com.sk.ar.web.test.service.CategoryService;
+import com.sk.ar.web.test.service.ExcelService;
 import com.sk.ar.web.test.utils.DateUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -38,32 +40,17 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @CrossOrigin(value = "*")
-@RequestMapping(value = "/api/v1/ar/event")
+@RequestMapping(value = "/api/v1/ar-event")
 public class ArEventController {
 
     @Autowired
     private ArEventService arEventService;
 
     @Autowired
+    private ExcelLogic excelLogic;
+
+    @Autowired
     private ArEventLogic arEventLogic;
-
-    @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
-    private CategoryService categoryService;
-
-
-    @PostMapping(value = "/save")
-    public void saveEvent(
-            //@RequestBody EventSaveDto eventSaveDto
-            @RequestPart(value = "jsonStr") String jsonStr,
-            @RequestPart(value = "excelFile") MultipartFile excelFile
-    ) throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        EventSaveDto eventSaveDto = objectMapper.readValue(jsonStr, EventSaveDto.class);
-        arEventLogic.saveArEventLogic(eventSaveDto);
-    }
 
     @GetMapping(value = "/category/all")
     @ApiOperation("이벤트 카테고리 정보 가져오기")
@@ -76,21 +63,32 @@ public class ArEventController {
         return ResponseEntity.ok(arEventService.findAllEventCategory(categoryType, parentCode));
     }
 
-    @GetMapping(value = "/test")
-    @ApiOperation("")
-    public ResponseEntity<WebEventBaseEntity> test(@RequestParam(value = "eventId", required = false) String eventId) {
-        return ResponseEntity.ok(arEventService.findEventBase(eventId));
+    @PostMapping(value = "/save")
+    @ApiOperation("AR 이벤트 저장")
+    public ResponseEntity<ApiResultObjectDto> saveEvent(
+            //@RequestBody EventSaveDto eventSaveDto
+            @RequestPart(value = "jsonStr") String jsonStr,
+            @RequestPart(value = "excelFile", required = false) MultipartFile excelFile
+    ) throws Exception {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        EventSaveDto eventSaveDto = objectMapper.readValue(jsonStr, EventSaveDto.class);
+        return ResponseEntity.ok(arEventLogic.saveArEventLogic(jsonStr));
     }
 
-    @PostMapping(value = "/test2")
-    public Object test2(@RequestPart(value = "jsonStr") String jsonStr,
-                        @RequestPart(value = "file") MultipartFile file) throws Exception {
-        log.info(">>> " + file.getOriginalFilename());
-        ObjectMapper objectMapper = new ObjectMapper();
-        EventSaveDto dto = objectMapper.readValue(jsonStr, EventSaveDto.class);
-        arEventLogic.saveArEventLogic(dto);
-        log.info(">> " + dto.getArEventInfo());
+    @PostMapping(value = "/verification/attend-code")
+    @ApiOperation("참여코드 검증")
+    public ResponseEntity<ApiResultObjectDto> verificationAttendCodeByExcelFile(@RequestPart(value = "excelFile") MultipartFile excelFile) {
+        return ResponseEntity.ok(excelLogic.isDuplicateAttendCode(excelFile));
+    }
+
+    @PutMapping(value = "/{eventId}")
+    @ApiOperation("AR 이벤트 수정")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "eventId", value = "eventId path 값", dataType = "string", paramType = "path", required = true),
+            @ApiImplicitParam(name = "jsonStr", value = "json string 값", dataType = "string", paramType = "query", required = true)
+    })
+    public ResponseEntity<ApiResultObjectDto> updateEvent(@PathVariable(value = "eventId") String eventId,
+                                                          @RequestPart(value = "jsonStr") String jsonStr) {
         return null;
     }
-
 }

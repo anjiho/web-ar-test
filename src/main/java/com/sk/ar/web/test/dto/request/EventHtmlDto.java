@@ -7,6 +7,8 @@ import lombok.Setter;
 @Getter
 public class EventHtmlDto {
 
+    private Integer eventHtmlId;
+
     // html 정보 타입(1:이미지, 2:버튼, 3:공유하기)
     private Integer htmlType;
 

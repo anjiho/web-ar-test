@@ -7,6 +7,8 @@ import lombok.Setter;
 @Getter
 public class EvenScanningImageDto {
 
+    private Integer arEventScanningImageId;
+
     // 스캐닝 이미지 url
     private String scanningImageUrl;
 

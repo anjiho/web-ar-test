@@ -11,6 +11,8 @@ import java.util.Date;
 @Data
 public class EventObjectDto {
 
+    private Integer arEventObjectId;
+
     // 오브젝트 순서
     private Integer objectSort;
 

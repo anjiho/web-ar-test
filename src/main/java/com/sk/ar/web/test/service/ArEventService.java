@@ -6,8 +6,6 @@ import com.sk.ar.web.test.dto.request.EventHtmlDto;
 import com.sk.ar.web.test.dto.response.CategoryDto;
 import com.sk.ar.web.test.entity.*;
 import com.sk.ar.web.test.entity.repository.*;
-import com.sk.ar.web.test.jpa.event.*;
-import com.sk.ar.web.test.jpa.event.repository.*;
 import com.sk.ar.web.test.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -42,13 +40,7 @@ public class ArEventService {
     private ArEventLogicalEntityRepository arEventLogicalEntityRepository;
 
     @Autowired
-    private ArEventButtonJpaRepository arEventButtonJpaRepository;
-
-    @Autowired
     private ArEventCategoryEntityRepository arEventCategoryEntityRepository;
-
-    @Autowired
-    private ArEventLogicalJpaRepository arEventLogicalJpaRepository;
 
     @Autowired
     private ArEventScanningImageEntityRepository arEventScanningImageEntityRepository;
@@ -100,10 +92,6 @@ public class ArEventService {
     @Transactional
     public void saveEventLogical(ArEventLogicalEntity arEventLogicalEntity) {
         arEventLogicalEntityRepository.save(arEventLogicalEntity);
-    }
-
-    public ArEventLogicalJpa findFirstByEventIdOrderByIdDesc(int eventId) {
-        return arEventLogicalJpaRepository.findFirstByEventIdOrderByIdDesc(eventId);
     }
 
     @Transactional
@@ -211,7 +199,7 @@ public class ArEventService {
                 categoryList.add(categoryDto);
             });
             //부모 카테고리 리스트 foreach 끝
-            return new ApiResultObjectDto(categoryList, resultCode);
+            return new ApiResultObjectDto(categoryList, resultCode, "");
         }
         return new ApiResultObjectDto();
     }

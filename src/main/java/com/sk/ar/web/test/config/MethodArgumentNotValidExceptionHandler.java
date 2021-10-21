@@ -25,7 +25,7 @@ public class MethodArgumentNotValidExceptionHandler {
                 .getDefaultMessage();
 
         log.error("error {} " + errorMessage);
-        ApiResultObjectDto apiResultObjectDTO = new ApiResultObjectDto(errorMessage, 801);
+        ApiResultObjectDto apiResultObjectDTO = new ApiResultObjectDto(errorMessage, 801, "");
         return ResponseEntity.ok(apiResultObjectDTO);
     }
 }

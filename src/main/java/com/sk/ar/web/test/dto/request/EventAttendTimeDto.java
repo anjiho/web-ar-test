@@ -10,6 +10,8 @@ import javax.validation.constraints.Positive;
 @Getter
 public class EventAttendTimeDto {
 
+    private Integer arEventAttendTimeId;
+
     // 참여시간 설정(시작)
     @Positive
     @Range(min = 0, max = 24)

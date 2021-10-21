@@ -9,6 +9,8 @@ import java.util.List;
 @Getter
 public class EventWinningDto {
 
+    private Integer arEventWinningId;
+
     // 당첨자 정보 설정 넘버
     private Integer eventWinningNumber;
 

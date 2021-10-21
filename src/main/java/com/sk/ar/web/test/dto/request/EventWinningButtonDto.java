@@ -7,6 +7,8 @@ import lombok.Setter;
 @Getter
 public class EventWinningButtonDto {
 
+    private Integer arEventWinningButtonId;
+
     // 버튼 액션 타입
     private String buttonActionType;
 

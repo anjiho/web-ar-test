@@ -17,7 +17,7 @@ public class ArEventWinningButtonEntity {
     // 아이디
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer arEventWinningButtonId;
 
     // AR_EVENT_WINNING.id
     private Integer arEventWinningId;
