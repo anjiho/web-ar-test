@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -18,15 +19,16 @@ import java.util.stream.Collectors;
 @Service
 public class ExcelService {
 
+    protected final String path = "/Users/jihoan/Downloads/";
+
     /**
      * 참여코드 중복여부 체크
      * @param excelFile
      * @return
      */
-    public boolean isValidationAttendCodeByExcelFile(MultipartFile excelFile) {
+    public boolean isValidationAttendCodeByExcelFile(final MultipartFile excelFile) {
         boolean isValidation = false;
 
-        String path = "/Users/jihoan/Downloads/";
         try {
             File destFile = new File(path + excelFile.getOriginalFilename());
             excelFile.transferTo(destFile);
@@ -54,5 +56,28 @@ public class ExcelService {
             log.info("================ 엑셀 파일 삭제 =====================");
         }
         return isValidation;
+    }
+
+    public List<Map<String, Object>> extractionAttendCodeByExcelFile(final MultipartFile excelFile) {
+        List<Map<String, Object>> attendCodeList = new ArrayList<>();
+        try {
+            File destFile = new File(path + excelFile.getOriginalFilename());
+            excelFile.transferTo(destFile);
+
+            ExcelReadOption excelReadOption = new ExcelReadOption();
+            excelReadOption.setFilePath(path + destFile.getName());
+            log.info("================ 파일명 ::: " + destFile.getName() + " =====================");
+            excelReadOption.setOutputColumns("A");
+            excelReadOption.setStartRow(2);
+            attendCodeList = ExcelRead.read(excelReadOption);
+            log.info("================ 엑셀 파일 추출 끝 =====================");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            FileUtils.fileDelete(path + excelFile.getOriginalFilename());
+            log.info("================ 엑셀 파일 삭제 =====================");
+        }
+        return attendCodeList;
     }
 }

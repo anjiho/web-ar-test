@@ -1,10 +1,13 @@
 package com.sk.ar.web.test.logic;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.json.JsonWriteFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sk.ar.web.test.dto.request.*;
 import com.sk.ar.web.test.entity.*;
 import com.sk.ar.web.test.service.ArEventService;
+import com.sk.ar.web.test.service.ExcelService;
 import com.sk.ar.web.test.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -12,13 +15,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.Cacheable;
 
 import javax.transaction.Transactional;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -30,6 +31,9 @@ public class ArEventLogic {
     private ArEventService arEventService;
 
     @Autowired
+    private ExcelService excelService;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     /**
@@ -38,13 +42,14 @@ public class ArEventLogic {
      * @return
      */
     @Transactional
-    public ApiResultObjectDto saveArEventLogic(String jsonStr) {
+    public ApiResultObjectDto saveArEventLogic(String jsonStr, MultipartFile attendCodeExcelFile) {
         int resultCode = httpSuccessCode;
 
         Map<String, Object>resultMap = new HashMap<>();
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.getFactory().configure(JsonWriteFeature.ESCAPE_NON_ASCII.mappedFeature(), true);
             EventSaveDto eventSaveDto = objectMapper.readValue(jsonStr, EventSaveDto.class);
 
             /**
@@ -134,6 +139,23 @@ public class ArEventLogic {
                  * AR_EVENT_HTML저장
                  */
                 arEventService.saveAllEventHtml(arEventId, eventSaveDto.getArEventHtmlInfo());
+
+                //참여코드 엑셀파일 추출 후 저장하기 시작
+                if (!attendCodeExcelFile.isEmpty()) {
+                    List<ArEventGateCodeEntity>arEventGateCodeEntityList = new ArrayList<>();
+                    List<Map<String, Object>> attendCodeList = excelService.extractionAttendCodeByExcelFile(attendCodeExcelFile);
+                    attendCodeList.forEach(attendCodeMap -> {
+                        ArEventGateCodeEntity gateCodeEntity = new ArEventGateCodeEntity();
+                        gateCodeEntity.setEventId(eventId);
+                        gateCodeEntity.setAttendCode(String.valueOf(attendCodeMap.get("A")));
+                        gateCodeEntity.setUseYn(false);
+
+                        arEventGateCodeEntityList.add(gateCodeEntity);
+                    });
+                    arEventService.saveAllArEventGateCode(arEventGateCodeEntityList);
+                }
+                //참여코드 엑셀파일 추출 후 저장하기 끝
+
             }
 
             resultMap.put("eventId", eventId);

@@ -57,6 +57,9 @@ public class ArEventService {
     @Autowired
     private ArEventHtmlEntityRepository arEventHtmlEntityRepository;
 
+    @Autowired
+    private ArEventGateCodeEntityRepository arEventGateCodeEntityRepository;
+
     @Transactional
     public String saveEventBase(WebEventBaseEntity webEventBaseEntity) {
         eventBaseEntityRepository.save(webEventBaseEntity);
@@ -147,6 +150,13 @@ public class ArEventService {
                     });
 
             arEventHtmlEntityRepository.saveAll(arEventHtmlEntityList);
+        }
+    }
+
+    @Transactional
+    public void saveAllArEventGateCode(List<ArEventGateCodeEntity>arEventGateCodeEntityList) {
+        if (!arEventGateCodeEntityList.isEmpty()) {
+            arEventGateCodeEntityRepository.saveAll(arEventGateCodeEntityList);
         }
     }
 

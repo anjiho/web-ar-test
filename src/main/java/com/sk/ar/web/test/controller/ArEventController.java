@@ -72,7 +72,7 @@ public class ArEventController {
     ) throws Exception {
 //        ObjectMapper objectMapper = new ObjectMapper();
 //        EventSaveDto eventSaveDto = objectMapper.readValue(jsonStr, EventSaveDto.class);
-        return ResponseEntity.ok(arEventLogic.saveArEventLogic(jsonStr));
+        return ResponseEntity.ok(arEventLogic.saveArEventLogic(jsonStr, excelFile));
     }
 
     @PostMapping(value = "/verification/attend-code")
