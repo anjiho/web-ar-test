@@ -122,6 +122,10 @@ public class ArEventService {
         arEventWinningButtonEntityRepository.save(arEventWinningButtonEntity);
     }
 
+    public ArEventEntity findArEventByEventId(String eventId) {
+        return arEventEntityRepository.findByEventId(eventId);
+    }
+
     @Transactional
     public void saveAllEventAttendTime(int arEventId, List<ArEventAttendTimeEntity>arEventAttendTimeEntityList) {
         if (!arEventAttendTimeEntityList.isEmpty()) {
@@ -135,6 +139,11 @@ public class ArEventService {
 
             arEventAttendTimeEntityRepository.saveAll(arEventAttendTimeEntityList);
         }
+    }
+
+    @Transactional
+    public void deleteArEventAttendTimeByArEventId(int arEventId) {
+        arEventAttendTimeEntityRepository.deleteByArEventId(arEventId);
     }
 
     @Transactional
@@ -158,6 +167,50 @@ public class ArEventService {
         if (!arEventGateCodeEntityList.isEmpty()) {
             arEventGateCodeEntityRepository.saveAll(arEventGateCodeEntityList);
         }
+    }
+
+    public ArEventButtonEntity findArEventButtonByArEventId(int arEventId) {
+        return arEventButtonEntityRepository.findByArEventId(arEventId);
+    }
+
+    public ArEventLogicalEntity findArEventLogicalByArEventId(int arEventId) {
+        return arEventLogicalEntityRepository.findByArEventId(arEventId);
+    }
+
+    public List<Integer> findArEventWinningIdListByArEventId(int arEventId) {
+        List<Integer> eventWinningIdList = new ArrayList<>();
+        List<ArEventWinningEntity> arEventWinningEntityList = arEventWinningEntityRepository.findAllByArEventId(arEventId);
+        arEventWinningEntityList
+                .stream()
+                .filter(Objects::nonNull)
+                .forEach(entity -> {
+                    eventWinningIdList.add(entity.getArEventWinningId());
+                });
+        return eventWinningIdList;
+    }
+
+    public void deleteArEventScanningImageByArEventId(int arEventId) {
+        arEventScanningImageEntityRepository.deleteByArEventId(arEventId);
+    }
+
+    public void deleteArEventObjectByArEventId(int arEventId) {
+        arEventObjectEntityRepository.deleteByArEventId(arEventId);
+    }
+
+    public void deleteArEventWinningByArEventId(int arEventId) {
+        arEventWinningEntityRepository.deleteByArEventId(arEventId);
+    }
+
+    public void deleteArEventWinningButtonByArEventWinningIdIn(List<Integer> arEventWinningIdList) {
+        arEventWinningButtonEntityRepository.deleteByArEventWinningIdIn(arEventWinningIdList);
+    }
+
+    public void deleteArEventHtmlByArEventId(int arEventId) {
+        arEventHtmlEntityRepository.deleteByArEventId(arEventId);
+    }
+
+    public void deleteArEventGateCodeByEventId(String eventId) {
+
     }
 
     public ApiResultObjectDto findAllEventCategory(String categoryType, String parentCode) {

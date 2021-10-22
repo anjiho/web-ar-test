@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,8 +27,9 @@ public class ExcelService {
      * @param excelFile
      * @return
      */
-    public boolean isValidationAttendCodeByExcelFile(final MultipartFile excelFile) {
+    public Map<String, Object> isValidationAttendCodeByExcelFile(final MultipartFile excelFile) {
         boolean isValidation = false;
+        int attendCodeSize = 0;
 
         try {
             File destFile = new File(path + excelFile.getOriginalFilename());
@@ -38,7 +40,11 @@ public class ExcelService {
             log.info("================ 파일명 ::: " + destFile.getName() + " =====================");
             excelReadOption.setOutputColumns("A");
             excelReadOption.setStartRow(2);
+
             List<Map<String, Object>> excelContentList = ExcelRead.read(excelReadOption);
+            //참여코드 개수 주입
+            attendCodeSize = excelContentList.size();
+
             log.info("================ 엑셀 파일 추출 끝 =====================");
             //엑셀 파일 중복된 맥 어드레스가 있는지 확인
             boolean isDuplicatedExcelContentList = excelContentList.stream()
@@ -48,6 +54,7 @@ public class ExcelService {
             if (isDuplicatedExcelContentList) {
                 log.error("=============== 참여코드 중복 ==================");
                 isValidation = true;
+                attendCodeSize = 0;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,7 +62,13 @@ public class ExcelService {
             FileUtils.fileDelete(path + excelFile.getOriginalFilename());
             log.info("================ 엑셀 파일 삭제 =====================");
         }
-        return isValidation;
+
+        Map<String, Object>resultMap = new HashMap<>();
+        resultMap.put("isDuplicate", isValidation);
+        resultMap.put("attendCodeCount", attendCodeSize);
+
+        return resultMap;
+
     }
 
     public List<Map<String, Object>> extractionAttendCodeByExcelFile(final MultipartFile excelFile) {

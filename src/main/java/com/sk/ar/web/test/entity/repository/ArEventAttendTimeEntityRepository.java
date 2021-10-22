@@ -10,4 +10,5 @@ import javax.persistence.*;
 import java.util.Date;
 
 public interface ArEventAttendTimeEntityRepository extends JpaRepository<ArEventAttendTimeEntity, Integer> {
+    void deleteByArEventId(int arEventId);
 }

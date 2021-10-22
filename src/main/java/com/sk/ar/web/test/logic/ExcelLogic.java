@@ -21,13 +21,10 @@ public class ExcelLogic {
     public ApiResultObjectDto isDuplicateAttendCode(MultipartFile excelFile) {
         int resultCode = httpSuccessCode;
         //참여코드 중복 확인
-        boolean isValidation = excelService.isValidationAttendCodeByExcelFile(excelFile);
-
-        Map<String, Object>resultMap = new HashMap<>();
-        resultMap.put("isDuplicate", isValidation);
+        Map<String, Object> attendCodeExcelMap = excelService.isValidationAttendCodeByExcelFile(excelFile);
 
         return new ApiResultObjectDto().builder()
-                .result(resultMap)
+                .result(attendCodeExcelMap)
                 .resultCode(resultCode)
                 .traceCd("")
                 .build();

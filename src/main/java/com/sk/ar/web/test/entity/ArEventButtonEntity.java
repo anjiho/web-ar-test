@@ -28,6 +28,9 @@ public class ArEventButtonEntity {
     // 버튼 배경색 지정 여부 값(AR_EVENT_CATEGORY)
     private String arButtonBgColorAssignType;
 
+    // 버튼 배경색 지정일떄 RGB, HEX 여부
+    private String arButtonBgColorInputType;
+
     // 버튼 배경색 rgb 값
     private Integer arButtonBgColorRed;
 
@@ -42,6 +45,9 @@ public class ArEventButtonEntity {
 
     // 버튼색 지정 여부 값
     private String arButtonColorAssignType;
+
+    // 버튼색 지정일떄 RGB, HEX 여부
+    private String arButtonColorInputType;
 
     // 버튼색 rgb 값
     private Integer arButtonColorRed;
@@ -58,6 +64,9 @@ public class ArEventButtonEntity {
     // 버튼 text 색 지정 여부 값
     private String arButtonTextColorAssignType;
 
+    // 버튼 text 색 지정일떄 RGB, HEX 여부
+    private String arButtonTextColorInputType;
+
     // 버튼 text 색 rgb값
     private Integer arButtonTextColorRed;
 
@@ -72,12 +81,6 @@ public class ArEventButtonEntity {
 
     // 버튼 text 문구 지정
     private String arButtonText;
-
-    // AR BG 이미지
-    private String arBgImage;
-
-    // AR 스킨 이미지
-    private String arSkinImage;
 
     // 생성자
     private String createdBy;
@@ -95,6 +98,15 @@ public class ArEventButtonEntity {
         ArEventButtonEntity entity = ModelMapperUtils.getModelMapper().map(dto, ArEventButtonEntity.class);
         entity.setArEventId(arEventId);
         entity.setCreatedDate(DateUtils.returnNowDate());
+        return entity;
+    }
+
+    public static ArEventButtonEntity updateOf(ArEventButtonEntity arEventButtonEntity, EventButtonDto dto) {
+        ArEventButtonEntity entity = ModelMapperUtils.getModelMapper().map(dto, ArEventButtonEntity.class);
+        entity.setArEventButtonId(arEventButtonEntity.getArEventButtonId());
+        entity.setArEventId(arEventButtonEntity.getArEventId());
+        entity.setCreatedDate(arEventButtonEntity.getCreatedDate());
+        entity.setLastModifiedDate(DateUtils.returnNowDate());
         return entity;
     }
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.json.JsonWriteFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sk.ar.web.test.define.ErrorCodeDefine;
 import com.sk.ar.web.test.dto.request.*;
 import com.sk.ar.web.test.entity.*;
 import com.sk.ar.web.test.service.ArEventService;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.Cacheable;
 
 import javax.transaction.Transactional;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,6 +38,9 @@ public class ArEventLogic {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private ObjectMapper mapper;
+
     /**
      * AR 이벤트 저장하기
      * @param jsonStr
@@ -48,9 +53,12 @@ public class ArEventLogic {
         Map<String, Object>resultMap = new HashMap<>();
 
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.getFactory().configure(JsonWriteFeature.ESCAPE_NON_ASCII.mappedFeature(), true);
-            EventSaveDto eventSaveDto = objectMapper.readValue(jsonStr, EventSaveDto.class);
+            //json string 인코딩 변경
+            String encodingJsonStr = "";
+            if (!StringUtils.isEmpty(jsonStr)) {
+                encodingJsonStr = new String(jsonStr.getBytes("iso-8859-1"), "utf-8");
+            }
+            EventSaveDto eventSaveDto = mapper.readValue(encodingJsonStr, EventSaveDto.class);
 
             /**
              * EVENT_BASE 저장
@@ -141,7 +149,7 @@ public class ArEventLogic {
                 arEventService.saveAllEventHtml(arEventId, eventSaveDto.getArEventHtmlInfo());
 
                 //참여코드 엑셀파일 추출 후 저장하기 시작
-                if (!attendCodeExcelFile.isEmpty()) {
+                if (attendCodeExcelFile != null) {
                     List<ArEventGateCodeEntity>arEventGateCodeEntityList = new ArrayList<>();
                     List<Map<String, Object>> attendCodeList = excelService.extractionAttendCodeByExcelFile(attendCodeExcelFile);
                     attendCodeList.forEach(attendCodeMap -> {
@@ -163,19 +171,182 @@ public class ArEventLogic {
         } catch (JsonProcessingException jpe) {
             log.info("json parse error");
             jpe.printStackTrace();
+        } catch (UnsupportedEncodingException uee) {
+            log.info("json encoding error");
+            uee.printStackTrace();;
         }
 
         return new ApiResultObjectDto().builder()
                 .result(resultMap)
                 .resultCode(resultCode)
-                .traceCd("")
+                .traceNo("")
                 .build();
     }
 
     /**
      * AR 이벤트 수정하기
      */
-    public void updateArEventLogic() {
+    @Transactional
+    public ApiResultObjectDto updateArEventLogic(String eventId, String jsonStr, MultipartFile attendCodeExcelFile) {
+        int resultCode = httpSuccessCode;
+
+        EventSaveDto eventSaveDto = new EventSaveDto();
+
+        try {
+            String encodingJsonStr = "";
+            if (!StringUtils.isEmpty(jsonStr)) {
+                encodingJsonStr = new String(jsonStr.getBytes("iso-8859-1"), "utf-8");
+            }
+            eventSaveDto = mapper.readValue(encodingJsonStr, EventSaveDto.class);
+        } catch (JsonProcessingException jpe) {
+            log.info("json parse error");
+            jpe.printStackTrace();
+        } catch (UnsupportedEncodingException uee) {
+            log.info("json encoding error");
+            uee.printStackTrace();;
+        }
+
+        WebEventBaseEntity webEventBase = arEventService.findEventBase(eventId);
+
+        //WEB_EVENT_BASE 없으면 에러처리
+        if (webEventBase == null) {
+
+            resultCode = ErrorCodeDefine.CUSTOM_ERROR_WEB_EVENT_BASE_NULL.code();
+            log.error(ErrorCodeDefine.getLogErrorMessage(resultCode));
+
+        } else {
+            /**
+             * WEB_EVENT_BASE 수정
+             */
+            arEventService.saveEventBase(WebEventBaseEntity.updateOf(webEventBase, eventId, eventSaveDto.getEventBaseInfo()));
+
+            /**
+             * AR_EVENT 수정
+             */
+            ArEventEntity arEventEntity = arEventService.findArEventByEventId(eventId);
+            arEventService.saveEvent(ArEventEntity.updateOf(arEventEntity, eventId, eventSaveDto.getArEventInfo()));
+            /**
+             * AR_EVENT_ATTEND_TIME 삭제 후 저장
+             */
+            arEventService.deleteArEventAttendTimeByArEventId(arEventEntity.getArEventId());
+            arEventService.saveAllEventAttendTime(arEventEntity.getArEventId(), convertEventAttendTimeDtoListToArEventAttendEntityList(eventSaveDto.getArEventInfo().getArEventAttendTimeInfo()));
+
+            /**
+             * AR_EVENT_BUTTON 수정
+             */
+            ArEventButtonEntity arEventButtonEntity = arEventService.findArEventButtonByArEventId(arEventEntity.getArEventId());
+            arEventService.saveEventButton(ArEventButtonEntity.updateOf(arEventButtonEntity, eventSaveDto.getArEventButtonInfo()));
+
+            /**
+             * AR_EVENT_OBJECT 수정 (이미지스캐닝이 아날떄만)
+             */
+            if (!"SCANNING".equals(eventSaveDto.getArEventInfo().getEventLogicalType())) {
+                //AR_EVENT_OBJECT 삭제
+                arEventService.deleteArEventObjectByArEventId(arEventEntity.getArEventId());
+
+                List<ArEventObjectEntity> eventObjectEntityList = convertEventObjectDtoListToArEventObjectEntityList(eventSaveDto.getArEventObjectInfo());
+                eventObjectEntityList
+                        .stream()
+                        .filter(Objects::nonNull)
+                        .forEach(objectEntity -> {
+                            objectEntity.setArEventId(arEventEntity.getArEventId());
+                            objectEntity.setCreatedDate(DateUtils.returnNowDate());
+                        });
+
+                arEventService.saveAllArEventObject(eventObjectEntityList);
+
+            } else {
+                /**
+                 * AR_EVENT_SCANNING_IMAGE 수정 (이미지스캔형일때만)
+                 */
+                //AR_EVENT_SCANNING_IMAGE 삭제
+                arEventService.deleteArEventScanningImageByArEventId(arEventEntity.getArEventId());
+
+                List<ArEventScanningImageEntity> arEventImageScanningEntityList = convertEventScanningImageDtoListToArEventImageScanningEntityList(eventSaveDto.getArEventScanningImageInfo());
+                arEventImageScanningEntityList
+                        .stream()
+                        .filter(Objects::nonNull)
+                        .forEach(entity -> {
+                            entity.setArEventId(arEventEntity.getArEventId());
+                            entity.setCreatedDate(DateUtils.returnNowDate());
+                        });
+
+                arEventService.saveAllEventImageScanning(arEventImageScanningEntityList);
+            }
+            /**
+             * AR_EVENT_LOGICAL 수정
+             */
+            ArEventLogicalEntity arEventLogicalEntity = arEventService.findArEventLogicalByArEventId(arEventEntity.getArEventId());
+            arEventService.saveEventLogical(ArEventLogicalEntity.updateOf(arEventLogicalEntity, eventSaveDto.getArEventLogicalInfo()));
+
+            /**
+             * AR_EVENT_WINNING, AR_EVENT_WINNING_BUTTON 수정
+             */
+            //당첨정보, 당첨버튼정보 수정하기
+            List<Integer> arEventWinningIdList = arEventService.findArEventWinningIdListByArEventId(arEventEntity.getArEventId());
+            //AR_EVENT_WINNING 삭제
+            arEventService.deleteArEventWinningByArEventId(arEventEntity.getArEventId());
+            //AR_EVENT_WINNING_BUTTON 삭제
+            arEventService.deleteArEventWinningButtonByArEventWinningIdIn(arEventWinningIdList);
+
+
+            int i = 0;
+            List<ArEventWinningEntity> arEventWinningEntityList = convertEventWinningDtoToArEventWinningEntityList(eventSaveDto.getArEventWinningInfo());
+            for (ArEventWinningEntity arEventWinningEntity : arEventWinningEntityList) {
+
+                arEventWinningEntity.setArEventId(arEventEntity.getArEventId());
+                arEventWinningEntity.setCreatedDate(DateUtils.returnNowDate());
+                //당첨정보 저장
+                arEventService.saveEventWinning(arEventWinningEntity);
+
+                //당첨버튼 정보 저장하기
+                List<ArEventWinningButtonEntity> arEventWinningButtonEntityList = convertEventWinningButtonDtoToArEventWinningButtonEntityList(eventSaveDto.getArEventWinningInfo().get(i).getArEventWinningButtonInfo());
+                for (ArEventWinningButtonEntity buttonEntity : arEventWinningButtonEntityList) {
+
+                    buttonEntity.setArEventWinningId(arEventService.findEventWinningEntityByArEventId(arEventEntity.getArEventId()).getArEventWinningId());
+                    buttonEntity.setCreatedDate(DateUtils.returnNowDate());
+
+                    arEventService.saveEventWinningButton(buttonEntity);
+                }
+                i++;
+            }
+
+            /**
+             * AR_EVENT_HTML저장
+             */
+            arEventService.deleteArEventHtmlByArEventId(arEventButtonEntity.getArEventId());
+            arEventService.saveAllEventHtml(arEventEntity.getArEventId(), eventSaveDto.getArEventHtmlInfo());
+
+            //참여코드 엑셀파일 추출 후 저장하기 시작
+            if (attendCodeExcelFile != null) {
+                //AR_EVENT_GATE_CODE 삭제
+                arEventService.deleteArEventGateCodeByEventId(eventId);
+
+                //신규 저장
+                List<ArEventGateCodeEntity>arEventGateCodeEntityList = new ArrayList<>();
+                List<Map<String, Object>> attendCodeList = excelService.extractionAttendCodeByExcelFile(attendCodeExcelFile);
+                attendCodeList.forEach(attendCodeMap -> {
+                    ArEventGateCodeEntity gateCodeEntity = new ArEventGateCodeEntity();
+                    gateCodeEntity.setEventId(eventId);
+                    gateCodeEntity.setAttendCode(String.valueOf(attendCodeMap.get("A")));
+                    gateCodeEntity.setUseYn(false);
+
+                    arEventGateCodeEntityList.add(gateCodeEntity);
+                });
+                arEventService.saveAllArEventGateCode(arEventGateCodeEntityList);
+            }
+            //참여코드 엑셀파일 추출 후 저장하기 끝
+
+        }
+
+        Map<String, Object>resultMap = new HashMap<>();
+        resultMap.put("eventId", eventId);
+
+        return new ApiResultObjectDto().builder()
+                .result(resultMap)
+                .resultCode(resultCode)
+                .traceNo("")
+                .build();
 
     }
 

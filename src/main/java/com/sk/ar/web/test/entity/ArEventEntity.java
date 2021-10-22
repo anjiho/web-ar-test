@@ -43,6 +43,15 @@ public class ArEventEntity {
     // AR 참여조건(참여번호)
     private Boolean arAttendConditionCodeYn;
 
+    // 기간참여조건 타입(제한없음, 기간제한)
+    private String arAttendTermType;
+
+    // 기간참여조건 종류(1일, 이벤트기간내)
+    private String arAttendTermLimitType;
+
+    // 기간참여조건 회수
+    private Integer arAttendTermLimitCount;
+
     // pid
     private String pid;
 
@@ -52,17 +61,17 @@ public class ArEventEntity {
     // 위치메세지 등록(위치 미 참여시)
     private String positionMessageNotAttend;
 
-//    // 참여시간 설정(시작)
-//    private Integer attendHourStart;
-//
-//    // 참여시간 설정(종료)
-//    private Integer attendHourEnd;
-
     // 시간참여 불가시
     private String attendHourMessage;
 
     // 참여번호 미 매칭시
     private String attendCodeMisMatchMessage;
+
+    // AR BG 이미지
+    private String arBgImage;
+
+    // AR 스킨 이미지
+    private String arSkinImage;
 
     // 생성자
     private String createdBy;
@@ -80,6 +89,15 @@ public class ArEventEntity {
         ArEventEntity entity = ModelMapperUtils.getModelMapper().map(dto, ArEventEntity.class);
         entity.setEventId(eventId);
         entity.setCreatedDate(DateUtils.returnNowDate());
+        return entity;
+    }
+
+    public static ArEventEntity updateOf(ArEventEntity arEventEntity, String eventId, EventDto dto) {
+        ArEventEntity entity = ModelMapperUtils.getModelMapper().map(dto, ArEventEntity.class);
+        entity.setArEventId(arEventEntity.getArEventId());
+        entity.setEventId(eventId);
+        entity.setCreatedDate(arEventEntity.getCreatedDate());
+        entity.setLastModifiedDate(DateUtils.returnNowDate());
         return entity;
     }
 }

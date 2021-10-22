@@ -32,6 +32,15 @@ public class EventDto {
     // AR 참여조건(참여번호)
     private Boolean arAttendConditionCodeYn;
 
+    // 기간참여조건 타입(제한없음, 기간제한)
+    private String arAttendTermType;
+
+    // 기간참여조건 종류(1일, 이벤트기간내)
+    private String arAttendTermLimitType;
+
+    // 기간참여조건 회수
+    private Integer arAttendTermLimitCount;
+
     // pid
     private String pid;
 
@@ -54,6 +63,12 @@ public class EventDto {
 
     // 참여번호 미 매칭시
     private String attendCodeMisMatchMessage;
+
+    // AR BG 이미지
+    private String arBgImage;
+
+    // AR 스킨 이미지
+    private String arSkinImage;
 
     private List<EventAttendTimeDto> arEventAttendTimeInfo;
 

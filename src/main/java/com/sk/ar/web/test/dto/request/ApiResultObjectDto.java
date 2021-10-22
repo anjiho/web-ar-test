@@ -16,13 +16,13 @@ public class ApiResultObjectDto {
 
     private String resultMsg;
 
-    private String traceCd;
+    private String traceNo;
 
     @Builder
-    public ApiResultObjectDto(Object result, int resultCode, String traceCd) {
+    public ApiResultObjectDto(Object result, int resultCode, String traceNo) {
         this.resultCode = resultCode;
         this.result = result;
         this.resultMsg = "";
-        this.traceCd = traceCd;
+        this.traceNo = traceNo;
     }
 }

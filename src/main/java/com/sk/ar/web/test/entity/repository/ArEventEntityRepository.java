@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ArEventEntityRepository extends JpaRepository<ArEventEntity, Integer> {
     ArEventEntity findFirstByOrderByArEventIdDesc();
+    ArEventEntity findByEventId(String eventId);
 }

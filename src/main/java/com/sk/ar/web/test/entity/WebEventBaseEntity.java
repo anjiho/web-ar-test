@@ -72,6 +72,21 @@ public class WebEventBaseEntity {
         return entity;
     }
 
+    public static WebEventBaseEntity updateOf(WebEventBaseEntity webEventBaseEntity, String eventId, EventBaseDto dto) {
+        WebEventBaseEntity entity = new WebEventBaseEntity();
+        entity.setId(webEventBaseEntity.getId());
+        entity.setEventId(eventId);
+        entity.setEventTitle(dto.getEventTitle());
+        entity.setMarketingId(dto.getMarketingId());
+        entity.setContractStatus(dto.getContractStatus());
+        entity.setEventStartDate(dto.getEventStartDate());
+        entity.setEventEndDate(dto.getEventEndDate());
+        entity.setQrCodeUrl(dto.getQrCodeUrl());
+        entity.setCreatedDate(webEventBaseEntity.getCreatedDate());
+        entity.setLastModifiedDate(DateUtils.returnNowDate());
+        return entity;
+    }
+
     public static String generateEventId(String prevEventId) {
         String generateCode = "";
         if (!"".equals(prevEventId)) {

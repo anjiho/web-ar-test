@@ -64,4 +64,13 @@ public class ArEventLogicalEntity {
         logicalEntity.setCreatedDate(DateUtils.returnNowDate());
         return logicalEntity;
     }
+
+    public static ArEventLogicalEntity updateOf(ArEventLogicalEntity arEventLogicalEntity, EventLogicalDto dto) {
+        ArEventLogicalEntity logicalEntity = ModelMapperUtils.getModelMapper().map(dto, ArEventLogicalEntity.class);
+        logicalEntity.setArEventLogicalId(arEventLogicalEntity.getArEventLogicalId());
+        logicalEntity.setArEventId(arEventLogicalEntity.getArEventId());
+        logicalEntity.setCreatedDate(arEventLogicalEntity.getCreatedDate());
+        logicalEntity.setLastModifiedDate(DateUtils.returnNowDate());
+        return logicalEntity;
+    }
 }
