@@ -1,23 +1,17 @@
-package com.sk.ar.web.test.entity;
+package com.sk.ar.web.test.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sk.ar.web.test.entity.ArEventWinningButtonEntity;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
-@NoArgsConstructor
 @Getter
 @Setter
-@Entity
-@Table(name = "AR_EVENT_WINNING")
-public class ArEventWinningEntity {
+public class ArEventWinningResDto {
 
-    // 아이디
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     // 아이디
     private Integer arEventWinningId;
 
@@ -82,4 +76,6 @@ public class ArEventWinningEntity {
     // 수정일
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
     private Date lastModifiedDate;
+
+    private List<ArEventWinningButtonEntity> arEventWinningButtonInfo;
 }

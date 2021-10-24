@@ -1,11 +1,13 @@
 package com.sk.ar.web.test.logic;
 
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.json.JsonWriteFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sk.ar.web.test.define.ErrorCodeDefine;
 import com.sk.ar.web.test.dto.request.*;
+import com.sk.ar.web.test.dto.response.ApiResultObjectDto;
+import com.sk.ar.web.test.dto.response.ArEventDetailResDto;
+import com.sk.ar.web.test.dto.response.ArEventResDto;
+import com.sk.ar.web.test.dto.response.ArEventWinningResDto;
 import com.sk.ar.web.test.entity.*;
 import com.sk.ar.web.test.service.ArEventService;
 import com.sk.ar.web.test.service.ExcelService;
@@ -17,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
-import springfox.documentation.annotations.Cacheable;
 
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
@@ -348,6 +349,76 @@ public class ArEventLogic {
                 .traceNo("")
                 .build();
 
+    }
+
+    public ApiResultObjectDto getArEventDetailLogic(String eventId) {
+        int resultCode = httpSuccessCode;
+
+        if (StringUtils.isEmpty(eventId)) {
+            resultCode = ErrorCodeDefine.CUSTOM_ERROR_EVENT_ID_NULL.code();
+            log.error(ErrorCodeDefine.getLogErrorMessage(resultCode));
+
+        } else {
+
+            WebEventBaseEntity webEventBaseInfo = arEventService.findEventBase(eventId);
+
+            ArEventResDto arEventResDto = arEventService.findArEventByEventIdOfResDto(eventId);
+
+            //AR_EVENT 정보가 없으면 에러처리
+            if (arEventResDto == null) {
+                resultCode = ErrorCodeDefine.CUSTOM_ERROR_AR_EVENT_INFO_NULL.code();
+                log.error(ErrorCodeDefine.getLogErrorMessage(resultCode));
+            } else {
+                int arEventId = arEventResDto.getArEventId();
+                //AR_EVENT_ATTEND_TIME 정보
+                arEventResDto.setArEventAttendTimeInfo(arEventService.findAllArEventAttendTimeByArEventId(arEventId));
+                //AR_EVENT_BUTTON 정보
+                ArEventButtonEntity arEventButtonEntity = arEventService.findArEventButtonByArEventId(arEventId);
+                //AR_EVENT_OBJECT 정보
+                List<ArEventObjectEntity> arEventObjectEntityList = arEventService.findAllArEventObjectByArEventId(arEventId);
+
+                ArEventLogicalEntity arEventLogicalEntity = null;
+                List<ArEventScanningImageEntity> arEventScanningImageEntityList = null;
+
+                //오브젝트 종류가 스캐닝이 아닐때 AR_EVENT_LOGICAL 정보 주입하기
+                if (!"SCANNING".equals(arEventResDto.getEventLogicalType())) {
+                    arEventLogicalEntity = arEventService.findArEventLogicalByArEventId(arEventId);
+                } else {
+                    arEventScanningImageEntityList = arEventService.findAllArEventScanningImageByEventId(arEventId);
+                }
+                //AR_EVENT_WINNING 정보
+                List<ArEventWinningResDto> arEventWinningResDtoList = arEventService.findAllArEventWinningByArEventIdOfResDto(arEventId);
+                //AR_EVENT_WINNING_BUTTON 정보 주입
+                arEventWinningResDtoList
+                        .stream()
+                        .filter(Objects::nonNull)
+                        .forEach(resDto -> {
+                            resDto.setArEventWinningButtonInfo(
+                                    arEventService.findAllArEventWinningButtonByArEventWinningId(resDto.getArEventWinningId())
+                            );
+                        });
+                //AR_EVENT_HTML 정보
+                List<ArEventHtmlEntity> arEventHtmlList = arEventService.findAllArEventHtmlByArEventId(arEventId);
+
+                ArEventDetailResDto arEventDetailResDto = new ArEventDetailResDto().builder()
+                        .webEventBaseInfo(webEventBaseInfo) //WEB_EVENT_BASE 정보
+                        .arEventInfo(arEventResDto) //AR_EVENT 정보
+                        .arEventButtonInfo(arEventButtonEntity) //AR_EVENT_BUTTON
+                        .arEventObjectInfo(arEventObjectEntityList) //AR_EVENT_OBJECT
+                        .arEventLogicalInfo(arEventLogicalEntity)   //AR_EVENT_LOGICAL
+                        .arEventScanningImageInfo(arEventScanningImageEntityList)   //AR_EVENT_SCANNING_IMAGE
+                        .arEventWinningInfo(arEventWinningResDtoList)   //AR_EVENT_WINNING
+                        .arEventHtmlInfo(arEventHtmlList)   //AR_EVENT_HTML
+                        .build();
+
+                return new ApiResultObjectDto().builder()
+                        .result(arEventDetailResDto)
+                        .resultCode(resultCode)
+                        .traceNo("")
+                        .build();
+            }
+        }
+        return new ApiResultObjectDto();
     }
 
     private List<ArEventObjectEntity> convertEventObjectDtoListToArEventObjectEntityList(List<EventObjectDto> eventObjectDtoList) {

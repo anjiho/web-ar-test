@@ -2,7 +2,9 @@ package com.sk.ar.web.test.define;
 
 public enum ErrorCodeDefine {
 
-    CUSTOM_ERROR_WEB_EVENT_BASE_NULL(800, "WEB_EVENT_BASE 없음")
+    CUSTOM_ERROR_WEB_EVENT_BASE_NULL(800, "WEB_EVENT_BASE 없음"),
+    CUSTOM_ERROR_EVENT_ID_NULL(801, "EVENT_ID 없음"),
+    CUSTOM_ERROR_AR_EVENT_INFO_NULL(802, "AR_EVENT 정보 없음")
     ;
 
     int code;

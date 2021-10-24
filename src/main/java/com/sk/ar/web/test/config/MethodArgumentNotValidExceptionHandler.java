@@ -1,11 +1,10 @@
 package com.sk.ar.web.test.config;
 
-import com.sk.ar.web.test.dto.request.ApiResultObjectDto;
+import com.sk.ar.web.test.dto.response.ApiResultObjectDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;

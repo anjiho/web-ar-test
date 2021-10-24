@@ -1,5 +1,6 @@
 package com.sk.ar.web.test.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sk.ar.web.test.dto.request.EventButtonDto;
 import com.sk.ar.web.test.utils.DateUtils;
 import com.sk.ar.web.test.utils.ModelMapperUtils;
@@ -86,12 +87,14 @@ public class ArEventButtonEntity {
     private String createdBy;
 
     // 생성일
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
     private Date createdDate;
 
     // 수정자
     private String lastModifiedBy;
 
     // 수정일
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
     private Date lastModifiedDate;
 
     public static ArEventButtonEntity of(int arEventId, EventButtonDto dto) {

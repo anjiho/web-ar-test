@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ArEventWinningEntityRepository extends JpaRepository<ArEventWinningEntity, Integer> {
     List<ArEventWinningEntity> findAllByArEventId(int arEventId);
+    List<ArEventWinningEntity> findAllByArEventIdOrderByArEventWinningIdAsc(int arEventId);
     ArEventWinningEntity findFirstByArEventIdOrderByArEventWinningIdDesc(int eventId);
     void deleteByArEventId(int arEventId);
 }

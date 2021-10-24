@@ -1,8 +1,9 @@
 package com.sk.ar.web.test.service;
 
-import com.sk.ar.web.test.dto.request.ApiResultObjectDto;
-import com.sk.ar.web.test.dto.request.EventAttendTimeDto;
+import com.sk.ar.web.test.dto.response.ApiResultObjectDto;
 import com.sk.ar.web.test.dto.request.EventHtmlDto;
+import com.sk.ar.web.test.dto.response.ArEventResDto;
+import com.sk.ar.web.test.dto.response.ArEventWinningResDto;
 import com.sk.ar.web.test.dto.response.CategoryDto;
 import com.sk.ar.web.test.entity.*;
 import com.sk.ar.web.test.entity.repository.*;
@@ -126,6 +127,14 @@ public class ArEventService {
         return arEventEntityRepository.findByEventId(eventId);
     }
 
+    public ArEventResDto findArEventByEventIdOfResDto(String eventId) {
+        ArEventEntity arEventEntity = arEventEntityRepository.findByEventId(eventId);
+        if (arEventEntity != null) {
+            return modelMapper.map(arEventEntity, ArEventResDto.class);
+        }
+        return null;
+    }
+
     @Transactional
     public void saveAllEventAttendTime(int arEventId, List<ArEventAttendTimeEntity>arEventAttendTimeEntityList) {
         if (!arEventAttendTimeEntityList.isEmpty()) {
@@ -144,6 +153,10 @@ public class ArEventService {
     @Transactional
     public void deleteArEventAttendTimeByArEventId(int arEventId) {
         arEventAttendTimeEntityRepository.deleteByArEventId(arEventId);
+    }
+
+    public List<ArEventAttendTimeEntity> findAllArEventAttendTimeByArEventId(int arEventId) {
+        return arEventAttendTimeEntityRepository.findByArEventIdOrderByArEventAttendTimeIdAsc(arEventId);
     }
 
     @Transactional
@@ -189,6 +202,34 @@ public class ArEventService {
         return eventWinningIdList;
     }
 
+    public List<ArEventObjectEntity> findAllArEventObjectByArEventId(int arEventId) {
+        return arEventObjectEntityRepository.findByArEventIdOrderByArEventObjectIdAsc(arEventId);
+    }
+
+    public List<ArEventScanningImageEntity> findAllArEventScanningImageByEventId(int arEventId) {
+        return arEventScanningImageEntityRepository.findAllByArEventIdOrderByArEventScanningImageIdAsc(arEventId);
+    }
+
+    public List<ArEventWinningResDto> findAllArEventWinningByArEventIdOfResDto(int arEventId) {
+        List<ArEventWinningEntity> entityList = arEventWinningEntityRepository.findAllByArEventIdOrderByArEventWinningIdAsc(arEventId);
+        if (!entityList.isEmpty()) {
+            return entityList
+                    .stream()
+                    .filter(Objects::nonNull)
+                    .map(entity -> modelMapper.map(entity, ArEventWinningResDto.class))
+                    .collect(Collectors.toList());
+        }
+        return null;
+    }
+
+    public List<ArEventWinningButtonEntity> findAllArEventWinningButtonByArEventWinningId(int arEventWinningId) {
+        return arEventWinningButtonEntityRepository.findAllByArEventWinningIdOrderByButtonSortNumberAsc(arEventWinningId);
+    }
+
+    public List<ArEventHtmlEntity> findAllArEventHtmlByArEventId(int arEventId) {
+        return arEventHtmlEntityRepository.findAllByArEventIdOrderByHtmlTypeSortNumberAsc(arEventId);
+    }
+
     public void deleteArEventScanningImageByArEventId(int arEventId) {
         arEventScanningImageEntityRepository.deleteByArEventId(arEventId);
     }
@@ -210,7 +251,7 @@ public class ArEventService {
     }
 
     public void deleteArEventGateCodeByEventId(String eventId) {
-
+        arEventGateCodeEntityRepository.deleteByEventId(eventId);
     }
 
     public ApiResultObjectDto findAllEventCategory(String categoryType, String parentCode) {

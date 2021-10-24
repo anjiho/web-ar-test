@@ -1,8 +1,8 @@
 package com.sk.ar.web.test.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sk.ar.web.test.dto.request.EventBaseDto;
 import com.sk.ar.web.test.utils.DateUtils;
-import com.sk.ar.web.test.utils.ModelMapperUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,9 +37,11 @@ public class WebEventBaseEntity {
     private String eventType;
 
     // 서비스 시작일
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Asia/Seoul")
     private Date eventStartDate;
 
     // 서비스 종료일
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Asia/Seoul")
     private Date eventEndDate;
 
     // QR코드 이미지 URL
@@ -49,15 +51,15 @@ public class WebEventBaseEntity {
     private String createdBy;
 
     // 생성일
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
     private Date createdDate;
 
     // 수정자
     private String lastModifiedBy;
 
     // 수정일
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
     private Date lastModifiedDate;
-
-
 
     public static WebEventBaseEntity of(WebEventBaseEntity webEventBaseEntity, EventBaseDto dto) {
         WebEventBaseEntity entity = new WebEventBaseEntity();
@@ -65,6 +67,7 @@ public class WebEventBaseEntity {
         entity.setEventTitle(dto.getEventTitle());
         entity.setMarketingId(dto.getMarketingId());
         entity.setContractStatus(dto.getContractStatus());
+        entity.setEventType("AR");
         entity.setEventStartDate(dto.getEventStartDate());
         entity.setEventEndDate(dto.getEventEndDate());
         entity.setQrCodeUrl(dto.getQrCodeUrl());
@@ -79,6 +82,7 @@ public class WebEventBaseEntity {
         entity.setEventTitle(dto.getEventTitle());
         entity.setMarketingId(dto.getMarketingId());
         entity.setContractStatus(dto.getContractStatus());
+        entity.setEventType(dto.getEventType());
         entity.setEventStartDate(dto.getEventStartDate());
         entity.setEventEndDate(dto.getEventEndDate());
         entity.setQrCodeUrl(dto.getQrCodeUrl());

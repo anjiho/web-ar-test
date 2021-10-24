@@ -1,4 +1,4 @@
-package com.sk.ar.web.test.dto.request;
+package com.sk.ar.web.test.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

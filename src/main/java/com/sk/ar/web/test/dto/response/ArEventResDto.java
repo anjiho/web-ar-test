@@ -1,26 +1,21 @@
-package com.sk.ar.web.test.entity;
+package com.sk.ar.web.test.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.sk.ar.web.test.dto.request.EventDto;
-import com.sk.ar.web.test.utils.DateUtils;
-import com.sk.ar.web.test.utils.ModelMapperUtils;
+import com.sk.ar.web.test.dto.request.EventAttendTimeDto;
+import com.sk.ar.web.test.entity.ArEventAttendTimeEntity;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
+import java.util.List;
 
-@NoArgsConstructor
 @Getter
 @Setter
-@Entity
-@Table(name = "AR_EVENT")
-public class ArEventEntity {
+public class ArEventResDto {
 
-    // 이벤트 아이디
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer arEventId;
 
     // 이벤트 기본 테이블 아이디
@@ -78,27 +73,15 @@ public class ArEventEntity {
     private String createdBy;
 
     // 생성일
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
     private Date createdDate;
 
     // 수정자
     private String lastModifiedBy;
 
     // 수정일
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
     private Date lastModifiedDate;
 
-    public static ArEventEntity of(String eventId, EventDto dto) {
-        ArEventEntity entity = ModelMapperUtils.getModelMapper().map(dto, ArEventEntity.class);
-        entity.setEventId(eventId);
-        entity.setCreatedDate(DateUtils.returnNowDate());
-        return entity;
-    }
-
-    public static ArEventEntity updateOf(ArEventEntity arEventEntity, String eventId, EventDto dto) {
-        ArEventEntity entity = ModelMapperUtils.getModelMapper().map(dto, ArEventEntity.class);
-        entity.setArEventId(arEventEntity.getArEventId());
-        entity.setEventId(eventId);
-        entity.setCreatedDate(arEventEntity.getCreatedDate());
-        entity.setLastModifiedDate(DateUtils.returnNowDate());
-        return entity;
-    }
+    private List<ArEventAttendTimeEntity> arEventAttendTimeInfo;
 }
