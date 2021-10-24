@@ -40,7 +40,7 @@ public class ArEventLogic {
     private ModelMapper modelMapper;
 
     @Autowired
-    private ObjectMapper mapper;
+    private ObjectMapper objectMapper;
 
     /**
      * AR 이벤트 저장하기
@@ -59,7 +59,7 @@ public class ArEventLogic {
             if (!StringUtils.isEmpty(jsonStr)) {
                 encodingJsonStr = new String(jsonStr.getBytes("iso-8859-1"), "utf-8");
             }
-            EventSaveDto eventSaveDto = mapper.readValue(encodingJsonStr, EventSaveDto.class);
+            EventSaveDto eventSaveDto = objectMapper.readValue(encodingJsonStr, EventSaveDto.class);
 
             /**
              * EVENT_BASE 저장
@@ -198,7 +198,7 @@ public class ArEventLogic {
             if (!StringUtils.isEmpty(jsonStr)) {
                 encodingJsonStr = new String(jsonStr.getBytes("iso-8859-1"), "utf-8");
             }
-            eventSaveDto = mapper.readValue(encodingJsonStr, EventSaveDto.class);
+            eventSaveDto = objectMapper.readValue(encodingJsonStr, EventSaveDto.class);
         } catch (JsonProcessingException jpe) {
             log.info("json parse error");
             jpe.printStackTrace();
