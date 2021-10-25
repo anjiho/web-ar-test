@@ -409,6 +409,7 @@ public class ArEventLogic {
                         .arEventScanningImageInfo(arEventScanningImageEntityList)   //AR_EVENT_SCANNING_IMAGE
                         .arEventWinningInfo(arEventWinningResDtoList)   //AR_EVENT_WINNING
                         .arEventHtmlInfo(arEventHtmlList)   //AR_EVENT_HTML
+                        .arEventUrl("http://ar.skevent.com/" + eventId) //TODO 추후 정식 URL패턴으로 변경 해야함
                         .build();
 
                 return new ApiResultObjectDto().builder()

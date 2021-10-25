@@ -30,4 +30,6 @@ public class ArEventDetailResDto {
 
     private List<ArEventHtmlEntity> arEventHtmlInfo;
 
+    private String arEventUrl;
+
 }
