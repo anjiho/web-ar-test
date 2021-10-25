@@ -100,10 +100,10 @@ public class ArEventObjectEntity {
     private String exposureControlType;
 
     // 위치 노출제어 값
-    private String locationExposureControlType;
+    private String positionExposureControlType;
 
-    // 이벤트 pid
-    private String locationExposureControlPid;
+    //  위치 노출제어 pid
+    private String positionExposureControlPid;
 
     // 최대 노출 여부 값
     private String maxExposureType;

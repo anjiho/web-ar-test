@@ -34,12 +34,6 @@ public class EventObjectDto {
     // 동영상 재생반복 여부 값
     private String videoPlayRepeatType;
 
-    // 동영상 투과색 지정 여부
-    private String videoPenetrationAssignType;
-
-    // 동영상 투과색(hex)
-    private String videoPenetrationColorHex;
-
     // 오브젝트 위치지정 값
     private String objectPositionAssignType;
 
@@ -73,12 +67,6 @@ public class EventObjectDto {
     // 오브젝트 change 크기(z)
     private BigDecimal objectChangeSizeZ;
 
-    // 오브젝트 change 동영상 투과색 지정 여부 코드
-    private String objectChangeVideoPenetrationAssignType;
-
-    // 오브젝트 change 동영상 투과색
-    private String objectChangeVideoPenetrationColor;
-
     // 캐치 사운드 설정 값
     private String catchSoundType;
 
@@ -89,10 +77,10 @@ public class EventObjectDto {
     private String exposureControlType;
 
     // 위치 노출제어 값
-    private String locationExposureControlType;
+    private String positionExposureControlType;
 
     // 이벤트 pid
-    private String locationExposureControlPid;
+    private String positionExposureControlPid;
 
     // 최대 노출 여부 값
     private String maxExposureType;

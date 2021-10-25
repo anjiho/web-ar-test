@@ -2,8 +2,10 @@ package com.sk.ar.web.test.logic;
 
 import com.sk.ar.web.test.define.ErrorCodeDefine;
 import com.sk.ar.web.test.dto.response.ApiResultObjectDto;
+import com.sk.ar.web.test.dto.response.WebArObjectResDto;
 import com.sk.ar.web.test.entity.ArEventEntity;
 import com.sk.ar.web.test.entity.ArEventHtmlEntity;
+import com.sk.ar.web.test.entity.ArEventObjectEntity;
 import com.sk.ar.web.test.entity.WebEventBaseEntity;
 import com.sk.ar.web.test.service.ArEventFrontService;
 
@@ -59,6 +61,42 @@ public class ArEventFrontLogic {
             }
         }
         return new ApiResultObjectDto();
+    }
+
+    public ApiResultObjectDto getWebArInfoLogic(String eventId) {
+        int resultCode = httpSuccessCode;
+
+        if (StringUtils.isEmpty(eventId)) {
+
+            resultCode = ErrorCodeDefine.CUSTOM_ERROR_EVENT_ID_NULL.code();
+            log.error(ErrorCodeDefine.getLogErrorMessage(resultCode));
+
+        } else {
+            WebEventBaseEntity webEventBase = arEventService.findEventBase(eventId);
+            ArEventEntity arEvent = arEventService.findArEventByEventId(eventId);
+
+            List<ArEventObjectEntity> arEventObjectEntityList = arEventService.findAllArEventObjectByArEventId(arEvent.getArEventId());
+
+            WebArObjectResDto webArObjectResDto = new WebArObjectResDto().builder()
+                    .eventId(webEventBase.getEventId())
+                    .eventTitle(webEventBase.getEventTitle())
+                    .eventLogicalType(arEvent.getEventLogicalType())
+                    .arBgImage(arEvent.getArBgImage())
+                    .arSkinImage(arEvent.getArSkinImage())
+                    .arObjectInfo(null)
+                    .arBridgeInfo(null)
+                    .arScanningImageInfo(null)
+                    .build();
+
+            return new ApiResultObjectDto().builder()
+                    .resultCode(resultCode)
+                    .result(webArObjectResDto)
+                    .traceNo("")
+                    .build();
+
+        }
+        return new ApiResultObjectDto();
+
     }
 
 }
