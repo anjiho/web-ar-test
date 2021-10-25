@@ -91,7 +91,7 @@ public class WebEventBaseEntity {
         return entity;
     }
 
-    public static String generateEventId(String prevEventId) {
+    private static String generateEventId(String prevEventId) {
         String generateCode = "";
         if (!"".equals(prevEventId)) {
             generateCode = String.format("%05d", Integer.parseInt(prevEventId) + 1);
