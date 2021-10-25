@@ -15,8 +15,6 @@ public class EventDto {
     // AR 구동 정보(기본형 ~ 이미지스캐닝형)
     private String eventLogicalType;
 
-    // 페이지 접속 팝업
-    @NotNull(message = "페이지 접속 팝업 값이 없습니다.")
     // 페이지 접속 팝업(위치설정조건)
     private Boolean locationSettingYn;
 
@@ -50,14 +48,6 @@ public class EventDto {
     // 위치메세지 등록(위치 미 참여시)
     private String positionMessageNotAttend;
 
-    // 참여시간 설정(시작)
-//    @Positive
-//    @Range(min = 0, max = 24)
-//    private Integer attendHourStart;
-//
-//    // 참여시간 설정(종료)
-//    private Integer attendHourEnd;
-
     // 시간참여 불가시
     private String attendHourMessage;
 
@@ -69,6 +59,15 @@ public class EventDto {
 
     // AR 스킨 이미지
     private String arSkinImage;
+
+    // 당첨정보(공통)설정 > 중복당첨수 제한 타입
+    private String duplicateWinningType;
+
+    // 중복당첨 당첨제한 (전체 : 0 , 1일 : 1)
+    private Integer duplicateWinningLimitType;
+
+    // 중복 당첨 당첨제한 회수
+    private Integer duplicateWinningCount;
 
     private List<EventAttendTimeDto> arEventAttendTimeInfo;
 

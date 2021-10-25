@@ -4,9 +4,11 @@ import com.sk.ar.web.test.utils.ExcelRead;
 import com.sk.ar.web.test.utils.ExcelReadOption;
 import com.sk.ar.web.test.utils.FileUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +19,9 @@ import java.util.Map;
 @Service
 public class ExcelService {
 
-    protected final String path = "/Users/jihoan/Downloads/";
+    @Autowired
+    private HttpServletRequest request;
+
 
     /**
      * 참여코드 중복여부 체크
@@ -27,6 +31,8 @@ public class ExcelService {
     public Map<String, Object> isValidationAttendCodeByExcelFile(final MultipartFile excelFile) {
         boolean isValidation = false;
         int attendCodeSize = 0;
+
+        String path = request.getSession().getServletContext().getRealPath("/");
 
         try {
             File destFile = new File(path + excelFile.getOriginalFilename());
@@ -70,6 +76,8 @@ public class ExcelService {
 
     public List<Map<String, Object>> extractionAttendCodeByExcelFile(final MultipartFile excelFile) {
         List<Map<String, Object>> attendCodeList = new ArrayList<>();
+        String path = request.getSession().getServletContext().getRealPath("/");
+
         try {
             File destFile = new File(path + excelFile.getOriginalFilename());
             excelFile.transferTo(destFile);

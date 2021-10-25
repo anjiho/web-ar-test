@@ -74,6 +74,15 @@ public class ArEventEntity {
     // AR 스킨 이미지
     private String arSkinImage;
 
+    // 당첨정보(공통)설정 > 중복당첨수 제한 타입
+    private String duplicateWinningType;
+
+    // 중복당첨 당첨제한 (전체 : 0 , 1일 : 1)
+    private Integer duplicateWinningLimitType;
+
+    // 중복 당첨 당첨제한 회수
+    private Integer duplicateWinningCount;
+
     // 생성자
     private String createdBy;
 

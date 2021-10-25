@@ -9,6 +9,7 @@ import java.util.List;
 @Getter
 public class EventWinningDto {
 
+    // 아이디
     private Integer arEventWinningId;
 
     // 당첨자 정보 설정 넘버
@@ -55,6 +56,15 @@ public class EventWinningDto {
 
     // 당첨 상품명
     private String productName;
+
+    // 참여번호당 당첨제한 타입 값
+    private String attendCodeWinningType;
+
+    // 참여번호당 당첨제한 (전체 : 0 , 1일 : 1)
+    private Integer attendCodeLimitType;
+
+    // 참여번호당 당첨제한 회수
+    private Integer attendCodeWinningCount;
 
     // 당첨 버튼 정보
     private List<EventWinningButtonDto> arEventWinningButtonInfo;

@@ -69,6 +69,15 @@ public class ArEventWinningEntity {
     // 당첨 상품명
     private String productName;
 
+    // 참여번호당 당첨제한 타입 값
+    private String attendCodeWinningType;
+
+    // 참여번호당 당첨제한 (전체 : 0 , 1일 : 1)
+    private Integer attendCodeLimitType;
+
+    // 참여번호당 당첨제한 회수
+    private Integer attendCodeWinningCount;
+
     // 생성자
     private String createdBy;
 
