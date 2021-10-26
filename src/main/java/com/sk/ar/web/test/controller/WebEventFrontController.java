@@ -38,6 +38,6 @@ public class WebEventFrontController {
     @ApiOperation("웹 AR 이벤트 오브젝트 정보(AR 페이지에게 전달할 정보)")
     @GetMapping(value = "/ar-object/{eventId}")
     public ResponseEntity<ApiResultObjectDto> getWebArInfo(@PathVariable(value = "eventId") String eventId) {
-        return null;
+        return ResponseEntity.ok(arEventFrontLogic.getWebArInfoLogic(eventId));
     }
 }

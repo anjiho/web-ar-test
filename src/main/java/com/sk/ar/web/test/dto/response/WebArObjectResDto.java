@@ -26,7 +26,7 @@ public class WebArObjectResDto {
 
     private List<ArEventObjectResDto> arObjectInfo;
 
-    private List<ArEventBridgeResDto> arBridgeInfo;
+    private ArEventLogicalResDto arEventLogicalInfo;
 
     private List<ArEventScanningImageResDto> arScanningImageInfo;
 }

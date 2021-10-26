@@ -73,6 +73,17 @@ public class ArEventObjectResDto {
     // 판 설정  값(판 위치 셀렉트박스)
     private String panPositionType;
 
+    // 브릿지 타입 값
+    private String bridgeType;
+
+    // 브릿지 파일 url
+    private String bridgeUrl;
+
+    // 브릿지 노출 시간 값
+    private Integer bridgeExposureTimeSecond;
+
+    // 브릿지 화면 방향  값(화면 방향 라디오 코드 값)
+    private String bridgeDisplayDirectionType;
 
 
 

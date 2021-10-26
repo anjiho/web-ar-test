@@ -2,6 +2,8 @@ package com.sk.ar.web.test.logic;
 
 import com.sk.ar.web.test.define.ErrorCodeDefine;
 import com.sk.ar.web.test.dto.response.ApiResultObjectDto;
+import com.sk.ar.web.test.dto.response.ArEventLogicalResDto;
+import com.sk.ar.web.test.dto.response.ArEventObjectResDto;
 import com.sk.ar.web.test.dto.response.WebArObjectResDto;
 import com.sk.ar.web.test.entity.ArEventEntity;
 import com.sk.ar.web.test.entity.ArEventHtmlEntity;
@@ -12,6 +14,7 @@ import com.sk.ar.web.test.service.ArEventFrontService;
 import com.sk.ar.web.test.service.ArEventService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
@@ -22,6 +25,9 @@ import java.util.List;
 @Repository
 public class ArEventFrontLogic {
     private final int httpSuccessCode = HttpStatus.OK.value();
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     private ArEventService arEventService;
@@ -75,28 +81,38 @@ public class ArEventFrontLogic {
             WebEventBaseEntity webEventBase = arEventService.findEventBase(eventId);
             ArEventEntity arEvent = arEventService.findArEventByEventId(eventId);
 
-            List<ArEventObjectEntity> arEventObjectEntityList = arEventService.findAllArEventObjectByArEventId(arEvent.getArEventId());
+            if (arEvent == null) {
 
-            WebArObjectResDto webArObjectResDto = new WebArObjectResDto().builder()
-                    .eventId(webEventBase.getEventId())
-                    .eventTitle(webEventBase.getEventTitle())
-                    .eventLogicalType(arEvent.getEventLogicalType())
-                    .arBgImage(arEvent.getArBgImage())
-                    .arSkinImage(arEvent.getArSkinImage())
-                    .arObjectInfo(null)
-                    .arBridgeInfo(null)
-                    .arScanningImageInfo(null)
-                    .build();
+                resultCode = ErrorCodeDefine.CUSTOM_ERROR_AR_EVENT_INFO_NULL.code();
+                log.error(ErrorCodeDefine.getLogErrorMessage(resultCode));
 
-            return new ApiResultObjectDto().builder()
-                    .resultCode(resultCode)
-                    .result(webArObjectResDto)
-                    .traceNo("")
-                    .build();
+            } else {
 
+                WebArObjectResDto webArObjectResDto = new WebArObjectResDto().builder()
+                        .eventId(webEventBase.getEventId())
+                        .eventTitle(webEventBase.getEventTitle())
+                        .eventLogicalType(arEvent.getEventLogicalType())
+                        .arBgImage(arEvent.getArBgImage())
+                        .arSkinImage(arEvent.getArSkinImage())
+                        .arObjectInfo(arEventService.findAllArEventObjectResDto(arEvent.getArEventId()))
+                        .arEventLogicalInfo(arEventService.findArEventLogicalResDto(arEvent.getArEventId()))
+                        .arScanningImageInfo(arEventService.findAllArEventScanningImageResDto(arEvent.getArEventId()))
+                        .build();
+
+                return new ApiResultObjectDto().builder()
+                        .resultCode(resultCode)
+                        .result(webArObjectResDto)
+                        .traceNo("")
+                        .build();
+            }
         }
-        return new ApiResultObjectDto();
-
+        return new ApiResultObjectDto().builder()
+                .resultCode(resultCode)
+                .result(null)
+                .traceNo("")
+                .build();
     }
+
+
 
 }

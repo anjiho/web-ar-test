@@ -1,10 +1,7 @@
 package com.sk.ar.web.test.service;
 
-import com.sk.ar.web.test.dto.response.ApiResultObjectDto;
+import com.sk.ar.web.test.dto.response.*;
 import com.sk.ar.web.test.dto.request.EventHtmlDto;
-import com.sk.ar.web.test.dto.response.ArEventResDto;
-import com.sk.ar.web.test.dto.response.ArEventWinningResDto;
-import com.sk.ar.web.test.dto.response.CategoryDto;
 import com.sk.ar.web.test.entity.*;
 import com.sk.ar.web.test.entity.repository.*;
 import com.sk.ar.web.test.utils.DateUtils;
@@ -187,7 +184,7 @@ public class ArEventService {
     }
 
     public ArEventLogicalEntity findArEventLogicalByArEventId(int arEventId) {
-        return arEventLogicalEntityRepository.findByArEventId(arEventId);
+        return arEventLogicalEntityRepository.findByArEventId(arEventId).orElseGet(ArEventLogicalEntity::new);
     }
 
     public List<Integer> findArEventWinningIdListByArEventId(int arEventId) {
@@ -228,6 +225,32 @@ public class ArEventService {
 
     public List<ArEventHtmlEntity> findAllArEventHtmlByArEventId(int arEventId) {
         return arEventHtmlEntityRepository.findAllByArEventIdOrderByHtmlTypeSortNumberAsc(arEventId);
+    }
+
+    public List<ArEventObjectResDto> findAllArEventObjectResDto(int arEventId) {
+        List<ArEventObjectEntity> arEventObjectEntityList = arEventObjectEntityRepository.findByArEventIdOrderByArEventObjectIdAsc(arEventId);
+        if (!arEventObjectEntityList.isEmpty()) {
+            return convertArEventObjectEntityListToArEventObjectResDtoList(
+                    arEventObjectEntityRepository.findByArEventIdOrderByArEventObjectIdAsc(arEventId)
+            );
+        }
+        return null;
+    }
+
+    public ArEventLogicalResDto findArEventLogicalResDto(int arEventId) {
+        ArEventLogicalEntity arEventLogicalEntity = arEventLogicalEntityRepository.findByArEventId(arEventId).orElseGet(ArEventLogicalEntity::new);
+        if (arEventLogicalEntity != null) {
+            return modelMapper.map(arEventLogicalEntity, ArEventLogicalResDto.class);
+        }
+        return new ArEventLogicalResDto();
+    }
+
+    public List<ArEventScanningImageResDto> findAllArEventScanningImageResDto(int arEventId) {
+        List<ArEventScanningImageEntity> arEventScanningImageResDtoList = this.findAllArEventScanningImageByEventId(arEventId);
+        if (!arEventScanningImageResDtoList.isEmpty()) {
+            return convertArEventScanningImageEntityListToArEventScanningImageDtoList(arEventScanningImageResDtoList);
+        }
+        return null;
     }
 
     public void deleteArEventScanningImageByArEventId(int arEventId) {
@@ -315,6 +338,22 @@ public class ArEventService {
                 .map(dto -> modelMapper.map(dto, ArEventHtmlEntity.class))
                 .collect(Collectors.toList());
 
+    }
+
+    private List<ArEventObjectResDto> convertArEventObjectEntityListToArEventObjectResDtoList(List<ArEventObjectEntity>arEventObjectEntityList) {
+        return arEventObjectEntityList
+                .stream()
+                .filter(Objects::nonNull)
+                .map(entity -> modelMapper.map(entity, ArEventObjectResDto.class))
+                .collect(Collectors.toList());
+    }
+
+    private List<ArEventScanningImageResDto> convertArEventScanningImageEntityListToArEventScanningImageDtoList(List<ArEventScanningImageEntity>arEventScanningImageEntityList) {
+        return arEventScanningImageEntityList
+                .stream()
+                .filter(Objects::nonNull)
+                .map(entity -> modelMapper.map(entity, ArEventScanningImageResDto.class))
+                .collect(Collectors.toList());
     }
 
 }

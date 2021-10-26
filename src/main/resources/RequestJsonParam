@@ -52,7 +52,7 @@
     }
   ],
   "arEventInfo": {
-    "eventLogicalType": "BASIC",
+    "eventLogicalType": "SCANNING",
     "locationSettingYn": true,
     "arAttendConditionAllYn": false,
     "arAttendConditionSpecialPositionYn": true,
@@ -147,11 +147,20 @@
       "activeThumbnailUrl": "string",
       "arEventScanningImageId": 0,
       "inactiveThumbnailUrl": "string",
-      "scanningImageNumber": 0,
+      "scanningImageNumber": 1,
       "scanningImageUrl": "string",
       "scanningSoundData": "string",
       "scanningSoundType": "string"
-    }
+    },
+    {
+          "activeThumbnailUrl": "string",
+          "arEventScanningImageId": 0,
+          "inactiveThumbnailUrl": "string",
+          "scanningImageNumber": 2,
+          "scanningImageUrl": "string",
+          "scanningSoundData": "string",
+          "scanningSoundType": "string"
+        }
   ],
   "arEventWinningInfo": [
     {

@@ -1,5 +1,6 @@
 package com.sk.ar.web.test.dto.response;
 
+import com.sk.ar.web.test.define.ErrorCodeDefine;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +23,7 @@ public class ApiResultObjectDto {
     public ApiResultObjectDto(Object result, int resultCode, String traceNo) {
         this.resultCode = resultCode;
         this.result = result;
-        this.resultMsg = "";
+        this.resultMsg = ErrorCodeDefine.getEventErrorMessage(resultCode) == null ? "SUCCESS" : ErrorCodeDefine.getEventErrorMessage(resultCode);;
         this.traceNo = traceNo;
     }
 }
