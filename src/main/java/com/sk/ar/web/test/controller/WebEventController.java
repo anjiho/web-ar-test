@@ -16,8 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @RestController
 @CrossOrigin(value = "*")
-@RequestMapping(value = "/api/v1/ar-event")
-public class ArEventController {
+@RequestMapping(value = "/api/v1/web-event")
+public class WebEventController {
 
     @Autowired
     private ArEventService arEventService;

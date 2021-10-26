@@ -16,7 +16,7 @@ public class EvenScanningImageDto {
     private String scanningSoundType;
 
     // 스캐닝 사운드 데이터
-    private String scanningSoundData;
+    private String scanningSoundFile;
 
     // 정렬 순서
     private Integer scanningImageNumber;

@@ -33,7 +33,7 @@ public class ArEventScanningImageEntity {
     private String scanningSoundType;
 
     // 스캐닝 사운드 데이터
-    private String scanningSoundData;
+    private String scanningSoundFile;
 
     // 활성화 썸네일
     private String activeThumbnailUrl;

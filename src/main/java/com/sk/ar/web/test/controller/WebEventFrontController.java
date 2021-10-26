@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @CrossOrigin(value = "*")
 @RestController
-@RequestMapping(value = "/api/v1/ar-event-front")
-public class ArEventFrontController {
+@RequestMapping(value = "/api/v1/web-event-front")
+public class WebEventFrontController {
 
     @Autowired
     private ArEventFrontLogic arEventFrontLogic;
