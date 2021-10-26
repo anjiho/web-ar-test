@@ -27,6 +27,9 @@ public class ArEventHtmlEntity {
     // html 정보 타입(1:이미지, 2:버튼, 3:공유하기)
     private Integer htmlType;
 
+    // 순서
+    private Integer htmlTypeSortNumber;
+
     // 이미지 url
     private String htmlImageUrl;
 
@@ -40,7 +43,7 @@ public class ArEventHtmlEntity {
     private String htmlButtonBgColorInputType;
 
     // 버튼 배경색 rgb 값
-    private Integer htmlButtonBgColorReg;
+    private Integer htmlButtonBgColorRed;
 
     // 버튼 배경색 rgb 값
     private Integer htmlButtonBgColorGreen;
@@ -57,11 +60,8 @@ public class ArEventHtmlEntity {
     // 버튼 target url
     private String htmlButtonTargetUrl;
 
-    // 순서
-    private Integer htmlTypeSortNumber;
-
-    // 공유하기 버튼 사용 여부
-    private Boolean htmlShareButtonUseYn;
+    // 공유하기 버튼 이미지 url
+    private String htmlShareButtonImageUrl;
 
     // 버튼색 지정여부
     private String htmlButtonColorAssignType;

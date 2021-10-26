@@ -16,7 +16,7 @@ public class EventDto {
     private String eventLogicalType;
 
     // 페이지 접속 팝업(위치설정조건)
-    private Boolean locationSettingYn;
+    private Boolean positionSettingYn;
 
     // AR 참여조건(전체)
     private Boolean arAttendConditionAllYn;

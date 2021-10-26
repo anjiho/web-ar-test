@@ -162,6 +162,10 @@ public class ArEventLogic {
                         arEventGateCodeEntityList.add(gateCodeEntity);
                     });
                     arEventService.saveAllArEventGateCode(arEventGateCodeEntityList);
+                } else {
+                    /**
+                     * TODO 엑셀파일 없을때 코드 자동 생성 후 저장하기 기능 추가
+                     */
                 }
                 //참여코드 엑셀파일 추출 후 저장하기 끝
 
@@ -335,6 +339,10 @@ public class ArEventLogic {
                     arEventGateCodeEntityList.add(gateCodeEntity);
                 });
                 arEventService.saveAllArEventGateCode(arEventGateCodeEntityList);
+            } else {
+                /**
+                 * TODO 엑셀파일 없을때 코드 자동 생성 후 저장하기 기능 추가
+                 */
             }
             //참여코드 엑셀파일 추출 후 저장하기 끝
 
@@ -450,7 +458,7 @@ public class ArEventLogic {
                 .collect(Collectors.toList());
     }
 
-    public List<ArEventAttendTimeEntity> convertEventAttendTimeDtoListToArEventAttendEntityList(List<EventAttendTimeDto>eventAttendTimeDtoList) {
+    private List<ArEventAttendTimeEntity> convertEventAttendTimeDtoListToArEventAttendEntityList(List<EventAttendTimeDto>eventAttendTimeDtoList) {
         return eventAttendTimeDtoList
                 .stream()
                 .map(dto -> modelMapper.map(dto, ArEventAttendTimeEntity.class))

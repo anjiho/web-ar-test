@@ -27,11 +27,17 @@ public class WebEventFrontController {
 
 
     @GetMapping(value = "/gate/{eventId}")
-    @ApiOperation("AR 이벤트 게이트 페이지 정보")
+    @ApiOperation("웹 AR 이벤트 게이트 페이지 정보")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "eventId", value = "이벤트 아이디", dataType = "string", paramType = "path", required = true)
     })
-    public ResponseEntity<ApiResultObjectDto> getGatePage(@PathVariable(value = "eventId") String eventId) {
+    public ResponseEntity<ApiResultObjectDto> getWebArGatePage(@PathVariable(value = "eventId") String eventId) {
         return ResponseEntity.ok(arEventFrontLogic.getGatePageLogic(eventId));
+    }
+
+    @ApiOperation("웹 AR 이벤트 오브젝트 정보(AR 페이지에게 전달할 정보)")
+    @GetMapping(value = "/ar-object/{eventId}")
+    public ResponseEntity<ApiResultObjectDto> getWebArInfo(@PathVariable(value = "eventId") String eventId) {
+        return null;
     }
 }
