@@ -48,9 +48,6 @@ public class EventHtmlDto {
     // 버튼 target url
     private String htmlButtonTargetUrl;
 
-    // 공유하기 버튼 이미지 url
-    private String htmlShareButtonImageUrl;
-
     // 버튼색 지정여부
     private String htmlButtonColorAssignType;
 

@@ -24,6 +24,17 @@ public class DateUtils {
         return to;
     }
 
+    public static Date stringToDate2(String yyyymmdd) {
+        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date to = new Date();
+        try {
+            to = transFormat.parse(yyyymmdd);
+        } catch (ParseException pe) {
+            pe.printStackTrace();
+        }
+        return to;
+    }
+
     public static Date returnNowDate() {
         Date today = new Date();
         //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -219,15 +230,42 @@ public class DateUtils {
         return sdf.format(today);
     }
 
+//    /**
+//     * yyyy-mm-dd -> yyyymmdd 변환
+//     */
+//    public static String convertDateFormat(String date) throws Exception {
+//        SimpleDateFormat fromDateFormat = new SimpleDateFormat("yyyymmdd");
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+//        Date originDate = fromDateFormat.parse(date);
+//        String newDate = dateFormat.format(originDate);
+//        return newDate;
+//    }
+
     /**
-     * yyyy-mm-dd -> yyyymmdd 변환
+     * yyyymmdd ==> yyy-mm-dd 변환
      */
-    public static String convertDateFormat(String date) throws Exception {
-        SimpleDateFormat fromDateFormat = new SimpleDateFormat("yyyy-mm-dd");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmdd");
-        Date originDate = fromDateFormat.parse(date);
-        String newDate = dateFormat.format(originDate);
+    public static String convertDateFormat(String date) {
+        String newDate = "";
+        SimpleDateFormat fromDateFormat = new SimpleDateFormat("yyyymmdd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        try {
+            Date originDate = fromDateFormat.parse(date);
+            newDate = dateFormat.format(originDate);
+        } catch (ParseException pe) {
+            pe.printStackTrace();
+        }
         return newDate;
+    }
+
+    public static Date convertDateTimeFormat(String yyyymmdd) {
+        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date to = new Date();
+        try {
+            to = transFormat.parse(yyyymmdd);
+        } catch (ParseException pe) {
+            pe.printStackTrace();
+        }
+        return to;
     }
 
     public static String convertDateFormat2(String date) {
@@ -478,7 +516,7 @@ public class DateUtils {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(returnNowDate());
+        System.out.println(stringToDate2(convertDateFormat("20210101") + " 23:59:59"));
 
     }
 }

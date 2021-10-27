@@ -29,7 +29,7 @@
       "htmlButtonBgColorGreen": 0,
       "htmlButtonBgColorHex": "string",
       "htmlButtonBgColorInputType": "string",
-      "htmlButtonBgColorReg": 0,
+      "htmlButtonBgColorRed": 0,
       "htmlButtonColorAssignType": "string",
       "htmlButtonColorBlue": 0,
       "htmlButtonColorGreen": 0,
@@ -46,7 +46,6 @@
       "htmlButtonTextColorRed": 0,
       "htmlButtonType": "string",
       "htmlImageUrl": "string",
-      "htmlShareButtonUseYn": true,
       "htmlType": 0,
       "htmlTypeSortNumber": 0
     }
@@ -149,7 +148,7 @@
       "inactiveThumbnailUrl": "string",
       "scanningImageNumber": 1,
       "scanningImageUrl": "string",
-      "scanningSoundData": "string",
+      "scanningSoundFile": "string",
       "scanningSoundType": "string"
     },
     {
@@ -158,7 +157,7 @@
           "inactiveThumbnailUrl": "string",
           "scanningImageNumber": 2,
           "scanningImageUrl": "string",
-          "scanningSoundData": "string",
+          "scanningSoundFile": "string",
           "scanningSoundType": "string"
         }
   ],
@@ -199,8 +198,8 @@
   ],
   "eventBaseInfo": {
     "contractStatus": "03",
-    "eventEndDate": "2021-01-25",
-    "eventStartDate": "2021-10-25",
+    "eventEndDate": "20211225",
+    "eventStartDate": "20210101",
     "eventTitle": "이벤트 타이틀입니다.",
     "eventType": "AR",
     "marketingId": "",

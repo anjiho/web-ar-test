@@ -68,8 +68,8 @@ public class WebEventBaseEntity {
         entity.setMarketingId(dto.getMarketingId());
         entity.setContractStatus(dto.getContractStatus());
         entity.setEventType("AR");
-        entity.setEventStartDate(dto.getEventStartDate());
-        entity.setEventEndDate(dto.getEventEndDate());
+        entity.setEventStartDate(DateUtils.convertDateTimeFormat(DateUtils.convertDateFormat(dto.getEventStartDate()) + " 00:00:00"));
+        entity.setEventEndDate(DateUtils.convertDateTimeFormat(DateUtils.convertDateFormat(dto.getEventEndDate()) + " 23:59:59"));
         entity.setQrCodeUrl(dto.getQrCodeUrl());
         entity.setCreatedDate(DateUtils.returnNowDate());
         return entity;
@@ -83,8 +83,8 @@ public class WebEventBaseEntity {
         entity.setMarketingId(dto.getMarketingId());
         entity.setContractStatus(dto.getContractStatus());
         entity.setEventType(dto.getEventType());
-        entity.setEventStartDate(dto.getEventStartDate());
-        entity.setEventEndDate(dto.getEventEndDate());
+        entity.setEventStartDate(DateUtils.convertDateTimeFormat(DateUtils.convertDateFormat(dto.getEventStartDate() + " 00:00:00")));
+        entity.setEventEndDate(DateUtils.convertDateTimeFormat(DateUtils.convertDateFormat(dto.getEventEndDate() + " 23:59:59")));
         entity.setQrCodeUrl(dto.getQrCodeUrl());
         entity.setCreatedDate(webEventBaseEntity.getCreatedDate());
         entity.setLastModifiedDate(DateUtils.returnNowDate());

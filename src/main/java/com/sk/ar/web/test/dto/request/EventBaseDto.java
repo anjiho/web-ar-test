@@ -24,10 +24,10 @@ public class EventBaseDto {
     private String eventType;
 
     // 서비스 시작일
-    private Date eventStartDate;
+    private String eventStartDate;
 
     // 서비스 종료일
-    private Date eventEndDate;
+    private String eventEndDate;
 
     // QR코드 이미지 URL
     private String qrCodeUrl;

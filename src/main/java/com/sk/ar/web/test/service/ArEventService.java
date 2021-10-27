@@ -234,7 +234,7 @@ public class ArEventService {
                     arEventObjectEntityRepository.findByArEventIdOrderByArEventObjectIdAsc(arEventId)
             );
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public ArEventLogicalResDto findArEventLogicalResDto(int arEventId) {
@@ -250,7 +250,7 @@ public class ArEventService {
         if (!arEventScanningImageResDtoList.isEmpty()) {
             return convertArEventScanningImageEntityListToArEventScanningImageDtoList(arEventScanningImageResDtoList);
         }
-        return null;
+        return new ArrayList<ArEventScanningImageResDto>();
     }
 
     public void deleteArEventScanningImageByArEventId(int arEventId) {
