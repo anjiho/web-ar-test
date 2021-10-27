@@ -206,3 +206,98 @@
     "qrCodeUrl": ""
   }
 }
+
+
+//계약 승인 알림 API request
+{
+"serviceSolutionId": "SL24010121",
+"solutionCode": "0101",
+"marketingInfo": {
+  "marketingId": "MKT2012120",
+  "displayWeekList": [
+      {
+        "weekDay": "01",
+        "weekDayName": "월"
+      },
+      {
+         "weekDay": "01",
+        "weekDayName": "화"
+
+      }
+  ],
+  "displayTimeList": [
+      {
+        "times": "01",
+        "timeName": "08시~09시"
+      },
+      {
+        "times": "02",
+        "timeName": "09시~10시"
+
+      }
+  ],
+  "usePlaceIdList": [
+      {
+        "usePlaceType": "01",
+        "usePlaceId": "00001"
+      },
+      {
+        "usePlaceType": "02",
+        "usePlaceId": "00002"
+      }
+    ],
+    "usePlaceMerchantTaid": "",
+    "usePlaceName": "사용처명",
+    "serviceAutostartYN": "1",
+    "serviceStartDate": "20150601",
+    "serviceEndYN": "1",
+    "serviceEndDate": "20150925",
+    "weekDay": "02",
+    "times": "02",
+    "usePlaceType": "01",
+    "targetChargingName": "시럽스토어 워킹데이",
+    "targetChargingCost": "20",
+    "contPlaceIdList": [
+        {
+          "contPlaceType": "01",
+          "contPlaceId": "00001"
+        },
+        {
+          "contPlaceType": "02",
+          "contPlaceId": "00002"
+
+        }
+    ],
+    "contPlaceName": "계약처명"
+
+  },
+   "targetingInfo":{
+      "targetingId": "100211213",
+      "targetingAllYn": "0",
+      "targetingType": "01"
+    },
+    "contractInfo": {
+      "contractNo": "141016-000002",
+      "contractDate": "20150601",
+      "contractStatus": "04",
+      "userId": "957",
+      "subGroupId": "1",
+      "corporationType": "GRP_TYPE_NOR",
+      "agentId": "988",
+      "agentSubGroupId": "2",
+      "agentCorporationType": "GRP_TYPE_SKP",
+      "createdBy": "988",
+      "industrySavingRate": "3:5",
+      "industryFeeRate": "5:5"
+    },
+    "productInfo": {
+      "productId": "003-01-00003",
+      "productTitle": "워킹데이 쿠폰",
+      "price": "10000",
+      "priceType": "01",
+      "surtaxYN": "1",
+      "actType": "01",
+      "saleName": null,
+      "saleRate": "0"
+    }
+}
