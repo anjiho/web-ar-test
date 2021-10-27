@@ -24,7 +24,7 @@ public class ArEventScanningImageEntity {
     private Integer arEventId;
 
     // 이미지 설정 넘버
-    private Integer scanningImageNumber;
+    private Integer scanningImageSort;
 
     // 스캐닝 이미지 url
     private String scanningImageUrl;

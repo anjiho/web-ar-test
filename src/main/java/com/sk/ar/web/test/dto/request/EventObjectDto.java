@@ -44,13 +44,13 @@ public class EventObjectDto {
     private String objectPositionAssignType;
 
     // 오브젝트 위치 지정(x)
-    private BigDecimal objectLocationX;
+    private BigDecimal objectPositionX;
 
     // 오브젝트 위치 지정(y)
-    private BigDecimal objectLocationY;
+    private BigDecimal objectPositionY;
 
     // 오브젝트 위치 지정(z)
-    private BigDecimal objectLocationZ;
+    private BigDecimal objectPositionZ;
 
     // STAY EFFECT 설정  값
     private String stayEffectType;

@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ArEventWinningButtonEntityRepository extends JpaRepository<ArEventWinningButtonEntity, Integer> {
-    List<ArEventWinningButtonEntity> findAllByArEventWinningIdOrderByButtonSortNumberAsc(int ArEventWinningId);
+    List<ArEventWinningButtonEntity> findAllByArEventWinningIdOrderByButtonSortAsc(int ArEventWinningId);
     void deleteByArEventWinningIdIn(List<Integer>arEventWinningIdList);
 }

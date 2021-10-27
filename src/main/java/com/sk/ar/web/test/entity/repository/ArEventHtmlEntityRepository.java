@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ArEventHtmlEntityRepository extends JpaRepository<ArEventHtmlEntity, Integer> {
-    List<ArEventHtmlEntity> findAllByArEventIdOrderByHtmlTypeSortNumberAsc(int arEventId);
+    List<ArEventHtmlEntity> findAllByArEventIdOrderByHtmlTypeSortAsc(int arEventId);
     void deleteByArEventId(int arEventId);
 }

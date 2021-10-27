@@ -87,23 +87,24 @@
 
         <!-- springfox-swagger2 -->
 
-<!--        &lt;!&ndash; springfox-swager-ui &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>io.springfox</groupId>-->
-<!--            <artifactId>springfox-swagger2</artifactId>-->
-<!--            <version>2.6.1</version>-->
-<!--        </dependency>-->
-        <!-- https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter -->
+        <!-- springfox-swager-ui -->
         <dependency>
             <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>3.0.0</version>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.6.1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter -->
+<!--        <dependency>-->
+<!--            <groupId>io.springfox</groupId>-->
+<!--            <artifactId>springfox-boot-starter</artifactId>-->
+<!--            <version>3.0.0</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
-            <version>3.0.0</version>
+<!--            <version>3.0.0</version>-->
+            <version>2.6.1</version>
         </dependency>
 
 

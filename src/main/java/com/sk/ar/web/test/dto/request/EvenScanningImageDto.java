@@ -19,7 +19,7 @@ public class EvenScanningImageDto {
     private String scanningSoundFile;
 
     // 정렬 순서
-    private Integer scanningImageNumber;
+    private Integer scanningImageSort;
 
     // 활성화 썸네일
     private String activeThumbnailUrl;

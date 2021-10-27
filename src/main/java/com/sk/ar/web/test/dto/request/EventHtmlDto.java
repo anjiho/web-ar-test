@@ -13,10 +13,10 @@ public class EventHtmlDto {
     private Integer arEventId;
 
     // html 정보 타입(1:이미지, 2:버튼, 3:공유하기)
-    private Integer htmlType;
+    private String htmlType;
 
     // 순서
-    private Integer htmlTypeSortNumber;
+    private Integer htmlTypeSort;
 
     // 이미지 url
     private String htmlImageUrl;

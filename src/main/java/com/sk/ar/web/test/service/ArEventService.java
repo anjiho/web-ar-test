@@ -220,11 +220,11 @@ public class ArEventService {
     }
 
     public List<ArEventWinningButtonEntity> findAllArEventWinningButtonByArEventWinningId(int arEventWinningId) {
-        return arEventWinningButtonEntityRepository.findAllByArEventWinningIdOrderByButtonSortNumberAsc(arEventWinningId);
+        return arEventWinningButtonEntityRepository.findAllByArEventWinningIdOrderByButtonSortAsc(arEventWinningId);
     }
 
     public List<ArEventHtmlEntity> findAllArEventHtmlByArEventId(int arEventId) {
-        return arEventHtmlEntityRepository.findAllByArEventIdOrderByHtmlTypeSortNumberAsc(arEventId);
+        return arEventHtmlEntityRepository.findAllByArEventIdOrderByHtmlTypeSortAsc(arEventId);
     }
 
     public List<ArEventObjectResDto> findAllArEventObjectResDto(int arEventId) {

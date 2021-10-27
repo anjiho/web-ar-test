@@ -19,7 +19,7 @@ public class EventWinningButtonDto {
     private String buttonLinkUrl;
 
     // 순서
-    private Integer buttonSortNumber;
+    private Integer buttonSort;
 
     // 버튼 액션 타입이 경품배송일때 성명 사용여부
     private Boolean deliveryNameYn;

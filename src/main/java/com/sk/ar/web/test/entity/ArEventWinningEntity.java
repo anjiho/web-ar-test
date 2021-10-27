@@ -25,7 +25,7 @@ public class ArEventWinningEntity {
     private Integer arEventId;
 
     // 당첨자 정보 설정 넘버
-    private Integer eventWinningNumber;
+    private Integer eventWinningSort;
 
     // 오브젝트 매핑 선택 타입 값
     private String objectMappingType;

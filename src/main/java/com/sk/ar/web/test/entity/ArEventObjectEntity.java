@@ -55,16 +55,16 @@ public class ArEventObjectEntity {
     private String objectPositionAssignType;
 
     // 오브젝트 위치 지정(x)
-    @Column(name = "object_location_x")
-    private BigDecimal objectLocationX;
+    @Column(name = "object_position_x")
+    private BigDecimal objectPositionX;
 
     // 오브젝트 위치 지정(y)
-    @Column(name = "object_location_y")
-    private BigDecimal objectLocationY;
+    @Column(name = "object_position_y")
+    private BigDecimal objectPositionY;
 
     // 오브젝트 위치 지정(z)
-    @Column(name = "object_location_z")
-    private BigDecimal objectLocationZ;
+    @Column(name = "object_position_z")
+    private BigDecimal objectPositionZ;
 
     // STAY EFFECT 설정  값
     private String stayEffectType;
@@ -76,7 +76,7 @@ public class ArEventObjectEntity {
     private String objectChangeSettingType;
 
     // 오브젝트 change 설정 파일 URL
-    private String objectChangeSettingVideoUrl;
+    private String objectChangeSettingUrl;
 
     // 오브젝트 change 크기(x)
     @Column(name = "object_change_size_x")
@@ -100,10 +100,10 @@ public class ArEventObjectEntity {
     private String exposureControlType;
 
     // 위치 노출제어 값
-    private String positionExposureControlType;
+    private String locationExposureControlType;
 
     //  위치 노출제어 pid
-    private String positionExposureControlPid;
+    private String locationExposureControlPid;
 
     // 최대 노출 여부 값
     private String maxExposureType;

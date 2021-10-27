@@ -1,5 +1,6 @@
 package com.sk.ar.web.test.controller;
 
+import com.sk.ar.web.test.dto.request.EventSaveDto;
 import com.sk.ar.web.test.dto.response.ApiResultObjectDto;
 import com.sk.ar.web.test.logic.ArEventLogic;
 import com.sk.ar.web.test.logic.ExcelLogic;
@@ -37,6 +38,12 @@ public class WebEventController {
     public ResponseEntity<ApiResultObjectDto> findAllByEventCategory(@RequestParam(value = "categoryType", required = false) String categoryType,
                                                                      @RequestParam(value = "parentCode", required = false) String parentCode) {
         return ResponseEntity.ok(arEventService.findAllEventCategory(categoryType, parentCode));
+    }
+
+    @GetMapping(value = "/save/request/sample")
+    @ApiOperation("AR 이벤트 저장 데이터 샘플")
+    public ResponseEntity<ApiResultObjectDto> saveEvent(@RequestBody EventSaveDto eventSaveDto) {
+        return ResponseEntity.ok(new ApiResultObjectDto());
     }
 
     @PostMapping(value = "/save")
